@@ -1,0 +1,22 @@
+﻿namespace MovieCatalogue.Data.Models
+{
+    public class Movie
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; } = null!;
+        public DateTime ReleaseDate { get; set; }
+        public string Cast { get; set; } = null!;
+        public double Rating { get; set; }
+        public string TrailerUrl { get; set; } = null!;
+
+        public int Duration { get; set; }
+
+        public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
+        public virtual ICollection<Favorite> Favorites { get; set; } = new HashSet<Favorite>();
+        public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
+
+    }
+}
