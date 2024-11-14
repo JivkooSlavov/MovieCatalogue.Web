@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Web", "MovieCatalogue.Web\MovieCatalogue.Web.csproj", "{04EBBB2C-0FD0-4DCE-AA0E-5865F63AB8C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Web", "MovieCatalogue.Web\MovieCatalogue.Web.csproj", "{04EBBB2C-0FD0-4DCE-AA0E-5865F63AB8C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Web.ViewModels", "MovieCatalogue.Web.ViewModels\MovieCatalogue.Web.ViewModels.csproj", "{4874C68C-1A3A-4ABB-92A2-45770D92E354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Web.ViewModels", "MovieCatalogue.Web.ViewModels\MovieCatalogue.Web.ViewModels.csproj", "{4874C68C-1A3A-4ABB-92A2-45770D92E354}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Data.Models", "MovieCatalogue.Data.Models\MovieCatalogue.Data.Models.csproj", "{F803FF0C-7C9B-4BB0-BE2B-4B0B2913DF83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Data.Models", "MovieCatalogue.Data.Models\MovieCatalogue.Data.Models.csproj", "{F803FF0C-7C9B-4BB0-BE2B-4B0B2913DF83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Common", "MovieCatalogue.Common\MovieCatalogue.Common.csproj", "{00C26E21-EB6F-49A3-8819-FD7AAC98463B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Common", "MovieCatalogue.Common\MovieCatalogue.Common.csproj", "{00C26E21-EB6F-49A3-8819-FD7AAC98463B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{A315413C-3ED3-412A-876E-E1002AEA2B78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{209598D4-A5FD-4E42-8E91-C3CC4E5B9075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Data", "MovieCatalogue.Data\MovieCatalogue.Data.csproj", "{F903683E-B1CB-4675-AC9C-7E2C71FEE748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Data", "MovieCatalogue.Data\MovieCatalogue.Data.csproj", "{F903683E-B1CB-4675-AC9C-7E2C71FEE748}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

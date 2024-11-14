@@ -2,7 +2,7 @@
 {
     public class Movie
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public int GenreId { get; set; }
@@ -11,8 +11,11 @@
         public string Cast { get; set; } = null!;
         public double Rating { get; set; }
         public string TrailerUrl { get; set; } = null!;
-
+        public string Director { get; set; } = null!;
         public int Duration { get; set; }
+        public bool IsDeleted { get; set; }
+
+        public string PosterUrl { get; set; } = null!;
 
         public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public virtual ICollection<Favorite> Favorites { get; set; } = new HashSet<Favorite>();
