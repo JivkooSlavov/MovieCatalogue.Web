@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static MovieCatalogue.Common.EntityValidationConstants.Rating;
 
 namespace MovieCatalogue.Data.Configuration
 {
@@ -17,8 +13,8 @@ namespace MovieCatalogue.Data.Configuration
 
             builder.Property(r => r.Value)
                 .IsRequired()
-                .HasDefaultValue(1)
-                .HasMaxLength(5);
+                .HasDefaultValue(RatingValueMin)
+                .HasMaxLength(RatingValueMax);
 
             builder.HasOne(r => r.Movie)
                 .WithMany(m => m.Ratings)

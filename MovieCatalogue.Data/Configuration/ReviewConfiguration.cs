@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static MovieCatalogue.Common.EntityValidationConstants.Review;
 
 namespace MovieCatalogue.Data.Configuration
 {
@@ -17,10 +13,11 @@ namespace MovieCatalogue.Data.Configuration
 
             builder.Property(r => r.Content)
                 .IsRequired()
-                .HasMaxLength(1000);
+                .HasMaxLength(ReviewContentMax);
 
             builder.Property(r => r.DatePosted)
                 .IsRequired();
+
             builder.HasOne(r => r.Movie)
                 .WithMany(m => m.Reviews)
                 .HasForeignKey(r => r.MovieId)

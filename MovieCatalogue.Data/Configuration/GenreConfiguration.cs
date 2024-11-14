@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using static MovieCatalogue.Common.EntityValidationConstants.Genre;
 namespace MovieCatalogue.Data.Configuration
 {
     public class GenreConfiguration : IEntityTypeConfiguration<Genre>
@@ -17,7 +12,7 @@ namespace MovieCatalogue.Data.Configuration
 
             builder.Property(g => g.Name)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(GenreNameMaxLength);
         }
     }
 }

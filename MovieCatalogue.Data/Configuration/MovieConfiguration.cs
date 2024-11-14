@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieCatalogue.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static MovieCatalogue.Common.EntityValidationConstants.Movie;
 
 namespace MovieCatalogue.Data.Configuration
 {
@@ -17,23 +13,23 @@ namespace MovieCatalogue.Data.Configuration
 
             builder.Property(m => m.Title)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(MovieTitleMaxLength);
 
             builder.Property(m => m.Description)
-                .HasMaxLength(1000);
+                .HasMaxLength(MovieDescriptionsMaxLength);
 
             builder.Property(m => m.ReleaseDate)
                 .IsRequired();
 
             builder.Property(m => m.Cast)
-                .HasMaxLength(500);
+                .HasMaxLength(MovieCastMaxLength);
 
             builder.Property(m => m.Rating)
-                .HasDefaultValue(0)
+                .HasDefaultValue(MovieRatingDefault)
                 .HasPrecision(2, 1);
 
             builder.Property(m => m.TrailerUrl)
-                .HasMaxLength(2048);
+                .HasMaxLength(MovieImageUrlMaxLength);
 
 
             builder.HasOne(m => m.Genre)
