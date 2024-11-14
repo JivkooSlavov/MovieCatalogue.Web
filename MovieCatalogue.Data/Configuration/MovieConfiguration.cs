@@ -28,9 +28,13 @@ namespace MovieCatalogue.Data.Configuration
                 .HasDefaultValue(MovieRatingDefault)
                 .HasPrecision(2, 1);
 
-            builder.Property(m => m.TrailerUrl)
+            builder.Property(m => m.PosterUrl)
+                .IsRequired()
                 .HasMaxLength(MovieImageUrlMaxLength);
 
+            builder.Property(m=>m.Director)
+                .IsRequired()
+                .HasMaxLength(MovieDirectorMaxLength);
 
             builder.HasOne(m => m.Genre)
                 .WithMany(g => g.Movies)

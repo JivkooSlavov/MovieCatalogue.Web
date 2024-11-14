@@ -1,0 +1,49 @@
+﻿@using MovieCatalogue.Web.ViewModels.Movie;
+@model IEnumerable<MovieInfoViewModel>
+
+@{
+    ViewData["Title"] = "Movies List";
+}
+
+<h2>Movies List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Release Date</th>
+            <th>Rating</th>
+            <th>Poster</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>@movie.Genre</td>
+                    <td>@movie.ReleaseDate</td>
+                    <td>@movie.Rating</td>
+                    <td>
+                    @if (!string.IsNullOrEmpty(movie.PosterUrl))
+                    {
+                                <img src="@movie.PosterUrl" alt="Poster" style="max-width: 100px;" />
+                    }
+                    else
+                    {
+                                <span>No poster available</span>
+                    }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", "Movie", new { id = movie.Id })" class="btn btn-info">Details</a>
+                        <a href="@Url.Action("Edit", "Movie", new { id = movie.Id })" class="btn btn-warning">Edit</a>
+                        <a href="@Url.Action("Delete", "Movie", new { id = movie.Id })" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "Movie")" class="btn btn-success">Add New Movie</a>

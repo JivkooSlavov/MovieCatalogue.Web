@@ -1,0 +1,60 @@
+﻿@using MovieCatalogue.Web.ViewModels.Movie;
+@model AddMovieViewModel
+@{
+    ViewData["Title"] = "Create Movie";
+}
+
+<h2>Create Movie</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="@Model.Title" class="control-label"></label>
+        <input asp-for="@Model.Title" class="form-control" />
+        <span asp-validation-for="@Model.Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Description" class="control-label"></label>
+        <textarea asp-for="@Model.Description" class="form-control"></textarea>
+        <span asp-validation-for="@Model.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.GenreId" class="form-label-add-edit">Select Genres</label>
+        <select asp-for="@Model.GenreId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Genres, "Id", "Name"))">
+            <option value="">Select Genres...</option>
+        </select>
+        <span asp-validation-for="GenreId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.ReleaseDate" class="control-label"></label>
+        <input asp-for="@Model.ReleaseDate" class="form-control" />
+        <span asp-validation-for="@Model.ReleaseDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Rating" class="control-label"></label>
+        <input asp-for="Rating" class="form-control" type="number" step="0.1" min="0" max="10" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.TrailerUrl" class="control-label">Trailer URL</label>
+        <input asp-for="@Model.TrailerUrl" class="form-control" />
+        <span asp-validation-for="@Model.TrailerUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.PosterUrl" class="control-label">Poster URL</label>
+        <input asp-for="@Model.PosterUrl" class="form-control" />
+        <span asp-validation-for="@Model.PosterUrl" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

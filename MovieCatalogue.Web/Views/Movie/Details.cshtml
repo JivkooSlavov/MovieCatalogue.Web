@@ -1,0 +1,33 @@
+﻿@using MovieCatalogue.Web.ViewModels.Movie;
+@model MovieInfoViewModel;
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+
+@if (!string.IsNullOrEmpty(Model.PosterUrl))
+{
+    <img src="@Model.PosterUrl" alt="Poster" style="max-width: 300px;" />
+}
+else
+{
+    <p>No poster available</p>
+}
+
+<p><strong>Description:</strong> @Model.Description</p>
+<p><strong>Genre:</strong> @Model.Genre?</p>
+<p><strong>Release Date:</strong> @Model.ReleaseDate.ToString()</p>
+<p><strong>Rating:</strong> @Model.Rating</p>
+
+@if (!string.IsNullOrEmpty(Model.TrailerUrl))
+{
+    <p><a href="@Model.TrailerUrl" target="_blank">Watch Trailer</a></p>
+}
+else
+{
+    <p>No trailer available</p>
+}
+
+<a href="@Url.Action("Index", "Movie")" class="btn btn-primary">Back to List</a>
