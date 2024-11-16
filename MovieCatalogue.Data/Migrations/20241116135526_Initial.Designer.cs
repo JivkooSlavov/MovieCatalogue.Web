@@ -12,8 +12,8 @@ using MovieCatalogue.Data;
 namespace MovieCatalogue.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241114181601_update-database")]
-    partial class updatedatabase
+    [Migration("20241116135526_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,8 @@ namespace MovieCatalogue.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -59,8 +59,8 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -121,9 +121,11 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Movie", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cast")
                         .IsRequired()
@@ -137,7 +139,8 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<string>("Director")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -146,11 +149,16 @@ namespace MovieCatalogue.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("PosterUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)")
+                        .HasDefaultValue("/images/1.jpg");
 
                     b.Property<double>("Rating")
                         .ValueGeneratedOnAdd()
@@ -163,13 +171,12 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("TrailerUrl")
                         .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -186,8 +193,8 @@ namespace MovieCatalogue.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -195,7 +202,7 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<int>("Value")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(5)
+                        .HasMaxLength(10)
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
@@ -224,8 +231,8 @@ namespace MovieCatalogue.Data.Migrations
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()

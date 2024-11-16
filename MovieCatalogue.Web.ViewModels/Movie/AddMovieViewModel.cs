@@ -5,13 +5,15 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using static MovieCatalogue.Common.EntityValidationConstants.Movie;
+using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 using static MovieCatalogue.Common.Messages;
 
 namespace MovieCatalogue.Web.ViewModels.Movie
 {
     public class AddMovieViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [StringLength(MovieTitleMaxLength, MinimumLength =MovieTitleMinLength, ErrorMessage = StringLengthErrorMessage)]
         public string Title { get; set; } = null!;
@@ -23,8 +25,8 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         [Required(ErrorMessage =RequireErrorMessage)]
         public int GenreId { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime ReleaseDate { get; set; }
+        [Required(ErrorMessage = RequireErrorMessage)]
+        public string ReleaseDate { get; set; } = DateTime.Today.ToString(DateFormatOfMovie);
 
         [Required]
         [StringLength(MovieCastMaxLength, MinimumLength = MovieCastMinLength, ErrorMessage = StringLengthErrorMessage)]
@@ -44,7 +46,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string Director { get; set; } = null!;
 
         [Required]
-        [Range(MovieDurationMinLength,MovieDurationMaxLength, ErrorMessage = StringLengthErrorMessage)]
+        [Range(MovieDurationMinLength,MovieDurationMaxLength, ErrorMessage = StringLengthErrorRange)]
         public int Duration { get; set; }
         public virtual IEnumerable<TypeOfGenreMovies> Genres { get; set; } = new List<TypeOfGenreMovies>();
     }

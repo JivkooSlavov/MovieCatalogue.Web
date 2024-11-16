@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
-using static MovieCatalogue.Common.EntityValidationConstants.Review;
+using static MovieCatalogue.Common.EntityValidationConstants.ReviewConstants;
 
 namespace MovieCatalogue.Data.Configuration
 {

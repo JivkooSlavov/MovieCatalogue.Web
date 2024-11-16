@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
-using static MovieCatalogue.Common.EntityValidationConstants.Genre;
+using static MovieCatalogue.Common.EntityValidationConstants.GenreConstants;
 namespace MovieCatalogue.Data.Configuration
 {
     public class GenreConfiguration : IEntityTypeConfiguration<Genre>

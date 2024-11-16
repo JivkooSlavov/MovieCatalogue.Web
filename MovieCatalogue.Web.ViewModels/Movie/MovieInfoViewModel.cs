@@ -8,7 +8,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
 {
     public class MovieInfoViewModel
     {
-        public string Id { get; set; } = null!;
+        public int Id { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string Genre { get; set; } = null!;

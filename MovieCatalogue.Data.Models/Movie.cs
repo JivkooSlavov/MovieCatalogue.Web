@@ -1,8 +1,11 @@
-﻿namespace MovieCatalogue.Data.Models
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace MovieCatalogue.Data.Models
 {
     public class Movie
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public int GenreId { get; set; }
@@ -14,8 +17,9 @@
         public string Director { get; set; } = null!;
         public int Duration { get; set; }
         public bool IsDeleted { get; set; }
-
         public string PosterUrl { get; set; } = null!;
+        //public string CreatedByUserId { get; set; } = null!;
+        //public User CreatedByUser { get; set; } = null!;
 
         public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public virtual ICollection<Favorite> Favorites { get; set; } = new HashSet<Favorite>();

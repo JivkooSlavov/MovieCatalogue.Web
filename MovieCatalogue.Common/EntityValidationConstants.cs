@@ -8,7 +8,7 @@ namespace MovieCatalogue.Common
 {
     public static class EntityValidationConstants
     {
-        public static class Movie
+        public static class MovieConstants
         {
             public const int MovieTitleMaxLength = 256;
             public const int MovieTitleMinLength = 1;
@@ -33,18 +33,18 @@ namespace MovieCatalogue.Common
             public const int MovieRatingDefault = 0;
         }
 
-        public static class Rating
+        public static class RatingConstants
         {
             public const int RatingValueMax = 10;
             public const int RatingValueMin = 1;
         }
-        public static class Review
+        public static class ReviewConstants
         {
             public const int ReviewContentMax = 1000;
             public const int ReviewContentMin = 5;
         }
 
-        public static class Genre
+        public static class GenreConstants
         {
             public const int GenreNameMaxLength = 30;
             public const int GenreNameMinLength = 5;

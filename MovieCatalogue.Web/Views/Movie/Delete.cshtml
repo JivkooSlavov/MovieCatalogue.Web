@@ -1,0 +1,38 @@
+﻿@using MovieCatalogue.Web.ViewModels.Movie;
+@model DeleteMovieViewModel
+
+@{
+    ViewData["Title"] = "Delete Movie";
+}
+
+<div class="container mt-5">
+    <h1 class="text-danger">Confirm Deletion</h1>
+    <p class="lead">Are you sure you want to delete the following movie? This action cannot be undone.</p>
+
+    <div class="card mb-3" style="max-width: 600px;">
+        <div class="row g-0">
+            @if (!string.IsNullOrEmpty(Model.PosterUrl))
+            {
+                <div class="col-md-4">
+                    <img src="@Model.PosterUrl" alt="@Model.Title Poster" class="img-fluid rounded-start" />
+                </div>
+            }
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title text-dark">@Model.Title</h5>
+                    <p class="card-text">
+                        <strong>Genre:</strong> @Model.GenreName<br />
+                        <strong>Release Date:</strong> @Model.ReleaseDate.ToString("dd MMM yyyy")<br />
+                        <strong>Rating:</strong> @Model.Rating / 10
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger me-2">Delete</button>
+        <a href="@Url.Action("Index", "Movie")" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

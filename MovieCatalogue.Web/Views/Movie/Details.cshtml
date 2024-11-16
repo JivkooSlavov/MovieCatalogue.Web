@@ -2,32 +2,80 @@
 @model MovieInfoViewModel;
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = "Movie Details";
 }
 
 <h2>@Model.Title</h2>
 
-@if (!string.IsNullOrEmpty(Model.PosterUrl))
-{
-    <img src="@Model.PosterUrl" alt="Poster" style="max-width: 300px;" />
-}
-else
-{
-    <p>No poster available</p>
-}
+<div class="card mb-4 shadow-sm">
+    <div class="row g-0">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.PosterUrl))
+            {
+                <img src="@Model.PosterUrl" class="img-fluid rounded-start" alt="Poster of @Model.Title" />
+            }
+            else
+            {
+                <div class="text-center">
+                    <p class="text-muted">No poster available</p>
+                </div>
+            }
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                <p class="card-text">
+                    <strong>Description:</strong>
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        @Model.Description
+                    }
+                    else
+                    {
+                        <span class="text-muted">No description available</span>
+                    }
+                </p>
+                <p class="card-text">
+                    <strong>Genre:</strong>
+                    @Model.Genre
+                </p>
+                <p class="card-text">
+                    <strong>Director:</strong>
+                    @Model.Director
+                </p>
+                <p class="card-text">
+                    <strong>Cast:</strong>
+                    @Model.Cast
+                </p>
+                <p class="card-text">
+                    <strong>Duration:</strong>
+                    @Model.Duration
+                </p>
+                <p class="card-text">
+                    <strong>Release Date:</strong>
+                    @Model.ReleaseDate.ToString()
+                </p>
+                <p class="card-text">
+                    <strong>Rating:</strong>
+                    @Model.Rating.ToString("F1") / 10
+                </p>
+                <p class="card-text">
+                    <strong>Trailer:</strong>
+                    @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+                    {
+                        <a href="@Model.TrailerUrl" target="_blank" class="btn btn-secondary btn-sm">Watch Trailer</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No trailer available</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p><strong>Description:</strong> @Model.Description</p>
-<p><strong>Genre:</strong> @Model.Genre?</p>
-<p><strong>Release Date:</strong> @Model.ReleaseDate.ToString()</p>
-<p><strong>Rating:</strong> @Model.Rating</p>
-
-@if (!string.IsNullOrEmpty(Model.TrailerUrl))
-{
-    <p><a href="@Model.TrailerUrl" target="_blank">Watch Trailer</a></p>
-}
-else
-{
-    <p>No trailer available</p>
-}
-
-<a href="@Url.Action("Index", "Movie")" class="btn btn-primary">Back to List</a>
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

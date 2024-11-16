@@ -5,45 +5,56 @@
     ViewData["Title"] = "Movies List";
 }
 
-<h2>Movies List</h2>
+<h1>Movies</h1>
 
-<table class="table">
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Movie</a>
+</p>
+
+<table class="table table-striped">
     <thead>
         <tr>
+            <th>Poster</th>
             <th>Title</th>
             <th>Genre</th>
             <th>Release Date</th>
             <th>Rating</th>
-            <th>Poster</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var movie in Model)
+        @if (Model != null && Model.Any())
         {
+            foreach (MovieInfoViewModel movie in Model)
+            {
                 <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(movie.PosterUrl))
+                        {
+                            <img src="@movie.PosterUrl" alt="@movie.Title Poster" class="img-thumbnail" style="max-height: 100px;" />
+                        }
+                        else
+                        {
+                            <span>No poster available</span>
+                        }
+                    </td>
                     <td>@movie.Title</td>
                     <td>@movie.Genre</td>
-                    <td>@movie.ReleaseDate</td>
-                    <td>@movie.Rating</td>
+                    <td>@movie.ReleaseDate.ToString()</td>
+                    <td>@movie.Rating / 5</td>
                     <td>
-                    @if (!string.IsNullOrEmpty(movie.PosterUrl))
-                    {
-                                <img src="@movie.PosterUrl" alt="Poster" style="max-width: 100px;" />
-                    }
-                    else
-                    {
-                                <span>No poster available</span>
-                    }
-                    </td>
-                    <td>
-                        <a href="@Url.Action("Details", "Movie", new { id = movie.Id })" class="btn btn-info">Details</a>
-                        <a href="@Url.Action("Edit", "Movie", new { id = movie.Id })" class="btn btn-warning">Edit</a>
-                        <a href="@Url.Action("Delete", "Movie", new { id = movie.Id })" class="btn btn-danger">Delete</a>
+                        <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No movies found.</td>
+            </tr>
         }
     </tbody>
 </table>
-
-<a href="@Url.Action("Create", "Movie")" class="btn btn-success">Add New Movie</a>

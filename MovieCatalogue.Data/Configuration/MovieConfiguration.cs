@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MovieCatalogue.Data.Models;
-using static MovieCatalogue.Common.EntityValidationConstants.Movie;
+using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
+using static MovieCatalogue.Common.ApplicationConstants;
 
 namespace MovieCatalogue.Data.Configuration
 {
@@ -32,9 +33,19 @@ namespace MovieCatalogue.Data.Configuration
                 .IsRequired()
                 .HasMaxLength(MovieImageUrlMaxLength);
 
+            builder
+             .Property(m => m.PosterUrl)
+             .IsRequired()
+             .HasMaxLength(MovieImageUrlMaxLength)
+             .HasDefaultValue(NoImageUrl);
+
             builder.Property(m=>m.Director)
                 .IsRequired()
                 .HasMaxLength(MovieDirectorMaxLength);
+
+            builder
+                .Property(m=>m.IsDeleted)
+                .HasDefaultValue(true);
 
             builder.HasOne(m => m.Genre)
                 .WithMany(g => g.Movies)
