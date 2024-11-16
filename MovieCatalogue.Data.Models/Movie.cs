@@ -18,6 +18,7 @@ namespace MovieCatalogue.Data.Models
         public int Duration { get; set; }
         public bool IsDeleted { get; set; }
         public string PosterUrl { get; set; } = null!;
+
         //public string CreatedByUserId { get; set; } = null!;
         //public User CreatedByUser { get; set; } = null!;
 
