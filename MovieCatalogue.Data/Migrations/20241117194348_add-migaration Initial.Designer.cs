@@ -12,8 +12,8 @@ using MovieCatalogue.Data;
 namespace MovieCatalogue.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241117164808_Initial")]
-    partial class Initial
+    [Migration("20241117194348_add-migaration Initial")]
+    partial class addmigarationInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

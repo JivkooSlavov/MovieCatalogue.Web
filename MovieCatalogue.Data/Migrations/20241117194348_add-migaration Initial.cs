@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MovieCatalogue.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class addmigarationInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
