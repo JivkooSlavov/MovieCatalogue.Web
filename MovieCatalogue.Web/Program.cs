@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MovieCatalogue.Data;
+using MovieCatalogue.Data.Models;
+using MovieCatalogue.Web.Infrastructure;
+using MovieCatalogue.Web.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SQLServer");
@@ -11,10 +17,21 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
+builder.Services
+   .AddIdentity<User, IdentityRole<Guid>>(cfg =>
+   {
+        ConfigureIdentity(builder,cfg);
+   })
+   .AddEntityFrameworkStores<MovieDbContext>()
+   .AddRoles<IdentityRole<Guid>>()
+   .AddSignInManager<SignInManager<User>>()
+   .AddUserManager<UserManager<User>>();
+
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -30,10 +47,43 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
+app.ApplyMigrations();
+
 app.Run();
+
+static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg)
+{
+ 
+    cfg.Password.RequireDigit =
+            builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
+    cfg.Password.RequireLowercase =
+        builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+    cfg.Password.RequireUppercase =
+        builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+    cfg.Password.RequireNonAlphanumeric =
+        builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumerical");
+    cfg.Password.RequiredLength =
+        builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
+    cfg.Password.RequiredUniqueChars =
+        builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueCharacters");
+
+    cfg.SignIn.RequireConfirmedAccount =
+        builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+    cfg.SignIn.RequireConfirmedEmail =
+        builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedEmail");
+    cfg.SignIn.RequireConfirmedPhoneNumber =
+        builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedPhoneNumber");
+
+    cfg.User.RequireUniqueEmail =
+        builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
+}
+

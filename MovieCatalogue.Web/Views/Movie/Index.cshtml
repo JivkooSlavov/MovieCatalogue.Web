@@ -41,7 +41,7 @@
                     <td>@movie.Title</td>
                     <td>@movie.Genre</td>
                     <td>@movie.ReleaseDate.ToString()</td>
-                    <td>@movie.Rating / 5</td>
+                    <td>@movie.Rating.ToString("F1") / 5</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-sm">Details</a>
                         <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-warning btn-sm">Edit</a>

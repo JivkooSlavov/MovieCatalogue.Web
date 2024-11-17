@@ -48,11 +48,12 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string? id)
         {
 
             var movie = await _context.Movies
-                .Where(e=>e.Id ==id)
+                .Include(e=>e.Ratings)
+                .Where(e=>e.Id.ToString() ==id)
                 .Where(e => e.IsDeleted == false)
                 .Select(e => new MovieInfoViewModel()
                 {
@@ -67,6 +68,7 @@ namespace MovieCatalogue.Web.Controllers
                     ReleaseDate = e.ReleaseDate.ToString(EntityValidationConstants.MovieConstants.DateFormatOfMovie),
                     Title = e.Title,
                     TrailerUrl = e.TrailerUrl,
+                    Ratings=e.Ratings.ToList()
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
@@ -144,7 +146,7 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpGet]
         [Route("Movie/Edit/{id:int}")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string? id)
         {
             Movie? existMovie = await _context.Movies
                 .FindAsync(id);
@@ -234,10 +236,10 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string? id)
         {
             var model = await _context.Movies
-           .Where(p => p.Id == id)
+           .Where(p => p.Id.ToString() == id)
            .AsNoTracking()
            .Select(p => new DeleteMovieViewModel()
            {

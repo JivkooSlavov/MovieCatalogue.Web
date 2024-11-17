@@ -6,13 +6,14 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
+using static MovieCatalogue.Common.EntityValidationConstants.RatingConstants;
 using static MovieCatalogue.Common.Messages;
 
 namespace MovieCatalogue.Web.ViewModels.Movie
 {
     public class AddMovieViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(MovieTitleMaxLength, MinimumLength =MovieTitleMinLength, ErrorMessage = StringLengthErrorMessage)]
@@ -33,6 +34,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string Cast { get; set; } = null!;
 
         [Required(ErrorMessage = RequireErrorMessage)]
+        [Range(RatingValueMin, RatingValueMax)]
         public double Rating { get; set; }
 
         public string? TrailerUrl { get; set; } = null!;

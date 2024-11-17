@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
         public int Value { get; set; }
-        public int MovieId { get; set; }
+        public Guid MovieId { get; set; }
         public Movie Movie { get; set; } = null!;
-        public string UserId { get; set; } = null!;
+        public Guid UserId { get; set; } 
         public User User { get; set; } = null!;
     }
 }

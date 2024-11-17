@@ -35,7 +35,7 @@ namespace MovieCatalogue.Common
 
         public static class RatingConstants
         {
-            public const int RatingValueMax = 10;
+            public const int RatingValueMax = 5;
             public const int RatingValueMin = 1;
         }
         public static class ReviewConstants

@@ -14,7 +14,8 @@ namespace MovieCatalogue.Data.Configuration
             builder.Property(r => r.Value)
                 .IsRequired()
                 .HasDefaultValue(RatingValueMin)
-                .HasMaxLength(RatingValueMax);
+                .HasMaxLength(RatingValueMax)
+                .HasPrecision(2, 1);
 
             builder.HasOne(r => r.Movie)
                 .WithMany(m => m.Ratings)

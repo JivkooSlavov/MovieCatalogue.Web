@@ -8,7 +8,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
 {
     public class DeleteMovieViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; } = null!;
         public string GenreName { get; set; } = null!;
         public string PosterUrl { get; set; } = null!;

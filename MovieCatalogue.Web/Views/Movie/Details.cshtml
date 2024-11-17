@@ -5,77 +5,60 @@
     ViewData["Title"] = "Movie Details";
 }
 
-<h2>@Model.Title</h2>
-
-<div class="card mb-4 shadow-sm">
-    <div class="row g-0">
+<div class="container">
+    <h1>@Model.Title</h1>
+    
+    <div class="row">
         <div class="col-md-4">
-            @if (!string.IsNullOrEmpty(Model.PosterUrl))
-            {
-                <img src="@Model.PosterUrl" class="img-fluid rounded-start" alt="Poster of @Model.Title" />
-            }
-            else
-            {
-                <div class="text-center">
-                    <p class="text-muted">No poster available</p>
-                </div>
-            }
+            <img src="@Model.PosterUrl" alt="@Model.Title Poster" class="img-fluid" />
         </div>
         <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">@Model.Title</h5>
-                <p class="card-text">
-                    <strong>Description:</strong>
-                    @if (!string.IsNullOrEmpty(Model.Description))
-                    {
-                        @Model.Description
-                    }
-                    else
-                    {
-                        <span class="text-muted">No description available</span>
-                    }
-                </p>
-                <p class="card-text">
-                    <strong>Genre:</strong>
-                    @Model.Genre
-                </p>
-                <p class="card-text">
-                    <strong>Director:</strong>
-                    @Model.Director
-                </p>
-                <p class="card-text">
-                    <strong>Cast:</strong>
-                    @Model.Cast
-                </p>
-                <p class="card-text">
-                    <strong>Duration:</strong>
-                    @Model.Duration
-                </p>
-                <p class="card-text">
-                    <strong>Release Date:</strong>
-                    @Model.ReleaseDate.ToString()
-                </p>
-                <p class="card-text">
-                    <strong>Rating:</strong>
-                    @Model.Rating.ToString("F1") / 10
-                </p>
-                <p class="card-text">
-                    <strong>Trailer:</strong>
-                    @if (!string.IsNullOrEmpty(Model.TrailerUrl))
-                    {
-                        <a href="@Model.TrailerUrl" target="_blank" class="btn btn-secondary btn-sm">Watch Trailer</a>
-                    }
-                    else
-                    {
-                        <span class="text-muted">No trailer available</span>
-                    }
-                </p>
-            </div>
+            <p><strong>Description:</strong> @Model.Description</p>
+            <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString()</p>
+            <p><strong>Genre:</strong> @Model.Genre</p>
+            <p><strong>Average Rating:</strong> @Model.Rating.ToString("F2") / 5</p>
         </div>
     </div>
-</div>
 
-<div class="mt-4">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <hr />
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h3>Rate this Movie</h3>
+        <form asp-action="Create" asp-controller="Rating" method="post">
+            <input type="hidden" name="movieId" value="@Model.Id" />
+            <select name="value" class="form-control" required>
+                <option value="">Select a Rating</option>
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-danger">You need to <a asp-action="Login" asp-controller="Account">log in</a> to rate this movie.</p>
+    }
+
+    <hr />
+
+    <h3>All Ratings</h3>
+    @if (Model.Ratings.Any())
+    {
+        <ul>
+            @foreach (var rating in Model.Ratings)
+            {
+                <li>
+                    <strong>@rating.User.UserName:</strong> @rating.Value.ToString("F1") / 5
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No ratings yet. Be the first to rate this movie!</p>
+    }
 </div>

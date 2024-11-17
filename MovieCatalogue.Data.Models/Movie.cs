@@ -5,7 +5,7 @@ namespace MovieCatalogue.Data.Models
 {
     public class Movie
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public int GenreId { get; set; }

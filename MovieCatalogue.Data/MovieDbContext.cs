@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using MovieCatalogue.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MovieCatalogue.Data
 {
-    public class MovieDbContext : DbContext
+    public class  MovieDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public MovieDbContext()
         {
