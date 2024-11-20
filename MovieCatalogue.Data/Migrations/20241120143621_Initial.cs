@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MovieCatalogue.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class addmigarationInitial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,11 +186,18 @@ namespace MovieCatalogue.Data.Migrations
                     Director = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    PosterUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, defaultValue: "/images/1.jpg")
+                    PosterUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, defaultValue: "/images/1.jpg"),
+                    CreatedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Movies_AspNetUsers_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Movies_Genres_GenreId",
                         column: x => x.GenreId,
@@ -347,6 +354,11 @@ namespace MovieCatalogue.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Movies_CreatedByUserId",
+                table: "Movies",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movies_GenreId",
                 table: "Movies",
                 column: "GenreId");
@@ -403,10 +415,10 @@ namespace MovieCatalogue.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Movies");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Genres");

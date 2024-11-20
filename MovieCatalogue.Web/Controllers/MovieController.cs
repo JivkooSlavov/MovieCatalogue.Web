@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Common;
@@ -9,9 +10,11 @@ using System.Globalization;
 using System.IO;
 using System.Security.Claims;
 using static MovieCatalogue.Common.EntityValidationConstants;
+using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
+
     public class MovieController : Controller
     {
         private readonly MovieDbContext _context;
@@ -22,8 +25,10 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
+
             var model = await _context.Movies
                   .Where(x => x.IsDeleted == false)
                   .Include(y => y.Genre)
@@ -37,7 +42,7 @@ namespace MovieCatalogue.Web.Controllers
                     PosterUrl = x.PosterUrl,
                     Genre = x.Genre.Name,
                     Rating = x.Rating,
-                    ReleaseDate = x.ReleaseDate.ToString(EntityValidationConstants.MovieConstants.DateFormatOfMovie),
+                    ReleaseDate = x.ReleaseDate.ToString(DateFormatOfMovie),
                     Title = x.Title,
                     TrailerUrl = x.TrailerUrl,
                 })
@@ -48,12 +53,13 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(string? id)
         {
 
             var movie = await _context.Movies
-                .Include(e=>e.Ratings)
-                .Where(e=>e.Id.ToString() ==id)
+                .Include(e => e.Ratings)
+                .Where(e => e.Id.ToString() == id)
                 .Where(e => e.IsDeleted == false)
                 .Select(e => new MovieInfoViewModel()
                 {
@@ -65,10 +71,10 @@ namespace MovieCatalogue.Web.Controllers
                     PosterUrl = e.PosterUrl,
                     Genre = e.Genre.Name,
                     Rating = e.Rating,
-                    ReleaseDate = e.ReleaseDate.ToString(EntityValidationConstants.MovieConstants.DateFormatOfMovie),
+                    ReleaseDate = e.ReleaseDate.ToString(DateFormatOfMovie),
                     Title = e.Title,
                     TrailerUrl = e.TrailerUrl,
-                    Ratings=e.Ratings.ToList()
+                    Ratings = e.Ratings.ToList()
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
@@ -83,6 +89,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             AddMovieViewModel model = new AddMovieViewModel();
@@ -92,6 +99,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(AddMovieViewModel model)
         {
             if (!ModelState.IsValid)
@@ -109,14 +117,14 @@ namespace MovieCatalogue.Web.Controllers
 
             if (!DateTime.TryParseExact(
                model.ReleaseDate,
-               EntityValidationConstants.MovieConstants.DateFormatOfMovie,
+               DateFormatOfMovie,
                CultureInfo.InvariantCulture,
                DateTimeStyles.None,
                out start))
             {
 
                 ModelState
-                    .AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {EntityValidationConstants.MovieConstants.DateFormatOfMovie}");
+                    .AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
 
                 model.Genres = GetTypes();
 
@@ -125,16 +133,17 @@ namespace MovieCatalogue.Web.Controllers
 
             Movie movieToAdd = new Movie()
             {
-               Title = model.Title,
-               Description = model.Description,
-               Cast = model.Cast,
-               Director = model.Director,
-               Duration = model.Duration,
-               Rating = model.Rating,
-               ReleaseDate = start,
-               PosterUrl = model.PosterUrl,
-               TrailerUrl = model.TrailerUrl,
-               GenreId = model.GenreId
+                Title = model.Title,
+                Description = model.Description,
+                Cast = model.Cast,
+                Director = model.Director,
+                Duration = model.Duration,
+                Rating = model.Rating,
+                ReleaseDate = start,
+                PosterUrl = model.PosterUrl,
+                TrailerUrl = model.TrailerUrl,
+                GenreId = model.GenreId,
+                CreatedByUserId = Guid.Parse(GetUserId())
             };
 
             await _context.Movies.AddAsync(movieToAdd);
@@ -145,8 +154,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
-        [Route("Movie/Edit/{id:int}")]
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             Movie? existMovie = await _context.Movies
                 .FindAsync(id);
@@ -158,17 +166,26 @@ namespace MovieCatalogue.Web.Controllers
 
             AddMovieViewModel model = new AddMovieViewModel()
             {
+                Id = existMovie.Id,
                 Title = existMovie.Title,
                 Description = existMovie.Description,
                 Cast = existMovie.Cast,
                 Director = existMovie.Director,
                 Duration = existMovie.Duration,
                 Rating = existMovie.Rating,
-                ReleaseDate = existMovie.ReleaseDate.ToString(EntityValidationConstants.MovieConstants.DateFormatOfMovie),
+                ReleaseDate = existMovie.ReleaseDate.ToString(DateFormatOfMovie),
                 PosterUrl = existMovie.PosterUrl,
                 TrailerUrl = existMovie.TrailerUrl,
-                GenreId = existMovie.GenreId
+                GenreId = existMovie.GenreId,
+                CreatedByUserId = existMovie.CreatedByUserId
             };
+
+            Guid currentUserId = Guid.Parse(GetUserId());
+
+            if (model.CreatedByUserId != currentUserId)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             model.Genres = GetTypes();
 
@@ -176,7 +193,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(AddMovieViewModel model, int id)
+        public async Task<IActionResult> Edit(AddMovieViewModel model, Guid id)
         {
 
             if (!ModelState.IsValid)
@@ -189,14 +206,14 @@ namespace MovieCatalogue.Web.Controllers
 
             if (!DateTime.TryParseExact(
                model.ReleaseDate,
-               EntityValidationConstants.MovieConstants.DateFormatOfMovie,
+               DateFormatOfMovie,
                CultureInfo.InvariantCulture,
                DateTimeStyles.None,
                out start))
             {
 
                 ModelState
-                    .AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {EntityValidationConstants.MovieConstants.DateFormatOfMovie}");
+                    .AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
 
                 model.Genres = GetTypes();
 
@@ -210,12 +227,6 @@ namespace MovieCatalogue.Web.Controllers
                 throw new ArgumentException("Invalid Id");
             }
 
-            //string currentUserId = GetUserId() ?? string.Empty;
-
-            //if (entity.CreatedByUserId != currentUserId)
-            //{
-            //    RedirectToAction(nameof(Index));
-            //}
 
             entity.Title = model.Title;
             entity.Description = model.Description;
@@ -236,6 +247,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(string? id)
         {
             var model = await _context.Movies
@@ -248,14 +260,24 @@ namespace MovieCatalogue.Web.Controllers
                GenreName = p.Genre.Name,
                PosterUrl = p.PosterUrl,
                Rating = p.Rating,
-               ReleaseDate = p.ReleaseDate
+               ReleaseDate = p.ReleaseDate,
+               CreatedByUserId = p.CreatedByUserId
            })
            .FirstOrDefaultAsync();
+
+            Guid currentUserId = Guid.Parse(GetUserId());
+
+            if (model.CreatedByUserId != currentUserId)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
 
             return View(model);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Delete(DeleteMovieViewModel model)
         {
             var product = await _context.Movies

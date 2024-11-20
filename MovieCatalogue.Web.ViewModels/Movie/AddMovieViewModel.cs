@@ -50,6 +50,8 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         [Required]
         [Range(MovieDurationMinLength,MovieDurationMaxLength, ErrorMessage = StringLengthErrorRange)]
         public int Duration { get; set; }
+
+        public Guid CreatedByUserId { get; set; }
         public virtual IEnumerable<TypeOfGenreMovies> Genres { get; set; } = new List<TypeOfGenreMovies>();
     }
 }

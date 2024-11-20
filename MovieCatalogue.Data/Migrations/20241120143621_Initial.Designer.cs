@@ -12,8 +12,8 @@ using MovieCatalogue.Data;
 namespace MovieCatalogue.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241117194348_add-migaration Initial")]
-    partial class addmigarationInitial
+    [Migration("20241120143621_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -260,6 +260,9 @@ namespace MovieCatalogue.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -307,6 +310,8 @@ namespace MovieCatalogue.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("GenreId");
 
@@ -512,11 +517,19 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Movie", b =>
                 {
+                    b.HasOne("MovieCatalogue.Data.Models.User", "CreatedByUser")
+                        .WithMany("CreatedMovies")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("MovieCatalogue.Data.Models.Genre", "Genre")
                         .WithMany("Movies")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CreatedByUser");
 
                     b.Navigation("Genre");
                 });
@@ -575,6 +588,8 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.User", b =>
                 {
+                    b.Navigation("CreatedMovies");
+
                     b.Navigation("Favorites");
 
                     b.Navigation("Ratings");

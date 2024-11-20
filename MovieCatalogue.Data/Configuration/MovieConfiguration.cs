@@ -45,12 +45,17 @@ namespace MovieCatalogue.Data.Configuration
 
             builder
                 .Property(m=>m.IsDeleted)
-                .HasDefaultValue(true);
+                .HasDefaultValue(false);
 
             builder.HasOne(m => m.Genre)
                 .WithMany(g => g.Movies)
                 .HasForeignKey(m => m.GenreId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(m => m.CreatedByUser)
+                .WithMany(g => g.CreatedMovies)
+                .HasForeignKey(m => m.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

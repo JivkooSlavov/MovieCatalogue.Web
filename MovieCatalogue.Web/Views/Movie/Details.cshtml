@@ -16,7 +16,7 @@
             <p><strong>Description:</strong> @Model.Description</p>
             <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString()</p>
             <p><strong>Genre:</strong> @Model.Genre</p>
-            <p><strong>Average Rating:</strong> @Model.Rating.ToString("F2") / 5</p>
+            <p><strong>Average Rating:</strong> @Model.Rating.ToString("F2") / 5.00</p>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
     }
     else
     {
-        <p class="text-danger">You need to <a asp-action="Login" asp-controller="Account">log in</a> to rate this movie.</p>
+        <p class="text-danger">You need to <a asp-area="Identity" asp-page="/Account/Login">log in</a> to rate this movie.</p>
     }
 
     <hr />
@@ -52,7 +52,7 @@
             @foreach (var rating in Model.Ratings)
             {
                 <li>
-                    <strong>@rating.User.UserName:</strong> @rating.Value.ToString("F1") / 5
+                    <strong>@rating.User.UserName:</strong> @rating.Value.ToString("F1") / 5.00
                 </li>
             }
         </ul>

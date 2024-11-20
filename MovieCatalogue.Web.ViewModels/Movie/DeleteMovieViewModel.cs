@@ -15,5 +15,6 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public DateTime ReleaseDate { get; set; }
         public double Rating { get; set; }
 
+        public Guid CreatedByUserId {  get; set; }
     }
 }

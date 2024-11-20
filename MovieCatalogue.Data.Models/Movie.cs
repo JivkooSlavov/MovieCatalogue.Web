@@ -19,8 +19,8 @@ namespace MovieCatalogue.Data.Models
         public bool IsDeleted { get; set; }
         public string PosterUrl { get; set; } = null!;
 
-        //public string CreatedByUserId { get; set; } = null!;
-        //public User CreatedByUser { get; set; } = null!;
+        public Guid CreatedByUserId { get; set; }
+        public User CreatedByUser { get; set; } = null!;
 
         public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public virtual ICollection<Favorite> Favorites { get; set; } = new HashSet<Favorite>();
