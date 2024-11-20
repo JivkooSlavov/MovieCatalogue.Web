@@ -28,6 +28,11 @@ builder.Services
    .AddUserManager<UserManager<User>>();
 
 
+builder.Services.ConfigureApplicationCookie(cfg =>
+{
+    cfg.LoginPath = "/Identity/Account/Login";
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
