@@ -20,7 +20,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string Director { get; set; } = null!;
         public int Duration { get; set; }
         public string PosterUrl { get; set; } = null!;
-
+        public bool IsFavorite { get; set; } = false;
         public virtual ICollection<Rating> Ratings { get; set; }
 
     }

@@ -1,0 +1,44 @@
+﻿@using MovieCatalogue.Web.ViewModels.Favorite;
+@model IEnumerable<AddMovieToFavorite>
+
+@{
+    ViewData["Title"] = "My Favorite Movies";
+}
+
+<h1>My Favorite Movies</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Poster</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var favorite in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(favorite.PosterUrl))
+                    {
+                        <img src="@favorite.PosterUrl" alt="Poster" style="width: 100px; height: 150px;" />
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/100x150" alt="No Poster" />
+                    }
+                </td>
+                <td>@favorite.MovieTitle</td>
+                <td>@favorite.MovieDescription</td>
+                <td>
+                    <form asp-action="RemoveFromFavorite" asp-controller="Favorite" method="post">
+                        <input type="hidden" name="id" value="@favorite.FavoriteId" />
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

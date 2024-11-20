@@ -14,9 +14,17 @@
         </div>
         <div class="col-md-8">
             <p><strong>Description:</strong> @Model.Description</p>
-            <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString()</p>
+            <p><strong>Director:</strong> @Model.Director</p>
+            <p><strong>Cast:</strong> @Model.Cast</p>
             <p><strong>Genre:</strong> @Model.Genre</p>
+            <p><strong>Release Date:</strong> @Model.ReleaseDate.ToString()</p>
             <p><strong>Average Rating:</strong> @Model.Rating.ToString("F2") / 5.00</p>
+            <hr />
+
+            <h3>Watch Trailer</h3>
+            <a href="@Model.TrailerUrl" target="_blank" class="btn btn-danger">
+                <i class="fab fa-youtube"></i> Watch on YouTube
+            </a>
         </div>
     </div>
 
@@ -37,10 +45,30 @@
             </select>
             <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
         </form>
+
+        <hr />
+
+        <!-- Add or Remove from Favorites -->
+        <h3>
+            @if (Model.IsFavorite)
+            {
+                <form asp-action="RemoveFromFavorites" asp-controller="Favorite" method="post">
+                    <input type="hidden" name="movieId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-warning mt-2">Remove from Favorites</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="AddToFavorites" asp-controller="Favorite" method="post">
+                    <input type="hidden" name="movieId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary mt-2">Add to Favorites</button>
+                </form>
+            }
+        </h3>
     }
     else
     {
-        <p class="text-danger">You need to <a asp-area="Identity" asp-page="/Account/Login">log in</a> to rate this movie.</p>
+        <p class="text-danger">You need to <a asp-area="Identity" asp-page="/Account/Login">log in</a> to rate this movie or add it to your favorites.</p>
     }
 
     <hr />
@@ -62,3 +90,4 @@
         <p>No ratings yet. Be the first to rate this movie!</p>
     }
 </div>
+
