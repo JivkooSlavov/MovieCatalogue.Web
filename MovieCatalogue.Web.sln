@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{209598D4-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Data", "MovieCatalogue.Data\MovieCatalogue.Data.csproj", "{F903683E-B1CB-4675-AC9C-7E2C71FEE748}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Web.Infrastructure", "MovieCatalogue.Web.Infrastructure\MovieCatalogue.Web.Infrastructure.csproj", "{F978BA94-AA98-4467-8A99-4F513931DAAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Web.Infrastructure", "MovieCatalogue.Web.Infrastructure\MovieCatalogue.Web.Infrastructure.csproj", "{F978BA94-AA98-4467-8A99-4F513931DAAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
