@@ -6,6 +6,7 @@ using MovieCatalogue.Common;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
 using MovieCatalogue.Web.ViewModels.Movie;
+using MovieCatalogue.Web.ViewModels.Review;
 using System.Globalization;
 using System.IO;
 using System.Security.Claims;
@@ -54,12 +55,14 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(Guid id)
         {
 
             var movie = await _context.Movies
                 .Include(e => e.Ratings)
-                .Where(e => e.Id.ToString() == id)
+                .Include(e => e.Reviews)
+                .ThenInclude(e => e.User)
+                .Where(e => e.Id == id)
                 .Where(e => e.IsDeleted == false)
                 .Select(e => new MovieInfoViewModel()
                 {
@@ -74,10 +77,18 @@ namespace MovieCatalogue.Web.Controllers
                     ReleaseDate = e.ReleaseDate.ToString(DateFormatOfMovie),
                     Title = e.Title,
                     TrailerUrl = e.TrailerUrl,
-                    Ratings = e.Ratings.ToList()
+                    Reviews = e.Reviews
+                    .OrderBy(r=>r.DatePosted)
+                    .Select(r => new ReviewViewModel
+                    {
+                        Id = r.Id,
+                        Content = r.Content,
+                        UserName = r.User.UserName,
+                        CreatedAt = r.DatePosted
+                    }).ToList() 
                 })
-                .AsNoTracking()
                 .FirstOrDefaultAsync();
+
 
             if (movie == null)
             {

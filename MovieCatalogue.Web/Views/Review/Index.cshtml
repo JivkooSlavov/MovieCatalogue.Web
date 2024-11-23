@@ -1,0 +1,59 @@
+﻿@using MovieCatalogue.Web.ViewModels.Review;
+@model ReviewIndexViewModel
+
+@{
+    ViewData["Title"] = $"Reviews for {Model.MovieTitle}";
+}
+
+<div class="container">
+    <h1 class="mb-4">Reviews for <span class="text-primary">@Model.MovieTitle</span></h1>
+
+    <a asp-action="Details" asp-controller="Movie" asp-route-id="@Model.MovieId" class="btn btn-secondary mb-3">
+        Back to Movie Details
+    </a>
+
+    <hr />
+
+    @if (Model.Reviews.Any())
+    {
+        <h3>All Reviews</h3>
+        <ul class="list-group">
+            @foreach (var review in Model.Reviews)
+            {
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@review.UserName</strong>
+                            <span class="text-muted">(@review.CreatedAt.ToString("g"))</span>
+                        </div>
+                        @if (User.Identity.IsAuthenticated && User.Identity.Name == review.UserName)
+                        {
+                            <div>
+                                <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </div>
+                        }
+                    </div>
+                    <p class="mt-2 mb-0">@review.Content</p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4" role="alert">
+            No reviews yet. Be the first to write a review for <strong>@Model.MovieTitle</strong>!
+        </div>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Create" asp-route-movieId="@Model.MovieId" class="btn btn-primary mt-4">Write a Review</a>
+    }
+    else
+    {
+        <div class="alert alert-warning mt-4" role="alert">
+            <a asp-area="Identity" asp-page="/Account/Login">Log in</a> to write a review for this movie.
+        </div>
+    }
+</div>

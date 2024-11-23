@@ -185,7 +185,7 @@ namespace MovieCatalogue.Data.Migrations
                     TrailerUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Director = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     PosterUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, defaultValue: "/images/1.jpg"),
                     CreatedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -263,12 +263,12 @@ namespace MovieCatalogue.Data.Migrations
                 name: "Reviews",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatePosted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

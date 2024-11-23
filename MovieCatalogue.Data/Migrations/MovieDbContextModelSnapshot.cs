@@ -279,7 +279,7 @@ namespace MovieCatalogue.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
                     b.Property<string>("PosterUrl")
                         .IsRequired()
@@ -347,11 +347,9 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -363,6 +361,9 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatePosted")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

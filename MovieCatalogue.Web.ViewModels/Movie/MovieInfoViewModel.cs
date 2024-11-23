@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Web.ViewModels.Review;
 
 namespace MovieCatalogue.Web.ViewModels.Movie
 {
@@ -22,6 +23,8 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string PosterUrl { get; set; } = null!;
         public bool IsFavorite { get; set; } = false;
         public virtual ICollection<Rating> Ratings { get; set; }
+
+        public List<ReviewViewModel> Reviews { get; set; } = new List<ReviewViewModel>();
 
     }
 }

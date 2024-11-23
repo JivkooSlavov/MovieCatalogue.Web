@@ -25,69 +25,71 @@
             <a href="@Model.TrailerUrl" target="_blank" class="btn btn-danger">
                 <i class="fab fa-youtube"></i> Watch on YouTube
             </a>
+            <h3>
+                <td>
+                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    {
+                        @if (Model.IsFavorite)
+                        {
+                            <form asp-action="RemoveFromFavorites" asp-controller="Favorite" method="post">
+                                <input type="hidden" name="movieId" value="@Model.Id" />
+                                <button type="submit" class="btn btn-warning mt-2">Remove from Favorites</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="AddToFavorites" asp-controller="Favorite" method="post">
+                                <input type="hidden" name="movieId" value="@Model.Id" />
+                                <button type="submit" class="btn btn-primary mt-2">Add to Favorites</button>
+                            </form>
+                        }
+                    }
+                </td>
+            </h3>
         </div>
     </div>
-
-    <hr />
-
-    @if (User.Identity.IsAuthenticated)
+    <h3>Reviews</h3>
+    <h3>Reviews</h3>
+    @if (Model.Reviews.Any())
     {
-        <h3>Rate this Movie</h3>
-        <form asp-action="Create" asp-controller="Rating" method="post">
-            <input type="hidden" name="movieId" value="@Model.Id" />
-            <select name="value" class="form-control" required>
-                <option value="">Select a Rating</option>
-                <option value="1">1 - Poor</option>
-                <option value="2">2 - Fair</option>
-                <option value="3">3 - Good</option>
-                <option value="4">4 - Very Good</option>
-                <option value="5">5 - Excellent</option>
-            </select>
-            <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
-        </form>
-
-        <hr />
-
-        <!-- Add or Remove from Favorites -->
-        <h3>
-            @if (Model.IsFavorite)
+        <ul class="list-group">
+            @foreach (var review in Model.Reviews)
             {
-                <form asp-action="RemoveFromFavorites" asp-controller="Favorite" method="post">
-                    <input type="hidden" name="movieId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-warning mt-2">Remove from Favorites</button>
-                </form>
-            }
-            else
-            {
-                <form asp-action="AddToFavorites" asp-controller="Favorite" method="post">
-                    <input type="hidden" name="movieId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-primary mt-2">Add to Favorites</button>
-                </form>
-            }
-        </h3>
-    }
-    else
-    {
-        <p class="text-danger">You need to <a asp-area="Identity" asp-page="/Account/Login">log in</a> to rate this movie or add it to your favorites.</p>
-    }
+                <li class="list-group-item">
+                    <strong>@review.UserName:</strong>
+                    <p>@review.Content</p>
+                    <small>@review.CreatedAt.ToString("f")</small>
 
-    <hr />
+                    @if (User.Identity.IsAuthenticated && User.Identity.Name == review.UserName)
+                    {
+                        <div class="mt-2">
+                            <a asp-action="Edit" asp-controller="Review" asp-route-id="@review.Id" class="btn btn-sm btn-primary">Edit</a>
+                            <a asp-action="Delete" asp-controller="Review" asp-route-id="@review.Id" method="post" style="display: inline-block;">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </a>
+                        </div>
 
-    <h3>All Ratings</h3>
-    @if (Model.Ratings.Any())
-    {
-        <ul>
-            @foreach (var rating in Model.Ratings)
-            {
-                <li>
-                    <strong>@rating.User.UserName:</strong> @rating.Value.ToString("F1") / 5.00
+                    }
                 </li>
             }
         </ul>
     }
     else
     {
-        <p>No ratings yet. Be the first to rate this movie!</p>
+        <p>No reviews yet. Be the first to review this movie!</p>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        <hr />
+        <h4>Write a Review</h4>
+        <form asp-action="Create" asp-controller="Review" method="post">
+            <input type="hidden" name="movieId" value="@Model.Id" />
+            <textarea name="content" class="form-control" rows="3" placeholder="Write your review here..." required></textarea>
+            <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-danger">You need to <a asp-area="Identity" asp-page="/Account/Login">log in</a> to write a review.</p>
     }
 </div>
-

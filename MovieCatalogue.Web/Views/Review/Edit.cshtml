@@ -1,0 +1,23 @@
+﻿@using MovieCatalogue.Web.ViewModels.Review
+@model ReviewCreateViewModel
+
+@{
+    ViewData["Title"] = "Edit Review";
+}
+
+<div class="container">
+    <h1>Edit Review for @Model.MovieName</h1>
+
+    <form asp-action="Edit" asp-controller="Review" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="hidden" name="MovieId" value="@Model.MovieId" />
+
+        <div class="form-group">
+            <label for="Content">Review Content</label>
+            <textarea id="Content" name="Content" class="form-control" rows="5" required>@Model.Content</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Update Review</button>
+        <a asp-action="Index" asp-route-movieId="@Model.MovieId" class="btn btn-secondary mt-3">Back to Reviews</a>
+    </form>
+</div>

@@ -1,0 +1,21 @@
+﻿@using MovieCatalogue.Web.ViewModels.Review;
+@model ReviewCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Review";
+}
+
+<h1>Create Review</h1>
+
+<form asp-action="Create" asp-controller="Review" method="post">
+    <input type="hidden" name="movieId" value="@Model.MovieId" />
+    
+    <div class="form-group">
+        <label for="Content">Review</label>
+        <textarea name="Content" class="form-control" rows="5" required>
+        </textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
