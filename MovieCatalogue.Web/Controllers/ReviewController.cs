@@ -22,6 +22,8 @@ namespace MovieCatalogue.Web.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(Guid movieId)
         {
             var movie = await _context.Movies
@@ -53,6 +55,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create(Guid movieId)
         {
             ReviewCreateViewModel reviewMovie = new ReviewCreateViewModel
@@ -93,6 +96,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(Guid id)
         {
             var existReview = await _context.Reviews.FindAsync(id);
@@ -122,7 +126,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(ReviewCreateViewModel model)
         {
             if (!ModelState.IsValid)
@@ -141,7 +145,9 @@ namespace MovieCatalogue.Web.Controllers
 
             return RedirectToAction("Index", new { movieId = model.MovieId });
         }
+
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
 
@@ -169,6 +175,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Delete(DeleteMovieViewModel model)
         {
             var review = await _context.Reviews

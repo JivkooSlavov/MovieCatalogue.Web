@@ -48,7 +48,29 @@
             </h3>
         </div>
     </div>
-    <h3>Reviews</h3>
+    <h3>Rate this Movie</h3>
+    <form asp-action="Create" asp-controller="Rating" method="post">
+        <input type="hidden" name="movieId" value="@Model.Id" />
+        <select name="value" class="form-control" required>
+            <option value="">Select a Rating</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+        <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
+    </form>
+
+    @if (Model.Rating > 0)
+    {
+        <p>Average Rating: @Model.Rating/5</p>
+    }
+    else
+    {
+        <p>This movie has not been rated yet.</p>
+    }
+
     <h3>Reviews</h3>
     @if (Model.Reviews.Any())
     {

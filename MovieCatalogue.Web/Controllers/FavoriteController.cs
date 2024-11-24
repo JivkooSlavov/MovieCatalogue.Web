@@ -6,9 +6,11 @@ using System.Security.Claims;
 using MovieCatalogue.Web.ViewModels;
 using MovieCatalogue.Web.ViewModels.Favorite;
 using MovieCatalogue.Web.ViewModels.Movie;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MovieCatalogue.Web.Controllers
 {
+    [Authorize]
     public class FavoriteController : Controller
     {
         private readonly MovieDbContext _context;
@@ -42,7 +44,6 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToFavorites(Guid movieId)
         {
             if (_context.Favorites.Any(f => f.MovieId == movieId && f.UserId == Guid.Parse(GetUserId())))
@@ -61,13 +62,39 @@ namespace MovieCatalogue.Web.Controllers
 
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveFromFavorite(int id)
+        [HttpGet]
+        public async Task<IActionResult> ConfirmRemove(Guid movieId)
         {
-            var favorite = await _context.Favorites.FindAsync(id);
+            var userId = Guid.Parse(GetUserId());
 
-            if (favorite == null || favorite.UserId != Guid.Parse(GetUserId()))
+            var model = await _context.Favorites
+                   .Where(f => f.MovieId == movieId && f.UserId == userId) 
+                   .Select(f => new RemoveMovieFromFavorite
+                   {
+                       MovieId = f.MovieId,
+                       MovieTitle = f.Movie.Title
+                   })
+                   .FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Remove(Guid movieId)
+        {
+            var userId = Guid.Parse(GetUserId());
+
+            var favorite = await _context.Favorites
+                .Include(f => f.Movie)
+                .FirstOrDefaultAsync(f => f.MovieId == movieId && f.UserId == userId);
+
+            if (favorite == null)
             {
                 return NotFound();
             }
@@ -75,7 +102,7 @@ namespace MovieCatalogue.Web.Controllers
             _context.Favorites.Remove(favorite);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Favorite");
         }
             private string GetUserId()
         {

@@ -33,10 +33,9 @@
                 <td>@favorite.MovieTitle</td>
                 <td>@favorite.MovieDescription</td>
                 <td>
-                    <form asp-action="RemoveFromFavorite" asp-controller="Favorite" method="post">
-                        <input type="hidden" name="id" value="@favorite.FavoriteId" />
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </form>
+                    <a asp-action="ConfirmRemove" asp-route-movieId="@favorite.MovieId" class="btn btn-danger">
+                        Remove
+                    </a>
                 </td>
             </tr>
         }

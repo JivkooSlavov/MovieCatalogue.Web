@@ -1,0 +1,21 @@
+﻿@using MovieCatalogue.Web.ViewModels.Favorite;
+@model RemoveMovieFromFavorite
+
+@{
+    ViewData["Title"] = "Remove from Favorites";
+}
+
+<div class="container">
+    <h1>Remove from Favorites</h1>
+
+    <div class="alert alert-warning">
+        <strong>Are you sure you want to remove "@Model.MovieTitle" from your favorites?</strong>
+    </div>
+
+    <form asp-action="Remove" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="movieId" value="@Model.MovieId" />
+        <button type="submit" class="btn btn-danger">Yes, Remove</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
