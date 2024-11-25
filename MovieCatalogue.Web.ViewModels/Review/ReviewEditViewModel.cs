@@ -18,7 +18,7 @@ namespace MovieCatalogue.Web.ViewModels.Review
         public string MovieName { get; set; } = null!;
 
         [Required]
-        [Range(ReviewContentMin, ReviewContentMax, ErrorMessage = StringLengthErrorMessage)]
+        [StringLength(ReviewContentMax, MinimumLength = ReviewContentMin, ErrorMessage = StringLengthErrorMessage)]
         public string Content { get; set; } = null!;
 
     }

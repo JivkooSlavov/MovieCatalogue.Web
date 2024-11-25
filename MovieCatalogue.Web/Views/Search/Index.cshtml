@@ -1,0 +1,60 @@
+﻿@using MovieCatalogue.Web.ViewModels.Search;
+@model SearchViewModel
+
+@{
+    ViewData["Title"] = "Search Movies";
+}
+
+<h1>Search Movies</h1>
+
+<form method="get" asp-controller="Search" asp-action="Index">
+    <div class="form-group">
+        <label for="query">Search by Movie Title</label>
+        <input type="text" name="query" id="query" class="form-control" value="@Model.Query" placeholder="Enter movie title..." />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (Model.Movies.Any())
+{
+    <h2>Search Results</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Poster</th>
+                <th>Title</th>
+                <th>Director</th>
+                <th>Genre</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model.Movies)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(movie.PosterUrl))
+                        {
+                            <img class="card-img-top" src="@movie.PosterUrl" alt="@movie.Title Poster" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/100x150" alt="No Poster" />
+                        }
+                    </td>
+                    <td>@movie.Title</td>
+                    <td>@movie.Director</td>
+                    <td>@movie.Genre</td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-info">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No movies found matching your search criteria.</p>
+}

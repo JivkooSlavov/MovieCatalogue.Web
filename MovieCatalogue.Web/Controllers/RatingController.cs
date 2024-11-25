@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Web.ViewModels.Rating;
 using System.Security.Claims;
 
 namespace MovieCatalogue.Web.Controllers
@@ -18,31 +19,30 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(int value, Guid movieId)
+        public async Task<IActionResult> Create(RatingViewModel model)
         {
-            if (value < 1 || value > 5)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Rating value must be between 1 and 5.");
-                return RedirectToAction("Details", "Movie", new { id = movieId });
+                return RedirectToAction("Details", "Movie", new { id = model.MovieId });
             }
 
-            var userId =Guid.Parse(GetUserId());
+            var userId = Guid.Parse(GetUserId());
 
             var existingRating = await _context.Ratings
-                .FirstOrDefaultAsync(r => r.MovieId == movieId && r.UserId == userId);
+                .FirstOrDefaultAsync(r => r.MovieId == model.MovieId && r.UserId == userId);
 
             if (existingRating != null)
             {
-                existingRating.Value = value;
+                existingRating.Value = model.Value;
                 _context.Ratings.Update(existingRating);
             }
             else
             {
                 var rating = new Rating
                 {
-                    MovieId = movieId,
+                    MovieId = model.MovieId,
                     UserId = userId,
-                    Value = value
+                    Value = model.Value
                 };
 
                 _context.Ratings.Add(rating);
@@ -50,11 +50,11 @@ namespace MovieCatalogue.Web.Controllers
 
             await _context.SaveChangesAsync();
 
-            await UpdateMovieRatingAsync(movieId);
+            await UpdateMovieRatingAsync(model.MovieId);
 
-            return RedirectToAction("Details", "Movie", new { id = movieId });
-
+            return RedirectToAction("Details", "Movie", new { id = model.MovieId });
         }
+
         private async Task UpdateMovieRatingAsync(Guid movieId)
         {
             var movie = await _context.Movies
@@ -71,6 +71,7 @@ namespace MovieCatalogue.Web.Controllers
                 await _context.SaveChangesAsync();
             }
         }
+
         private string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;

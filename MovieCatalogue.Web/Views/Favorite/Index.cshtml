@@ -12,7 +12,6 @@
         <tr>
             <th>Poster</th>
             <th>Title</th>
-            <th>Description</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -23,21 +22,29 @@
                 <td>
                     @if (!string.IsNullOrEmpty(favorite.PosterUrl))
                     {
-                        <img src="@favorite.PosterUrl" alt="Poster" style="width: 100px; height: 150px;" />
+                        <img src="@favorite.PosterUrl" alt="Poster" class="img-thumbnail" style="max-height: 200px; max-width: 150px;" />
                     }
                     else
                     {
-                        <img src="https://via.placeholder.com/100x150" alt="No Poster" />
+                        <img src="https://via.placeholder.com/200x300" alt="No Poster" class="img-thumbnail" />
                     }
                 </td>
                 <td>@favorite.MovieTitle</td>
-                <td>@favorite.MovieDescription</td>
                 <td>
-                    <a asp-action="ConfirmRemove" asp-route-movieId="@favorite.MovieId" class="btn btn-danger">
-                        Remove
-                    </a>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@favorite.MovieId" class="btn btn-info custom-btn">
+                            Details
+                        </a>
+                        <a asp-action="ConfirmRemove" asp-route-movieId="@favorite.MovieId" class="btn btn-danger custom-btn">
+                            Remove
+                        </a>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<a asp-action="Index" asp-controller="Movie" class="btn btn-secondary mt-3">
+    Back to All Movies
+</a>

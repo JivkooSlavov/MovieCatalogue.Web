@@ -12,6 +12,7 @@ namespace MovieCatalogue.Web.ViewModels.Review
     public class ReviewCreateViewModel
     {
         public Guid Id { get; set; }
+
         [Required]
         public Guid MovieId { get; set; }
 

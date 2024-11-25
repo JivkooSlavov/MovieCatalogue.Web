@@ -7,6 +7,13 @@
 
 <h1>Movies</h1>
 
+<form asp-action="Index" asp-controller="Search" method="get" class="form-inline mb-3">
+    <div class="form-group">
+        <input type="text" name="query" class="form-control mr-2" placeholder="Search for a movie..." />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New Movie</a>
 </p>
