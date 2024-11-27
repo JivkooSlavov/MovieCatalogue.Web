@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Services.Data;
+using MovieCatalogue.Services.Data.Interfaces;
+using MovieCatalogue.Services.Mapping;
 using MovieCatalogue.Web.Infrastructure;
 using MovieCatalogue.Web.Infrastructure.Extensions;
+using MovieCatalogue.Web.Viewmodels;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SQLServer");
@@ -32,10 +36,18 @@ builder.Services.ConfigureApplicationCookie(cfg =>
     cfg.LoginPath = "/Identity/Account/Login";
 });
 
+builder.Services.RegisterRepositories(typeof(User).Assembly);
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 WebApplication app = builder.Build();
+
+AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

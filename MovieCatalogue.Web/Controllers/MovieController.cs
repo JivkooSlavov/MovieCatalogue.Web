@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Common;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Data.Repository.Interfaces;
+using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
 using System.Globalization;
@@ -15,14 +17,15 @@ using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
-
-    public class MovieController : Controller
+    public class MovieController : BaseController
     {
         private readonly MovieDbContext _context;
+        private readonly IMovieService _movieService;
 
-        public MovieController(MovieDbContext context)
+        public MovieController(MovieDbContext context, IMovieService movieService)
         {
             _context = context;
+            _movieService = movieService;
         }
 
         [HttpGet]
@@ -30,73 +33,33 @@ namespace MovieCatalogue.Web.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var model = await _context.Movies
-                  .Where(x => x.IsDeleted == false)
-                  .Include(y => y.Genre)
-                .Select(x => new MovieInfoViewModel
-                {
-                    Id = x.Id,
-                    Cast = x.Cast,
-                    Description = x.Description,
-                    Director = x.Director,
-                    Duration = x.Duration,
-                    PosterUrl = x.PosterUrl,
-                    Genre = x.Genre.Name,
-                    Rating = x.Rating,
-                    ReleaseDate = x.ReleaseDate.ToString(DateFormatOfMovie),
-                    Title = x.Title,
-                    TrailerUrl = x.TrailerUrl,
-                })
-                .AsNoTracking()
-                .ToListAsync();
+            IEnumerable<MovieInfoViewModel> allMovies =
+               await  _movieService.GetAllMoviesAsync();
 
-            return View(model);
+            return View(allMovies);
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
-
-            var movie = await _context.Movies
-                .Include(e => e.Ratings)
-                .Include(e => e.Reviews)
-                .ThenInclude(e => e.User)
-                .Where(e => e.Id == id)
-                .Where(e => e.IsDeleted == false)
-                .Select(e => new MovieInfoViewModel()
-                {
-                    Id = e.Id,
-                    Cast = e.Cast,
-                    Description = e.Description,
-                    Director = e.Director,
-                    Duration = e.Duration,
-                    PosterUrl = e.PosterUrl,
-                    Genre = e.Genre.Name,
-                    Rating = e.Rating,
-                    ReleaseDate = e.ReleaseDate.ToString(DateFormatOfMovie),
-                    Title = e.Title,
-                    TrailerUrl = e.TrailerUrl,
-                    Reviews = e.Reviews
-                    .OrderBy(r=>r.DatePosted)
-                    .Select(r => new ReviewViewModel
-                    {
-                        Id = r.Id,
-                        Content = r.Content,
-                        UserName = r.User.UserName,
-                        CreatedAt = r.DatePosted
-                    }).ToList() 
-                })
-                .FirstOrDefaultAsync();
-
-
-            if (movie == null)
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
             {
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Index));
             }
 
 
-            return View(movie);
+            MovieInfoViewModel? movie = await this._movieService
+               .GetMovieDetailsAsync(movieGuid);
+
+            if (movie == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            return this.View(movie);
         }
 
         [HttpGet]
@@ -119,88 +82,38 @@ namespace MovieCatalogue.Web.Controllers
                 return View(model);
             }
 
-            if (!GetTypes().Any(e => e.Id == model.GenreId))
+
+            bool result = await _movieService.AddMovieAsync(model, Guid.Parse(GetUserId()));
+            if (result == false)
             {
-                ModelState.AddModelError(nameof(model.GenreId), "Genre does not exist!");
-            }
-
-            DateTime start;
-
-            if (!DateTime.TryParseExact(
-               model.ReleaseDate,
-               DateFormatOfMovie,
-               CultureInfo.InvariantCulture,
-               DateTimeStyles.None,
-               out start))
-            {
-
-                ModelState
-                    .AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
-
+                this.ModelState.AddModelError(nameof(model.ReleaseDate),
+                    String.Format("The Release Date must be in the following format: {0}", DateFormatOfMovie));
                 model.Genres = GetTypes();
-
-                return View(model);
+                return this.View(model);
             }
-
-            Movie movieToAdd = new Movie()
-            {
-                Title = model.Title,
-                Description = model.Description,
-                Cast = model.Cast,
-                Director = model.Director,
-                Duration = model.Duration,
-                Rating = model.Rating,
-                ReleaseDate = start,
-                PosterUrl = model.PosterUrl,
-                TrailerUrl = model.TrailerUrl,
-                GenreId = model.GenreId,
-                CreatedByUserId = Guid.Parse(GetUserId())
-            };
-
-            await _context.Movies.AddAsync(movieToAdd);
-            await _context.SaveChangesAsync();
-
-
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            Movie? existMovie = await _context.Movies
-                .FindAsync(id);
 
-            if (existMovie == null)
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
             {
-                return BadRequest();
+                return this.RedirectToAction(nameof(Index));
             }
-
-            AddMovieViewModel model = new AddMovieViewModel()
-            {
-                Id = existMovie.Id,
-                Title = existMovie.Title,
-                Description = existMovie.Description,
-                Cast = existMovie.Cast,
-                Director = existMovie.Director,
-                Duration = existMovie.Duration,
-                Rating = existMovie.Rating,
-                ReleaseDate = existMovie.ReleaseDate.ToString(DateFormatOfMovie),
-                PosterUrl = existMovie.PosterUrl,
-                TrailerUrl = existMovie.TrailerUrl,
-                GenreId = existMovie.GenreId,
-                CreatedByUserId = existMovie.CreatedByUserId
-            };
 
             Guid currentUserId = Guid.Parse(GetUserId());
 
-            if (model.CreatedByUserId != currentUserId)
-            {
-                return RedirectToAction(nameof(Index));
-            }
 
-            model.Genres = GetTypes();
+            AddMovieViewModel? model = await this._movieService
+                            .GetMovieForEditAsync(movieGuid, currentUserId);
 
-            return View(model);
+      
+
+            return this.View(model);
         }
 
         [HttpPost]
@@ -212,77 +125,32 @@ namespace MovieCatalogue.Web.Controllers
                 model.Genres = GetTypes();
                 return View(model);
             }
+            Guid currentUserId = Guid.Parse(GetUserId());
 
-            DateTime start;
+            bool isEdited = await _movieService.EditMovieAsync(id, model, currentUserId);
 
-            if (!DateTime.TryParseExact(
-               model.ReleaseDate,
-               DateFormatOfMovie,
-               CultureInfo.InvariantCulture,
-               DateTimeStyles.None,
-               out start))
+            if (!isEdited)
             {
-
-                ModelState
-                    .AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
-
+                ModelState.AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
                 model.Genres = GetTypes();
-
                 return View(model);
             }
-
-            var entity = await _context.Movies.FindAsync(id);
-
-            if (entity == null)
-            {
-                throw new ArgumentException("Invalid Id");
-            }
-
-
-            entity.Title = model.Title;
-            entity.Description = model.Description;
-            entity.Cast = model.Cast;
-            entity.Director = model.Director;
-            entity.Duration = model.Duration;
-            entity.Rating = model.Rating;
-            entity.ReleaseDate = start;
-            entity.PosterUrl = model.PosterUrl;
-            entity.TrailerUrl = model.TrailerUrl ?? String.Empty;
-            entity.GenreId = model.GenreId;
-
-            await _context.SaveChangesAsync();
-
-
 
             return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var model = await _context.Movies
-           .Where(p => p.Id.ToString() == id)
-           .AsNoTracking()
-           .Select(p => new DeleteMovieViewModel()
-           {
-               Id = p.Id,
-               Title = p.Title,
-               GenreName = p.Genre.Name,
-               PosterUrl = p.PosterUrl,
-               Rating = p.Rating,
-               ReleaseDate = p.ReleaseDate,
-               CreatedByUserId = p.CreatedByUserId
-           })
-           .FirstOrDefaultAsync();
-
             Guid currentUserId = Guid.Parse(GetUserId());
 
-            if (model.CreatedByUserId != currentUserId)
+            var model = await _movieService.GetMovieForDeletionAsync(id, currentUserId);
+
+            if (model == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-
 
             return View(model);
         }
@@ -291,15 +159,13 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(DeleteMovieViewModel model)
         {
-            var product = await _context.Movies
-                .Where(g => g.Id == model.Id)
-                .FirstOrDefaultAsync();
+            Guid currentUserId = Guid.Parse(GetUserId());
 
-            if (model != null)
+            bool isDeleted = await _movieService.DeleteMovieAsync(model.Id, currentUserId);
+
+            if (!isDeleted)
             {
-                product.IsDeleted = true;
-
-                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
             return RedirectToAction(nameof(Index));

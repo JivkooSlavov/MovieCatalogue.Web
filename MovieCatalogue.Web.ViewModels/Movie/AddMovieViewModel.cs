@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovieCatalogue.Services.Mapping;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,7 @@ using static MovieCatalogue.Common.Messages;
 
 namespace MovieCatalogue.Web.ViewModels.Movie
 {
-    public class AddMovieViewModel
+    public class AddMovieViewModel : IMapTo<MovieCatalogue.Data.Models.Movie>
     {
         public Guid Id { get; set; }
 

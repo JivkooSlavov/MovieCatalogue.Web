@@ -186,7 +186,7 @@ namespace MovieCatalogue.Data.Migrations
                     Director = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    PosterUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false, defaultValue: "/images/1.jpg"),
+                    PosterUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
                     CreatedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

@@ -283,10 +283,8 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<string>("PosterUrl")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasDefaultValue("/images/1.jpg");
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<double>("Rating")
                         .ValueGeneratedOnAdd()

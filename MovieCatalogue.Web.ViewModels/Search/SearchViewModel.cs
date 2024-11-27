@@ -10,6 +10,6 @@ namespace MovieCatalogue.Web.ViewModels.Search
     public class SearchViewModel
     {
         public string Query { get; set; } = string.Empty;
-        public virtual ICollection<MovieSearchResultViewModel> Movies { get; set; } = new HashSet<MovieSearchResultViewModel>();
+        public virtual IEnumerable<MovieSearchResultViewModel> Movies { get; set; } = new HashSet<MovieSearchResultViewModel>();
     }
 }

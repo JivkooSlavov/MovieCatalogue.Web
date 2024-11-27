@@ -12,7 +12,7 @@ using MovieCatalogue.Data;
 namespace MovieCatalogue.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241123092631_Initial")]
+    [Migration("20241126175252_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -286,10 +286,8 @@ namespace MovieCatalogue.Data.Migrations
 
                     b.Property<string>("PosterUrl")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasDefaultValue("/images/1.jpg");
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<double>("Rating")
                         .ValueGeneratedOnAdd()

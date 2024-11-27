@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
 using static MovieCatalogue.Common.EntityValidationConstants.GenreConstants;
+using System.Reflection.Emit;
 namespace MovieCatalogue.Data.Configuration
 {
     public class GenreConfiguration : IEntityTypeConfiguration<Genre>
@@ -13,6 +14,24 @@ namespace MovieCatalogue.Data.Configuration
             builder.Property(g => g.Name)
                 .IsRequired()
                 .HasMaxLength(GenreNameMaxLength);
+        }
+        private List<Genre> SeedGenres()
+        {
+            List<Genre> genres = new List<Genre>()
+            {
+                    new Genre { Id = 1, Name = "Drama" },
+                    new Genre { Id = 2, Name = "Comedy" },
+                    new Genre { Id = 3, Name = "Action" },
+                    new Genre { Id = 4, Name = "Adventure" },
+                    new Genre { Id = 5, Name = "Horror" },
+                    new Genre { Id = 6, Name = "Triller" },
+                    new Genre { Id = 7, Name = "Mystery" },
+                     new Genre { Id = 8, Name = "Musical" },
+                    new Genre { Id = 9, Name = "Animation" },
+                    new Genre { Id = 10, Name = "Fantasy" }
+            };
+
+            return genres;
         }
     }
 }

@@ -36,7 +36,7 @@
                     <td>
                         @if (!string.IsNullOrEmpty(movie.PosterUrl))
                         {
-                            <img class="card-img-top" src="@movie.PosterUrl" alt="@movie.Title Poster" />
+                            <img src="@movie.PosterUrl" alt="@movie.PosterUrl" class="img-thumbnail" style="max-height: 100px;" />
                         }
                         else
                         {

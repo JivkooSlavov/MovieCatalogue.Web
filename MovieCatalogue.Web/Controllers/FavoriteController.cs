@@ -7,17 +7,18 @@ using MovieCatalogue.Web.ViewModels;
 using MovieCatalogue.Web.ViewModels.Favorite;
 using MovieCatalogue.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Authorization;
+using MovieCatalogue.Services.Data.Interfaces;
 
 namespace MovieCatalogue.Web.Controllers
 {
     [Authorize]
-    public class FavoriteController : Controller
+    public class FavoriteController : BaseController
     {
-        private readonly MovieDbContext _context;
+        private readonly IFavoriteService _favoriteService;
 
-        public FavoriteController(MovieDbContext context)
+        public FavoriteController(MovieDbContext context, IFavoriteService favoriteService)
         {
-             _context = context;
+            _favoriteService = favoriteService;
         }
 
         [HttpGet]
@@ -25,20 +26,7 @@ namespace MovieCatalogue.Web.Controllers
         {
             Guid currentUserId = Guid.Parse(GetUserId());
 
-
-            var favorites = await _context.Favorites
-                .Include(f=>f.Movie)
-                .Where(f=>f.UserId == currentUserId)
-                .Select(f=> new AddMovieToFavorite
-                {
-                    FavoriteId = f.Id,
-                    MovieId = f.Movie.Id,
-                    MovieTitle = f.Movie.Title,
-                    MovieDescription = f.Movie.Description,
-                    PosterUrl = f.Movie.PosterUrl,
-                    IsFavorite = true
-                })
-                .ToListAsync();
+            var favorites = await _favoriteService.GetUserFavoritesAsync(currentUserId);
 
             return View(favorites);
         }
@@ -46,35 +34,23 @@ namespace MovieCatalogue.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToFavorites(Guid movieId)
         {
-            if (_context.Favorites.Any(f => f.MovieId == movieId && f.UserId == Guid.Parse(GetUserId())))
+            Guid userId = Guid.Parse(GetUserId());
+
+            var isAdded = await _favoriteService.AddToFavoritesAsync(movieId, userId);
+
+            if (!isAdded)
             {
                 return BadRequest("The movie is already in your favorites.");
             }
-
-            var favorite = new Favorite
-            {
-                MovieId = movieId,
-                UserId = Guid.Parse(GetUserId())
-            };
-
-            _context.Favorites.Add(favorite);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> ConfirmRemove(Guid movieId)
         {
-            var userId = Guid.Parse(GetUserId());
+            Guid userId = Guid.Parse(GetUserId());
 
-            var model = await _context.Favorites
-                   .Where(f => f.MovieId == movieId && f.UserId == userId) 
-                   .Select(f => new RemoveMovieFromFavorite
-                   {
-                       MovieId = f.MovieId,
-                       MovieTitle = f.Movie.Title
-                   })
-                   .FirstOrDefaultAsync();
+            var model = await _favoriteService.GetFavoriteByMovieIdAsync(movieId, userId);
 
             if (model == null)
             {
@@ -88,21 +64,16 @@ namespace MovieCatalogue.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Remove(Guid movieId)
         {
-            var userId = Guid.Parse(GetUserId());
+            Guid userId = Guid.Parse(GetUserId());
 
-            var favorite = await _context.Favorites
-                .Include(f => f.Movie)
-                .FirstOrDefaultAsync(f => f.MovieId == movieId && f.UserId == userId);
+            var isRemoved = await _favoriteService.RemoveFavoriteAsync(movieId, userId);
 
-            if (favorite == null)
+            if (!isRemoved)
             {
                 return NotFound();
             }
 
-            _context.Favorites.Remove(favorite);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Favorite");
+            return RedirectToAction(nameof(Index));
         }
             private string GetUserId()
         {

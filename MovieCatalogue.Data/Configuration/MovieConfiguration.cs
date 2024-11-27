@@ -36,8 +36,7 @@ namespace MovieCatalogue.Data.Configuration
             builder
              .Property(m => m.PosterUrl)
              .IsRequired()
-             .HasMaxLength(MovieImageUrlMaxLength)
-             .HasDefaultValue(NoImageUrl);
+             .HasMaxLength(MovieImageUrlMaxLength);
 
             builder.Property(m=>m.Director)
                 .IsRequired()
