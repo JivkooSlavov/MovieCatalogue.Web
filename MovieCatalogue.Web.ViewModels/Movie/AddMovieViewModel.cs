@@ -10,6 +10,7 @@ using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 using static MovieCatalogue.Common.EntityValidationConstants.RatingConstants;
 using static MovieCatalogue.Common.Messages;
 
+
 namespace MovieCatalogue.Web.ViewModels.Movie
 {
     public class AddMovieViewModel : IMapTo<MovieCatalogue.Data.Models.Movie>

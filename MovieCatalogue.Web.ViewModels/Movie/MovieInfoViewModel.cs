@@ -25,7 +25,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string PosterUrl { get; set; } = null!;
         public bool IsFavorite { get; set; } = false;
 
-        public virtual IEnumerable<TypeOfGenreMovies> Genres { get; set; } = new List<TypeOfGenreMovies>();
+        public virtual ICollection<TypeOfGenreMovies> Genres { get; set; } = new HashSet<TypeOfGenreMovies>();
 
         public virtual ICollection<RatingViewModel> Ratings { get; set; } = new HashSet<RatingViewModel>();
 

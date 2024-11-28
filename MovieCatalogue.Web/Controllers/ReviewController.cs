@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels;
 using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
@@ -11,45 +12,24 @@ using System.Security.Claims;
 
 namespace MovieCatalogue.Web.Controllers
 {
-    public class ReviewController : Controller
+    public class ReviewController : BaseController
     {
-        private readonly MovieDbContext _context;
-        private readonly UserManager<User> _userManager;
+        private readonly IReviewService _reviewService;
 
-        public ReviewController(MovieDbContext context, UserManager<User> userManager)
+        public ReviewController(IReviewService reviewService)
         {
-            _context = context;
-            _userManager = userManager;
+            _reviewService = reviewService;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index(Guid movieId)
         {
-            var movie = await _context.Movies
-             .Include(m => m.Reviews)
-             .ThenInclude(r => r.User)
-             .FirstOrDefaultAsync(m => m.Id == movieId);
-
-            if (movie == null)
+            var model = await _reviewService.GetReviewsForMovieAsync(movieId);
+            if (model == null)
             {
                 return NotFound();
             }
-
-            var model = new ReviewIndexViewModel
-            {
-                MovieId = movie.Id,
-                MovieTitle = movie.Title,
-                Reviews = movie.Reviews
-                 .OrderByDescending(r => r.DatePosted)
-                .Select(r => new ReviewViewModel
-                {
-                    Id = r.Id,
-                    UserName = r.User.UserName ?? string.Empty,
-                    Content = r.Content,
-                    CreatedAt = r.DatePosted
-                }).ToList()
-            };
 
             return View(model);
         }
@@ -58,12 +38,11 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public IActionResult Create(Guid movieId)
         {
-            ReviewCreateViewModel reviewMovie = new ReviewCreateViewModel
+            var reviewVm = new ReviewCreateViewModel
             {
                 MovieId = movieId
             };
-
-            return View(reviewMovie);
+            return View(reviewVm);
         }
 
         [HttpPost]
@@ -75,22 +54,13 @@ namespace MovieCatalogue.Web.Controllers
                 return View(reviewVm);
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
+            var userId = Guid.Parse(GetUserId());
+            var result = await _reviewService.CreateReviewAsync(reviewVm, userId);
+
+            if (!result)
             {
-                return Unauthorized();
+                return BadRequest("Error while creating review");
             }
-
-            Review review = new Review
-            {
-                Content = reviewVm.Content,
-                MovieId = reviewVm.MovieId,
-                UserId = Guid.Parse(userId),
-                DatePosted = DateTime.UtcNow,
-            };
-
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", new { movieId = reviewVm.MovieId });
         }
@@ -99,49 +69,32 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var existReview = await _context.Reviews.FindAsync(id);
+            var userId = Guid.Parse(GetUserId());
+            var reviewVm = await _reviewService.GetReviewForEditAsync(id, userId);
 
-            if (existReview == null)
+            if (reviewVm == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            ReviewCreateViewModel review = new ReviewCreateViewModel
-            {
-                Id = existReview.Id,
-                MovieId = existReview.MovieId,
-                Content = existReview.Content,
-                UpdatePosted = DateTime.Now,
-                CreatedByUserId = existReview.UserId
-            };
-
-            Guid currentUserId = Guid.Parse(GetUserId());
-
-            if (review.CreatedByUserId != currentUserId)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(review);
+            return View(reviewVm);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(ReviewCreateViewModel model)
+        public async Task<IActionResult> Edit(ReviewEditViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var review = await _context.Reviews.FindAsync(model.Id);
+            var result = await _reviewService.UpdateReviewAsync(model);
 
-            review.Content = model.Content;
-            review.UpdatePosted = DateTime.Now;
-            
-
-            _context.Reviews.Update(review);
-            await _context.SaveChangesAsync();
+            if (!result)
+            {
+                return NotFound();
+            }
 
             return RedirectToAction("Index", new { movieId = model.MovieId });
         }
@@ -151,41 +104,30 @@ namespace MovieCatalogue.Web.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
 
-            var model = await _context.Reviews
-               .Where(r => r.Id == id)
-               .Select(r => new ReviewDeleteViewModel()
-               {
-                   Id = r.Id,
-                   MovieId = r.MovieId,
-                   MovieTitle = r.Movie.Title,
-                   Content = r.Content,
-                   CreatedAt = r.DatePosted,
-                   CreatedByUserId = r.UserId
-               })
-                .FirstOrDefaultAsync();
+            var userId = Guid.Parse(GetUserId());
+            var reviewVm = await _reviewService.GetReviewForDeleteAsync(id, userId);
 
-            Guid currentUserId = Guid.Parse(GetUserId());
-
-            if (model.CreatedByUserId != currentUserId)
+            if (reviewVm == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
 
-            return View(model);
+            return View(reviewVm);
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Delete(DeleteMovieViewModel model)
         {
-            var review = await _context.Reviews
-                .Where(g => g.Id == model.Id)
-                .FirstOrDefaultAsync();
+            var userId = Guid.Parse(GetUserId());
+            var result = await _reviewService.DeleteReviewAsync(model.Id, userId);
 
-            _context.Reviews.Remove(review);
-            _context.SaveChanges();
+            if (!result)
+            {
+                return NotFound();
+            }
 
-            return RedirectToAction("Details", "Movie", new { id = review.MovieId });
+            return RedirectToAction("Details", "Movie", new { id =  model});
         }
 
         private string GetUserId()

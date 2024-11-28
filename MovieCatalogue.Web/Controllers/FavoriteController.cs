@@ -75,7 +75,7 @@ namespace MovieCatalogue.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-            private string GetUserId()
+        private string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }

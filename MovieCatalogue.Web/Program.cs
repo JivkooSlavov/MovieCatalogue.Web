@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Data.Repository.Interfaces;
+using MovieCatalogue.Data.Repository;
 using MovieCatalogue.Services.Data;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Services.Mapping;
@@ -37,11 +39,14 @@ builder.Services.ConfigureApplicationCookie(cfg =>
 });
 
 builder.Services.RegisterRepositories(typeof(User).Assembly);
+builder.Services.RegisterUserDefinedServices(typeof(IReviewService).Assembly);
+
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IRepository<User, Guid>, BaseRepository<User, Guid>>();
 
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

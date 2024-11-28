@@ -3,19 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels.Rating;
 using System.Security.Claims;
 
 namespace MovieCatalogue.Web.Controllers
 {
     [Authorize]
-    public class RatingController : Controller
+    public class RatingController : BaseController
     {
-        private readonly MovieDbContext _context;
+        private readonly IRatingService _ratingService;
 
-        public RatingController(MovieDbContext context)
+        public RatingController(IRatingService ratingService)
         {
-            _context = context;
+            _ratingService = ratingService;
         }
 
         [HttpPost]
@@ -28,48 +29,9 @@ namespace MovieCatalogue.Web.Controllers
 
             var userId = Guid.Parse(GetUserId());
 
-            var existingRating = await _context.Ratings
-                .FirstOrDefaultAsync(r => r.MovieId == model.MovieId && r.UserId == userId);
-
-            if (existingRating != null)
-            {
-                existingRating.Value = model.Value;
-                _context.Ratings.Update(existingRating);
-            }
-            else
-            {
-                var rating = new Rating
-                {
-                    MovieId = model.MovieId,
-                    UserId = userId,
-                    Value = model.Value
-                };
-
-                _context.Ratings.Add(rating);
-            }
-
-            await _context.SaveChangesAsync();
-
-            await UpdateMovieRatingAsync(model.MovieId);
+            await _ratingService.AddOrUpdateRatingAsync(model, userId);
 
             return RedirectToAction("Details", "Movie", new { id = model.MovieId });
-        }
-
-        private async Task UpdateMovieRatingAsync(Guid movieId)
-        {
-            var movie = await _context.Movies
-                .Include(m => m.Ratings)
-                .FirstOrDefaultAsync(m => m.Id == movieId);
-
-            if (movie != null)
-            {
-                movie.Rating = movie.Ratings.Any()
-                    ? movie.Ratings.Average(r => r.Value)
-                    : 0;
-
-                _context.Movies.Update(movie);
-                await _context.SaveChangesAsync();
-            }
         }
 
         private string GetUserId()

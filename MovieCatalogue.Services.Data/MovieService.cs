@@ -6,6 +6,7 @@ using MovieCatalogue.Services.Mapping;
 using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
 using System.Globalization;
+using System.Security.Claims;
 using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 
 namespace MovieCatalogue.Services.Data
@@ -47,10 +48,12 @@ namespace MovieCatalogue.Services.Data
             return model;
         }
 
-        public async  Task<MovieInfoViewModel?> GetMovieDetailsAsync(Guid id)
+        public async Task<MovieInfoViewModel?> GetMovieDetailsAsync(Guid id)
         {
             var movie = await _movieRepository
             .GetAllWithInclude(m => m.Genre)
+            .Include(m=>m.Reviews)
+            .Include(m=>m.Ratings)
             .FirstOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
 
             if (movie == null)
@@ -77,8 +80,8 @@ namespace MovieCatalogue.Services.Data
                     {
                         Id = r.Id,
                         Content = r.Content,
-                        UserName = r.User.UserName,
-                        CreatedAt = r.DatePosted
+                        CreatedAt = r.DatePosted,
+                        UserName = r.User.UserName
                     }).ToList()
             };
         }
@@ -198,7 +201,7 @@ namespace MovieCatalogue.Services.Data
 
             if (movie == null || movie.CreatedByUserId != currentUserId || movie.IsDeleted)
             {
-                return false; // Липса на достъп или филмът вече е изтрит
+                return false; 
             }
 
             movie.IsDeleted = true;

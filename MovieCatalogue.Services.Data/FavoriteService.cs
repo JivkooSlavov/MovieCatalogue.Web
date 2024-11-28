@@ -74,7 +74,7 @@ namespace MovieCatalogue.Services.Data
             return favorite;
         }
 
-  
+
 
         public async Task<bool> RemoveFavoriteAsync(Guid movieId, Guid userId)
         {
