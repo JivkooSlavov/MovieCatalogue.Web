@@ -2,6 +2,7 @@
 using MovieCatalogue.Data.Models;
 using MovieCatalogue.Data.Repository.Interfaces;
 using MovieCatalogue.Services.Data.Interfaces;
+using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
 using System;
 using System.Collections.Generic;
@@ -15,30 +16,28 @@ namespace MovieCatalogue.Services.Data
     {
         private readonly IRepository<Review, Guid> _reviewRepository;
         private readonly IRepository<Movie, Guid> _movieRepository;
-        private readonly IRepository<User, Guid> userReviewRepository;
 
         public ReviewService(
          IRepository<Review, Guid> reviewRepository,
-         IRepository<Movie, Guid> movieRepository,
-         IRepository<User, Guid> userReviewRepository)
+         IRepository<Movie, Guid> movieRepository)
         {
             _reviewRepository = reviewRepository;
             _movieRepository = movieRepository;
-            this.userReviewRepository = userReviewRepository;
         }
 
         public async Task<ReviewIndexViewModel> GetReviewsForMovieAsync(Guid movieId)
         {
             var movie = await _movieRepository
-                .GetAllWithInclude(m => m.Reviews)
-                .FirstOrDefaultAsync(m => m.Id == movieId);
+                 .GetAllWithInclude(m => m.Genre)
+                 .Include(m => m.Reviews)
+                 .ThenInclude(r => r.User)
+                 .Include(m => m.Ratings)
+                 .FirstOrDefaultAsync(m => m.Id == movieId && !m.IsDeleted);
 
             if (movie == null)
             {
                 return null;
             }
-
-            User user = userReviewRepository.GetById(movie.Id);
 
             var model = new ReviewIndexViewModel
             {
@@ -50,7 +49,8 @@ namespace MovieCatalogue.Services.Data
                     {
                         Id = r.Id,
                         Content = r.Content,
-                        CreatedAt = r.DatePosted
+                        CreatedAt = r.DatePosted,
+                        UserName = r.User?.UserName ?? "Unknown"
                     })
                     .ToList()
             };
@@ -60,12 +60,12 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<bool> CreateReviewAsync(ReviewCreateViewModel reviewVm, Guid userId)
         {
-            var review = new Review
+            Review review = new Review
             {
                 Content = reviewVm.Content,
                 MovieId = reviewVm.MovieId,
                 UserId = userId,
-                DatePosted = DateTime.UtcNow
+                DatePosted = DateTime.Now
             };
 
             await _reviewRepository.AddAsync(review);
@@ -74,68 +74,72 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<ReviewCreateViewModel> GetReviewForEditAsync(Guid id, Guid userId)
         {
-            var review = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == id);
+            var reviewForEdit = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == id);
 
-            if (review == null || review.UserId != userId)
+            if (reviewForEdit == null || reviewForEdit.UserId != userId)
             {
                 return null;
             }
 
             return new ReviewCreateViewModel
             {
-                Id = review.Id,
-                MovieId = review.MovieId,
-                Content = review.Content,
+                Id = reviewForEdit.Id,
+                MovieId = reviewForEdit.MovieId,
+                Content = reviewForEdit.Content,
                 UpdatePosted = DateTime.UtcNow
             };
         }
 
-        public async Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm)
+        public async Task<bool> UpdateReviewAsync(ReviewCreateViewModel reviewVm)
         {
-            var review = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewVm.Id);
+            var reviewUpdated = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewVm.Id);
 
-            if (review == null)
+            if (reviewUpdated == null)
             {
                 return false;
             }
 
-            review.Content = reviewVm.Content;
-            review.UpdatePosted = DateTime.UtcNow;
+            reviewUpdated.Content = reviewVm.Content;
+            reviewUpdated.UpdatePosted = DateTime.UtcNow;
 
-            await _reviewRepository.UpdateAsync(review);
+            await _reviewRepository.UpdateAsync(reviewUpdated);
             return true;
         }
 
         public async Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId)
         {
-            var review = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == id);
+            var reviewForDelete = await _reviewRepository
+                 .GetAllWithInclude(r => r.Movie)
+                 .Where(r => r.Id == id)
+                 .Select(r => new ReviewDeleteViewModel
+                 {
+                     Id = r.Id,
+                     MovieId = r.MovieId,
+                     MovieTitle = r.Movie.Title,
+                     Content = r.Content,
+                     CreatedAt = r.DatePosted,
+                     CreatedByUserId = r.UserId
+                 })
+                 .FirstOrDefaultAsync();
 
-            if (review == null || review.UserId != userId)
+            if (reviewForDelete == null || reviewForDelete.CreatedByUserId != userId)
             {
-                return null;
+                throw new UnauthorizedAccessException("You are not authorized to delete this review.");
             }
 
-            return new ReviewDeleteViewModel
-            {
-                Id = review.Id,
-                MovieId = review.MovieId,
-                MovieTitle = review.Movie.Title,
-                Content = review.Content,
-                CreatedAt = review.DatePosted,
-                CreatedByUserId = review.UserId
-            };
+            return reviewForDelete;
         }
 
         public async Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId)
         {
-            var review = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewId);
+            var reviewDeleted = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewId);
 
-            if (review == null || review.UserId != userId)
+            if (reviewDeleted == null || reviewDeleted.UserId != userId)
             {
                 return false;
             }
 
-            await _reviewRepository.DeleteAsync(review);
+            await _reviewRepository.DeleteAsync(reviewDeleted);
             return true;
         }
 

@@ -56,13 +56,11 @@ namespace MovieCatalogue.Web.Controllers
 
             var userId = Guid.Parse(GetUserId());
             var result = await _reviewService.CreateReviewAsync(reviewVm, userId);
-
             if (!result)
             {
                 return BadRequest("Error while creating review");
             }
-
-            return RedirectToAction("Index", new { movieId = reviewVm.MovieId });
+            return RedirectToAction("Details", "Movie", new { id = reviewVm.MovieId });
         }
 
         [HttpGet]
@@ -82,7 +80,7 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(ReviewEditViewModel model)
+        public async Task<IActionResult> Edit(ReviewCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -100,34 +98,31 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
 
             var userId = Guid.Parse(GetUserId());
-            var reviewVm = await _reviewService.GetReviewForDeleteAsync(id, userId);
+            ReviewDeleteViewModel review = await _reviewService.GetReviewForDeleteAsync(id, userId);
 
-            if (reviewVm == null)
+            if (review == null)
             {
                 return NotFound();
             }
 
-            return View(reviewVm);
+            return this.View(review);
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Delete(DeleteMovieViewModel model)
+        public async Task<IActionResult> DeleteConfirm(ReviewDeleteViewModel review)
         {
             var userId = Guid.Parse(GetUserId());
-            var result = await _reviewService.DeleteReviewAsync(model.Id, userId);
+            var result = await _reviewService.DeleteReviewAsync(review.Id, userId);
 
             if (!result)
             {
                 return NotFound();
             }
-
-            return RedirectToAction("Details", "Movie", new { id =  model});
+            return RedirectToAction("Index", new { movieId = review.MovieId });
         }
 
         private string GetUserId()

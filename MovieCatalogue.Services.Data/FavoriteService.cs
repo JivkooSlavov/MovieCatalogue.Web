@@ -46,11 +46,14 @@ namespace MovieCatalogue.Services.Data
         {
             return await _favoriteRepository
             .GetAllWithInclude(f => f.Movie)
+            .Include(f=>f.Movie.Genre)
             .Where(f => f.UserId == userId)
             .Select(f => new AddMovieToFavorite
             {
                 FavoriteId = f.Id,
+                DirectorName = f.Movie.Director,
                 MovieId = f.Movie.Id,
+                Genre = f.Movie.Genre.Name,
                 MovieTitle = f.Movie.Title,
                 MovieDescription = f.Movie.Description,
                 PosterUrl = f.Movie.PosterUrl,

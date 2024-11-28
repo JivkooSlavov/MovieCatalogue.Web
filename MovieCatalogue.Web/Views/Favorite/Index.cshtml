@@ -12,6 +12,8 @@
         <tr>
             <th>Poster</th>
             <th>Title</th>
+            <th>Director</th>
+            <th>Genre</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -30,6 +32,8 @@
                     }
                 </td>
                 <td>@favorite.MovieTitle</td>
+                <td>@favorite.DirectorName</td>
+                <td>@favorite.Genre</td>
                 <td>
                     <div class="d-flex gap-2">
                         <a asp-action="Details" asp-controller="Movie" asp-route-id="@favorite.MovieId" class="btn btn-info custom-btn">

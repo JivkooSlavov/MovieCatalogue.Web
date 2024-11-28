@@ -12,7 +12,7 @@ namespace MovieCatalogue.Services.Data.Interfaces
         Task<ReviewIndexViewModel> GetReviewsForMovieAsync(Guid movieId);
         Task<bool> CreateReviewAsync(ReviewCreateViewModel reviewVm, Guid userId);
         Task<ReviewCreateViewModel> GetReviewForEditAsync(Guid id, Guid userId);
-        Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm);
+        Task<bool> UpdateReviewAsync(ReviewCreateViewModel reviewVm);
         Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId);
         Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId);
     }

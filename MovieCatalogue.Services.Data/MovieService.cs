@@ -51,10 +51,11 @@ namespace MovieCatalogue.Services.Data
         public async Task<MovieInfoViewModel?> GetMovieDetailsAsync(Guid id)
         {
             var movie = await _movieRepository
-            .GetAllWithInclude(m => m.Genre)
-            .Include(m=>m.Reviews)
-            .Include(m=>m.Ratings)
-            .FirstOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
+                  .GetAllWithInclude(m => m.Genre)
+                  .Include(m => m.Reviews)
+                  .ThenInclude(r => r.User)
+                  .Include(m => m.Ratings)
+                  .FirstOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
 
             if (movie == null)
             {
