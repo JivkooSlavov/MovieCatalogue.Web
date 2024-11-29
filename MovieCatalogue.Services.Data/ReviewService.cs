@@ -28,11 +28,11 @@ namespace MovieCatalogue.Services.Data
         public async Task<ReviewIndexViewModel> GetReviewsForMovieAsync(Guid movieId)
         {
             var movie = await _movieRepository
-                 .GetAllWithInclude(m => m.Genre)
-                 .Include(m => m.Reviews)
-                 .ThenInclude(r => r.User)
-                 .Include(m => m.Ratings)
-                 .FirstOrDefaultAsync(m => m.Id == movieId && !m.IsDeleted);
+                .GetAllWithInclude(m => m.Genre)
+                .Include(m => m.Reviews.Where(r => !r.IsDeleted))
+                .ThenInclude(r => r.User)
+                .Include(m => m.Ratings)
+                .FirstOrDefaultAsync(m => m.Id == movieId && !m.IsDeleted);
 
             if (movie == null)
             {
@@ -50,7 +50,7 @@ namespace MovieCatalogue.Services.Data
                         Id = r.Id,
                         Content = r.Content,
                         CreatedAt = r.DatePosted,
-                        UserName = r.User?.UserName ?? "Unknown"
+                        UserName = r.User?.UserName ?? "Unknown",
                     })
                     .ToList()
             };
@@ -72,7 +72,7 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<ReviewCreateViewModel> GetReviewForEditAsync(Guid id, Guid userId)
+        public async Task<ReviewEditViewModel> GetReviewForEditAsync(Guid id, Guid userId)
         {
             var reviewForEdit = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == id);
 
@@ -81,7 +81,7 @@ namespace MovieCatalogue.Services.Data
                 return null;
             }
 
-            return new ReviewCreateViewModel
+            return new ReviewEditViewModel
             {
                 Id = reviewForEdit.Id,
                 MovieId = reviewForEdit.MovieId,
@@ -90,7 +90,7 @@ namespace MovieCatalogue.Services.Data
             };
         }
 
-        public async Task<bool> UpdateReviewAsync(ReviewCreateViewModel reviewVm)
+        public async Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm)
         {
             var reviewUpdated = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewVm.Id);
 
@@ -139,10 +139,10 @@ namespace MovieCatalogue.Services.Data
                 return false;
             }
 
-            await _reviewRepository.DeleteAsync(reviewDeleted);
+            reviewDeleted.IsDeleted = true;
+            await _reviewRepository.UpdateAsync(reviewDeleted);
+
             return true;
-        }
-
-
+        } 
     }
 }

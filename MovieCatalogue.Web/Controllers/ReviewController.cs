@@ -80,7 +80,7 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(ReviewCreateViewModel model)
+        public async Task<IActionResult> Edit(ReviewEditViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -116,9 +116,9 @@ namespace MovieCatalogue.Web.Controllers
         public async Task<IActionResult> DeleteConfirm(ReviewDeleteViewModel review)
         {
             var userId = Guid.Parse(GetUserId());
-            var result = await _reviewService.DeleteReviewAsync(review.Id, userId);
+            var isDeleted = await _reviewService.DeleteReviewAsync(review.Id, userId);
 
-            if (!result)
+            if (!isDeleted)
             {
                 return NotFound();
             }

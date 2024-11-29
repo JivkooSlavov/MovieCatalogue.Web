@@ -18,6 +18,10 @@ namespace MovieCatalogue.Data.Configuration
             builder.Property(r => r.DatePosted)
                 .IsRequired();
 
+            builder.Property(r => r.IsDeleted)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             builder.HasOne(r => r.Movie)
                 .WithMany(m => m.Reviews)
                 .HasForeignKey(r => r.MovieId)

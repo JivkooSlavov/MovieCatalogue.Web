@@ -52,7 +52,7 @@ namespace MovieCatalogue.Services.Data
         {
             var movie = await _movieRepository
                   .GetAllWithInclude(m => m.Genre)
-                  .Include(m => m.Reviews)
+                  .Include(m => m.Reviews.Where(r => !r.IsDeleted))
                   .ThenInclude(r => r.User)
                   .Include(m => m.Ratings)
                   .FirstOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
