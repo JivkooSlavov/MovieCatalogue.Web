@@ -232,7 +232,7 @@ namespace MovieCatalogue.Data.Migrations
                         new
                         {
                             Id = 8,
-                            Name = "Musical"
+                            Name = "History"
                         },
                         new
                         {
@@ -311,6 +311,88 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fc9d7404-607b-49ec-bc13-eeeb9432c902"),
+                            Cast = "Daniel Radcliffe, Rupert Grint, Emma Watson, John Cleese, Robbie Coltrane, Warwick Davis, Richard Griffiths, Richard Harris, Ian Hart, John Hurt, Alan Rickman, Fiona Shaw, Maggie Smith, Julie Walters",
+                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Description = "Harry Potter and the Philosopher's Stone (also known as Harry Potter and the Sorcerer's Stone in the United States) is a 2001 fantasy film directed by Chris Columbus and produced by David Heyman from a screenplay by Steve Kloves. It is based on the 1997 novel Harry Potter and the Philosopher's Stone by J. K. Rowling. It is the first instalment in the Harry Potter film series. The film stars Daniel Radcliffe as Harry Potter, with Rupert Grint as Ron Weasley, and Emma Watson as Hermione Granger. Its story follows Harry's first year at Hogwarts School of Witchcraft and Wizardry as he discovers that he is a famous wizard and begins his formal wizarding education.",
+                            Director = "Chris Columbus",
+                            Duration = 152,
+                            GenreId = 4,
+                            IsDeleted = false,
+                            PosterUrl = "https://img.posterstore.com/zoom/wb0101-8harrypotter-thephilosophersstoneno150x70.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(2001, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Harry Potter and the Philosopher's Stone",
+                            TrailerUrl = "https://www.youtube.com/watch?v=VyHV0BRtdxo"
+                        },
+                        new
+                        {
+                            Id = new Guid("d985c16d-e33d-43d1-a7fa-8e146e8bfa44"),
+                            Cast = "Ian McKellen, Martin Freeman, Richard Armitage, James Nesbitt, Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, Elijah Wood, Andy Serkis",
+                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Description = "The story is set in Middle-earth sixty years before the main events of The Lord of the Rings and portions of the film are adapted from the appendices to Tolkien's The Return of the King.[7] An Unexpected Journey tells the tale of Bilbo Baggins (Martin Freeman), who is convinced by the wizard Gandalf (Ian McKellen) to accompany thirteen Dwarves, led by Thorin Oakenshield (Richard Armitage), on a quest to reclaim the Lonely Mountain from the dragon Smaug. The ensemble cast also includes Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, James Nesbitt, Elijah Wood, and Andy Serkis. It features Sylvester McCoy, Barry Humphries, and Manu Bennett.",
+                            Director = "Peter Jackson",
+                            Duration = 169,
+                            GenreId = 4,
+                            IsDeleted = false,
+                            PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_FMjpg_UX1000_.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(2012, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "The Hobbit: An Unexpected Journey",
+                            TrailerUrl = "https://www.youtube.com/watch?v=9PSXjr1gbjc"
+                        },
+                        new
+                        {
+                            Id = new Guid("48059d39-e904-41eb-9624-28c6a4d93d47"),
+                            Cast = "Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry",
+                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Description = "Gone Girl is aAmerican psychological thriller film directed by David Fincher and written by Gillian Flynn, based on her 2012 novel of the same name. It stars Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry, and Carrie Coon in her film debut. In the film, Nick Dunne (Affleck) becomes the prime suspect in the sudden disappearance of his wife, Amy (Pike) in Missouri.",
+                            Director = "David Fincher",
+                            Duration = 149,
+                            GenreId = 6,
+                            IsDeleted = false,
+                            PosterUrl = "https://m.media-amazon.com/images/I/61cdYGoHFrL._AC_SY879_.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(2014, 9, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Gone Girl",
+                            TrailerUrl = "https://www.youtube.com/watch?v=2-_-1nJf8Vg"
+                        },
+                        new
+                        {
+                            Id = new Guid("78650750-039d-4d84-9d5a-68793141c576"),
+                            Cast = "Brad Pitt, Eric Bana, Orlando Bloom, Diane Kruger, Brian Cox, Sean Bean, Brendan Gleeson, Peter O'Toole",
+                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Description = "Troy is a 2004 epic historical war film directed by Wolfgang Petersen and written by David Benioff. Produced by units in Malta, Mexico and Britain's Shepperton Studios, the film features an ensemble cast led by Brad Pitt, Eric Bana, Sean Bean, Diane Kruger, Brian Cox, Brendan Gleeson, Rose Byrne, Saffron Burrows and Orlando Bloom. It is loosely based[3] on Homer's Iliad in its narration of the entire story of the decade-long Trojan War—condensed into little more than a couple of weeks, rather than just the quarrel between Achilles and Agamemnon in the ninth year. Achilles leads his Myrmidons along with the rest of the Greek army invading the historical city of Troy, defended by Hector's Trojan army. The end of the film (the sack of Troy) is not taken from the Iliad, but rather from Quintus Smyrnaeus's Posthomerica, as the Iliad concludes with Hector's death and funeral.",
+                            Director = "Wolfgang Petersen",
+                            Duration = 183,
+                            GenreId = 8,
+                            IsDeleted = false,
+                            PosterUrl = "https://www.rogerebert.com/wp-content/uploads/2024/03/Troy.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(2004, 5, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Troy",
+                            TrailerUrl = "https://www.youtube.com/watch?v=znTLzRJimeY"
+                        },
+                        new
+                        {
+                            Id = new Guid("1144f031-04e4-42ab-ae14-7528fbe03223"),
+                            Cast = "Ray Romano, John Leguizamo, Denis Leary",
+                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Description = "On Earth 20,000 years ago, everything was covered in ice. A group of friends, Manny, a mammoth, Diego, a saber tooth tiger, and Sid, a sloth encounter an Eskimo human baby. They must try to return the baby back to his tribe before a group of saber tooth tigers find him and eat him.",
+                            Director = "Chris Wedge",
+                            Duration = 81,
+                            GenreId = 9,
+                            IsDeleted = false,
+                            PosterUrl = "https://image.tmdb.org/t/p/original/idg7vYulQRXKEHfLIM0XKtqPkPz.jpg",
+                            Rating = 4.0,
+                            ReleaseDate = new DateTime(2003, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Ice Age",
+                            TrailerUrl = "https://www.youtube.com/watch?v=wjdqn9r4thg"
+                        });
                 });
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Rating", b =>
@@ -444,6 +526,40 @@ namespace MovieCatalogue.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "45b1dda4-4247-4926-aaf7-9cdcd9631d77",
+                            Email = "zhivko@movie.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ZHIVKO@MOVIE.COM",
+                            NormalizedUserName = "ZHIVKO@MOVIE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPW01t5SmoQqBCxGUfwNuRnOQ7xEa7B/B58YbNNfR9kQPyiNiNNgU4aLENhiYXTxYw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "72a797c3-e15c-4fec-a00d-45b2fb1c48c8",
+                            TwoFactorEnabled = false,
+                            UserName = "zhivko@movie.com"
+                        },
+                        new
+                        {
+                            Id = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3dab0b29-b30e-40b0-b4a3-21152a3ce66c",
+                            Email = "mitko@movie.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MITKO@MOVIE.COM",
+                            NormalizedUserName = "MITKO@MOVIE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOznfNZ03zrSZsGHYErrSqzf6+74g5nJlK1AqL0gH8A4c8FA+PJOa7gU74LBLBQ16g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "febcd72c-d188-41a7-9165-d010cb323b6b",
+                            TwoFactorEnabled = false,
+                            UserName = "mitko@movie.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -502,7 +618,7 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasOne("MovieCatalogue.Data.Models.Movie", "Movie")
                         .WithMany("Favorites")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MovieCatalogue.Data.Models.User", "User")
@@ -521,7 +637,7 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasOne("MovieCatalogue.Data.Models.User", "CreatedByUser")
                         .WithMany("CreatedMovies")
                         .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MovieCatalogue.Data.Models.Genre", "Genre")
@@ -540,7 +656,7 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasOne("MovieCatalogue.Data.Models.Movie", "Movie")
                         .WithMany("Ratings")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MovieCatalogue.Data.Models.User", "User")
@@ -559,7 +675,7 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasOne("MovieCatalogue.Data.Models.Movie", "Movie")
                         .WithMany("Reviews")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MovieCatalogue.Data.Models.User", "User")

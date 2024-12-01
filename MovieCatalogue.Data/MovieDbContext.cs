@@ -27,24 +27,40 @@ namespace MovieCatalogue.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 
-            base.OnModelCreating(modelBuilder);
+            var passwordHasher = new PasswordHasher<User>();
+            var testUser = new User
+            {
+                Id = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                UserName = "zhivko@movie.com",
+                NormalizedUserName = "ZHIVKO@MOVIE.COM",
+                Email = "zhivko@movie.com",
+                NormalizedEmail = "ZHIVKO@MOVIE.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
 
-            modelBuilder
-                .Entity<Genre>()
-                .HasData(
-                    new Genre { Id = 1, Name = "Drama" },
-                    new Genre { Id = 2, Name = "Comedy" },
-                    new Genre { Id = 3, Name = "Action" },
-                    new Genre { Id = 4, Name = "Adventure" },
-                    new Genre { Id = 5, Name = "Horror" },
-                    new Genre { Id = 6, Name = "Triller" },
-                    new Genre { Id = 7, Name = "Mystery" },
-                     new Genre { Id = 8, Name = "Musical" },
-                    new Genre { Id = 9, Name = "Animation" },
-                    new Genre { Id = 10, Name = "Fantasy" });
+            testUser.PasswordHash = passwordHasher.HashPassword(testUser, "123456");
+
+            modelBuilder.Entity<User>().HasData(testUser);
+
+            var passwordHasher1 = new PasswordHasher<User>();
+            var testUser1 = new User
+            {
+                Id = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016"),
+                UserName = "mitko@movie.com",
+                NormalizedUserName = "MITKO@MOVIE.COM",
+                Email = "mitko@movie.com",
+                NormalizedEmail = "MITKO@MOVIE.COM",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            testUser1.PasswordHash = passwordHasher1.HashPassword(testUser1, "123456");
+
+            modelBuilder.Entity<User>().HasData(testUser1);
+
         }
 
         public DbSet<Movie> Movies { get; set; }

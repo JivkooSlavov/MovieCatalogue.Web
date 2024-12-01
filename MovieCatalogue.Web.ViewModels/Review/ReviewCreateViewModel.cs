@@ -21,9 +21,7 @@ namespace MovieCatalogue.Web.ViewModels.Review
         [Required]
         [StringLength(ReviewContentMax, MinimumLength = ReviewContentMin, ErrorMessage = StringLengthErrorMessage)]
         public string Content { get; set; } = null!;
-
-        [Required(ErrorMessage = RequireErrorMessage)]
-        public string DatePosted { get; set; } = null!;
+        public string? DatePosted { get; set; } = null!;
         public DateTime UpdatePosted { get; set; }
 
         public Guid CreatedByUserId { get; set; }

@@ -1,23 +1,24 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
+using MovieCatalogue.Services.Data.Interfaces;
+using MovieCatalogue.Services.Data;
+using MovieCatalogue.Services.Mapping;
+using MovieCatalogue.Web.Viewmodels;
+using MovieCatalogue.Web.Infrastructure.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using MovieCatalogue.Data.Configuration;
 using MovieCatalogue.Data.Repository.Interfaces;
 using MovieCatalogue.Data.Repository;
-using MovieCatalogue.Services.Data;
-using MovieCatalogue.Services.Data.Interfaces;
-using MovieCatalogue.Services.Mapping;
-using MovieCatalogue.Web.Infrastructure;
-using MovieCatalogue.Web.Infrastructure.Extensions;
-using MovieCatalogue.Web.Viewmodels;
 
 var builder = WebApplication.CreateBuilder(args);
-string connectionString = builder.Configuration.GetConnectionString("SQLServer");
+string connectionString = builder.Configuration.GetConnectionString("SQLServer")!;
+string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
+string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
+string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
 
 // Add services to the container.
-
 builder.Services.AddDbContext<MovieDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
 builder.Services
    .AddIdentity<User, IdentityRole<Guid>>(cfg =>
    {
-        ConfigureIdentity(builder,cfg);
+       ConfigureIdentity(builder, cfg);
    })
    .AddEntityFrameworkStores<MovieDbContext>()
    .AddRoles<IdentityRole<Guid>>()
@@ -60,44 +61,46 @@ AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
+
+//app.UseRoleRedirectMiddleware();
+
 app.UseAuthorization();
 
+app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
 
+app.MapControllerRoute(
+    name: "Areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.MapRazorPages();
 app.ApplyMigrations();
 
 app.Run();
 
+// ConfigureIdentity method as before
 static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg)
 {
- 
     cfg.Password.RequireDigit =
-            builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
+        builder.Configuration.GetValue<bool>("Identity:Password:RequireDigits");
     cfg.Password.RequireLowercase =
         builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
     cfg.Password.RequireUppercase =
         builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
     cfg.Password.RequireNonAlphanumeric =
-        builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumerical");
+        builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
     cfg.Password.RequiredLength =
         builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
     cfg.Password.RequiredUniqueChars =
-        builder.Configuration.GetValue<int>("Identity:Password:RequiredUniqueCharacters");
+        builder.Configuration.GetValue<int>("Identity:Password:RequireUniqueChars");
 
     cfg.SignIn.RequireConfirmedAccount =
         builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
@@ -110,3 +113,27 @@ static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg
         builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
 }
 
+// Create middleware for redirecting admin users
+public static class AdminRedirectMiddleware
+{
+    public static void UseAdminRedirect(this IApplicationBuilder app)
+    {
+        app.Use(async (context, next) =>
+        {
+            if (context.User.Identity?.IsAuthenticated == true)
+            {
+                var userManager = context.RequestServices.GetRequiredService<UserManager<User>>();
+                var user = await userManager.GetUserAsync(context.User);
+
+                if (user != null && await userManager.IsInRoleAsync(user, "Administrator"))
+                {
+                    // Redirect admin users to /Admin/Home/Index
+                    context.Response.Redirect("/Admin/Home/Index");
+                    return;
+                }
+            }
+
+            await next();
+        });
+    }
+}

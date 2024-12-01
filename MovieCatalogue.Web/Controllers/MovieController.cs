@@ -95,6 +95,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(Guid id)
         {
 
@@ -111,12 +112,16 @@ namespace MovieCatalogue.Web.Controllers
             AddMovieViewModel? model = await this._movieService
                             .GetMovieForEditAsync(movieGuid, currentUserId);
 
-      
+            if (model==null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             return this.View(model);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(AddMovieViewModel model, Guid id)
         {
 

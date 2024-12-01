@@ -1,0 +1,44 @@
+﻿@using MovieCatalogue.Web.ViewModels.Review
+@model IEnumerable<UserReviewViewModel>
+
+@{
+    ViewData["Title"] = "My Reviews";
+}
+
+<h1>My Reviews</h1>
+
+@if (!Model.Any())
+{
+    <p>You haven't written any reviews yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Review</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@review.MovieId">
+                            @review.MovieTitle
+                        </a>
+                    </td>
+                    <td>@review.Content</td>
+                    <td>@review.CreatedAt.ToString("f")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

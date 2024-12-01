@@ -20,7 +20,7 @@ namespace MovieCatalogue.Data.Configuration
             builder.HasOne(r => r.Movie)
                 .WithMany(m => m.Ratings)
                 .HasForeignKey(r => r.MovieId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(r => r.User)
                 .WithMany(u => u.Ratings)

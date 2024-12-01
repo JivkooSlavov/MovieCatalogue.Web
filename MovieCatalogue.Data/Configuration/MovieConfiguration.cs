@@ -54,7 +54,86 @@ namespace MovieCatalogue.Data.Configuration
             builder.HasOne(m => m.CreatedByUser)
                 .WithMany(g => g.CreatedMovies)
                 .HasForeignKey(m => m.CreatedByUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasData(SeedMovies());
+        }
+        private List<Movie> SeedMovies()
+        {
+            List<Movie> movies = new List<Movie>()
+            {
+                new Movie()
+                {
+                    Title = "Harry Potter and the Philosopher's Stone",
+                    Description = "Harry Potter and the Philosopher's Stone (also known as Harry Potter and the Sorcerer's Stone in the United States) is a 2001 fantasy film directed by Chris Columbus and produced by David Heyman from a screenplay by Steve Kloves. It is based on the 1997 novel Harry Potter and the Philosopher's Stone by J. K. Rowling. It is the first instalment in the Harry Potter film series. The film stars Daniel Radcliffe as Harry Potter, with Rupert Grint as Ron Weasley, and Emma Watson as Hermione Granger. Its story follows Harry's first year at Hogwarts School of Witchcraft and Wizardry as he discovers that he is a famous wizard and begins his formal wizarding education.",
+                    Director = "Chris Columbus",
+                    Cast = "Daniel Radcliffe, Rupert Grint, Emma Watson, John Cleese, Robbie Coltrane, Warwick Davis, Richard Griffiths, Richard Harris, Ian Hart, John Hurt, Alan Rickman, Fiona Shaw, Maggie Smith, Julie Walters",
+                    PosterUrl = "https://img.posterstore.com/zoom/wb0101-8harrypotter-thephilosophersstoneno150x70.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=VyHV0BRtdxo",
+                    Duration = 152,
+                    GenreId = 4,
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2001, 11, 11),
+                    CreatedByUserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")
+                },
+               new Movie()
+                {
+                    Title = "The Hobbit: An Unexpected Journey",
+                    Description = "The story is set in Middle-earth sixty years before the main events of The Lord of the Rings and portions of the film are adapted from the appendices to Tolkien's The Return of the King.[7] An Unexpected Journey tells the tale of Bilbo Baggins (Martin Freeman), who is convinced by the wizard Gandalf (Ian McKellen) to accompany thirteen Dwarves, led by Thorin Oakenshield (Richard Armitage), on a quest to reclaim the Lonely Mountain from the dragon Smaug. The ensemble cast also includes Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, James Nesbitt, Elijah Wood, and Andy Serkis. It features Sylvester McCoy, Barry Humphries, and Manu Bennett.",
+                    Director = "Peter Jackson",
+                    Cast = "Ian McKellen, Martin Freeman, Richard Armitage, James Nesbitt, Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, Elijah Wood, Andy Serkis",
+                    PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_FMjpg_UX1000_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=9PSXjr1gbjc",
+                    Duration = 169,
+                    GenreId = 4,
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2012, 11, 28),
+                    CreatedByUserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")
+                },
+               new Movie()
+                {
+                    Title = "Gone Girl",
+                    Description = "Gone Girl is aAmerican psychological thriller film directed by David Fincher and written by Gillian Flynn, based on her 2012 novel of the same name. It stars Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry, and Carrie Coon in her film debut. In the film, Nick Dunne (Affleck) becomes the prime suspect in the sudden disappearance of his wife, Amy (Pike) in Missouri.",
+                    Director = "David Fincher",
+                    Cast = "Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry",
+                    PosterUrl = "https://m.media-amazon.com/images/I/61cdYGoHFrL._AC_SY879_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=2-_-1nJf8Vg",
+                    Duration = 149,
+                    GenreId = 6,
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2014, 09, 26),
+                    CreatedByUserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")
+                },
+               new Movie()
+                {
+                    Title = "Troy",
+                    Description = "Troy is a 2004 epic historical war film directed by Wolfgang Petersen and written by David Benioff. Produced by units in Malta, Mexico and Britain's Shepperton Studios, the film features an ensemble cast led by Brad Pitt, Eric Bana, Sean Bean, Diane Kruger, Brian Cox, Brendan Gleeson, Rose Byrne, Saffron Burrows and Orlando Bloom. It is loosely based[3] on Homer's Iliad in its narration of the entire story of the decade-long Trojan War—condensed into little more than a couple of weeks, rather than just the quarrel between Achilles and Agamemnon in the ninth year. Achilles leads his Myrmidons along with the rest of the Greek army invading the historical city of Troy, defended by Hector's Trojan army. The end of the film (the sack of Troy) is not taken from the Iliad, but rather from Quintus Smyrnaeus's Posthomerica, as the Iliad concludes with Hector's death and funeral.",
+                    Director = "Wolfgang Petersen",
+                    Cast = "Brad Pitt, Eric Bana, Orlando Bloom, Diane Kruger, Brian Cox, Sean Bean, Brendan Gleeson, Peter O'Toole",
+                    PosterUrl = "https://www.rogerebert.com/wp-content/uploads/2024/03/Troy.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=znTLzRJimeY",
+                    Duration = 183,
+                    GenreId = 8,
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2004, 05, 14),
+                    CreatedByUserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")
+                },
+               new Movie()
+                {
+                    Title = "Ice Age",
+                    Description = "On Earth 20,000 years ago, everything was covered in ice. A group of friends, Manny, a mammoth, Diego, a saber tooth tiger, and Sid, a sloth encounter an Eskimo human baby. They must try to return the baby back to his tribe before a group of saber tooth tigers find him and eat him.",
+                    Director = "Chris Wedge",
+                    Cast = "Ray Romano, John Leguizamo, Denis Leary",
+                    PosterUrl = "https://image.tmdb.org/t/p/original/idg7vYulQRXKEHfLIM0XKtqPkPz.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=wjdqn9r4thg",
+                    Duration = 81,
+                    GenreId = 9,
+                    Rating = 4,
+                    ReleaseDate = new DateTime(2003, 04, 04),
+                    CreatedByUserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")
+                }
+            };
+            return movies;
         }
     }
 }

@@ -36,6 +36,16 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpGet]
         [Authorize]
+        public async Task<IActionResult> UserReviews()
+        {
+            var userId = Guid.Parse(GetUserId());
+            var reviews = await _reviewService.GetUserReviewsAsync(userId);
+
+            return View(reviews);
+        }
+
+        [HttpGet]
+        [Authorize]
         public IActionResult Create(Guid movieId)
         {
             var reviewVm = new ReviewCreateViewModel
@@ -98,6 +108,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
 
@@ -113,6 +124,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirm(ReviewDeleteViewModel review)
         {
             var userId = Guid.Parse(GetUserId());

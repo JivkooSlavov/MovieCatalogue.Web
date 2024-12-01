@@ -143,6 +143,25 @@ namespace MovieCatalogue.Services.Data
             await _reviewRepository.UpdateAsync(reviewDeleted);
 
             return true;
-        } 
+        }
+
+        public async Task<IEnumerable<UserReviewViewModel>> GetUserReviewsAsync(Guid userId)
+        {
+            return await _reviewRepository
+                .GetAllWithInclude(r => r.Movie)
+                .Where(r=>r.IsDeleted == false)
+                .Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.DatePosted)
+                .Select(r => new UserReviewViewModel
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    CreatedAt = r.DatePosted,
+                    MovieTitle = r.Movie.Title,
+                    MovieId = r.Movie.Id
+                })
+                .ToListAsync();
+        }
+
     }
 }

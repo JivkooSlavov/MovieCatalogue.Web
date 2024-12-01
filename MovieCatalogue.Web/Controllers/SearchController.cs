@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
@@ -8,6 +9,7 @@ using MovieCatalogue.Web.ViewModels.Search;
 
 namespace MovieCatalogue.Web.Controllers
 {
+    [AllowAnonymous]
     public class SearchController : BaseController
     {
         private readonly ISearchService _searchService;

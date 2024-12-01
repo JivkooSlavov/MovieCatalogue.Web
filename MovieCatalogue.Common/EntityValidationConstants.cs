@@ -19,7 +19,7 @@ namespace MovieCatalogue.Common
             public const string DateFormatOfMovie = "dd-MM-yyyy";
 
             public const int MovieCastMaxLength = 500;
-            public const int MovieCastMinLength = 50;
+            public const int MovieCastMinLength = 20;
 
             public const int MovieDurationMaxLength = 999;
             public const int MovieDurationMinLength = 1;
@@ -48,9 +48,6 @@ namespace MovieCatalogue.Common
         {
             public const int GenreNameMaxLength = 30;
             public const int GenreNameMinLength = 5;
-
-
-
         }
     }
 }
