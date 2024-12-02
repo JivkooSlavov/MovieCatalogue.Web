@@ -1,4 +1,4 @@
-﻿@using MovieCatalogue.Web.ViewModels.Movie
+﻿@using MovieCatalogue.Web.ViewModels.Movie;
 @model IEnumerable<MovieInfoViewModel>
 
 @{
@@ -36,8 +36,13 @@
                         <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-sm">Details</a>
                         @if (User?.Identity?.IsAuthenticated ?? false)
                         {
-                            <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-warning btn-sm">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger btn-sm">Delete</a>
+                            var loggedInUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value?.ToUpper().Trim();
+                            var movieCreatorId = movie.CreatedByUserId.ToString().ToUpper().Trim();
+                            @if (string.Equals(loggedInUserId, movieCreatorId, StringComparison.Ordinal))
+                            {
+                                <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger btn-sm">Delete</a>
+                            }
                         }
                     </div>
                 </div>
@@ -54,7 +59,6 @@
 
 @section Styles {
     <style>
-
         .movie-poster {
             object-fit: cover;
             height: 350px;
@@ -68,6 +72,7 @@
             border-radius: 15px;
             transition: transform 0.3s ease-in-out;
         }
+
             .card:hover {
                 transform: scale(1.05);
             }
@@ -80,6 +85,7 @@
             padding: 10px;
             text-align: center;
         }
+
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -93,15 +99,9 @@
             font-size: 1.2rem;
             font-weight: bold;
         }
+
         .card-text {
             font-size: 0.9rem;
-        }
-
-        .jumbotron {
-            background-color: #007bff;
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
         }
 
         .btn-primary {
@@ -109,9 +109,16 @@
             border-color: #004085;
         }
 
-            .btn-primary:hover {
-                background-color: #004085;
-                border-color: #003366;
+        .btn-info {
+            background-color: #0056b3;
+            border-color: #004085;
+            color: white;
+        }
+
+            .btn-info:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+                color: white;
             }
     </style>
 }

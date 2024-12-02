@@ -9,7 +9,7 @@
     <div class="jumbotron text-center bg-primary text-white p-4">
         <h1>Welcome to Movie Catalogue</h1>
         <p>Discover the latest and greatest movies!</p>
-        <a asp-action="Index" asp-controller="Search" class="btn btn-light btn-lg">Search Movies</a>
+        <a asp-action="Index" asp-controller="Movie" class="btn btn-light btn-lg">All Movies</a>
     </div>
 
     <div class="row mb-4">
@@ -24,25 +24,6 @@
                     <div class="card-body">
                         <h5 class="card-title">@movie.Title</h5>
                         <p class="card-text">Rating: @movie.Rating / 5</p>
-                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-primary">View Details</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-
-    <div class="row mb-4">
-        <div class="col-12">
-            <h3 class="text-center mb-4">Latest Movies</h3>
-        </div>
-        @foreach (var movie in Model.LatestMovies)
-        {
-            <div class="col-md-3 mb-3">
-                <div class="card h-100 shadow-sm">
-                    <img src="@movie.PosterUrl" alt="@movie.Title" class="card-img-top movie-poster" />
-                    <div class="card-body">
-                        <h5 class="card-title">@movie.Title</h5>
-                        <p class="card-text">Released: @movie.ReleaseDate</p>
                         <a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
@@ -80,21 +61,9 @@
             text-align: center;
         }
 
-        .jumbotron {
-            background-color: #007bff;
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-        }
-
         .btn-primary {
             background-color: #0056b3;
             border-color: #004085;
         }
-
-            .btn-primary:hover {
-                background-color: #004085;
-                border-color: #003366;
-            }
     </style>
 }

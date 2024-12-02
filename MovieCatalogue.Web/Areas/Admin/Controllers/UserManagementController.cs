@@ -108,5 +108,7 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
 
             return this.RedirectToAction(nameof(Index));
         }
+
+
     }
 }

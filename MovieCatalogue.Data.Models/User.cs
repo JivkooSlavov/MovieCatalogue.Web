@@ -12,5 +12,6 @@ namespace MovieCatalogue.Data.Models
         public virtual ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public virtual ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
         public virtual ICollection<Movie> CreatedMovies {  get; set; } = new HashSet<Movie>();
+
     }
 }

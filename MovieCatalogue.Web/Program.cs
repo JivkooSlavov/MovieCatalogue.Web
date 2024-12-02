@@ -49,7 +49,6 @@ builder.Services.AddScoped<IRatingService, RatingService>();
 builder.Services.AddScoped<IRepository<User, Guid>, BaseRepository<User, Guid>>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

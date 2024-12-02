@@ -22,6 +22,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string TrailerUrl { get; set; } = null!;
         public string Director { get; set; } = null!;
         public int Duration { get; set; }
+        public string CreatedByUserId { get; set; } = null!;
         public string PosterUrl { get; set; } = null!;
         public bool IsFavorite { get; set; } = false;
 

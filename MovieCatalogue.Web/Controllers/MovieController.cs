@@ -89,7 +89,7 @@ namespace MovieCatalogue.Web.Controllers
             if (!result)
             {
                 this.ModelState.AddModelError(nameof(model.ReleaseDate),
-                    String.Format("The Release Date must be in the following format: {0}", DateFormatOfMovie));
+                    String.Format(DateFormatOfMovie));
                 model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }

@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace MovieCatalogue.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService _movieService;
@@ -21,12 +21,10 @@ namespace MovieCatalogue.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var popularMovies = await _movieService.GetPopularMoviesAsync();
-            var latestMovies = await _movieService.GetLatestMoviesAsync();
 
             var model = new HomeIndexViewModel
             {
-                PopularMovies = popularMovies,
-                LatestMovies = latestMovies
+                PopularMovies = popularMovies
             };
 
             return View(model);

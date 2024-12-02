@@ -10,6 +10,5 @@ namespace MovieCatalogue.Web.ViewModels.Home
     public class HomeIndexViewModel
     {
         public IEnumerable<MovieInfoViewModel> PopularMovies { get; set; } = new List<MovieInfoViewModel>();
-        public IEnumerable<MovieInfoViewModel> LatestMovies { get; set; } = new List<MovieInfoViewModel>();
     }
 }

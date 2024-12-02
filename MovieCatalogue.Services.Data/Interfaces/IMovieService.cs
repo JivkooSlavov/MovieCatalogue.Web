@@ -1,7 +1,9 @@
-﻿using MovieCatalogue.Web.ViewModels.Movie;
+﻿using MovieCatalogue.Data.Models;
+using MovieCatalogue.Web.ViewModels.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,8 +25,7 @@ namespace MovieCatalogue.Services.Data.Interfaces
 
         Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync();
 
-        Task<IEnumerable<MovieInfoViewModel>> GetLatestMoviesAsync();
-
         Task<IEnumerable<MovieInfoViewModel>> GetPopularMoviesAsync();
+
     }
 }

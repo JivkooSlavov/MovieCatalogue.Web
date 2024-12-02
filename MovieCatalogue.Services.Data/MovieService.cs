@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
 using MovieCatalogue.Data.Repository.Interfaces;
 using MovieCatalogue.Services.Data.Interfaces;
@@ -26,10 +27,12 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<IEnumerable<MovieInfoViewModel>> GetAllMoviesAsync()
         {
+
             var model = await _movieRepository
                  .GetAllAttached()
                  .Include(y => y.Genre)
                  .Where(x=>x.IsDeleted==false)
+                 .OrderBy(x=>x.Title)
                       .Select(x => new MovieInfoViewModel
                    {
                        Id = x.Id,
@@ -40,6 +43,7 @@ namespace MovieCatalogue.Services.Data
                        PosterUrl = x.PosterUrl,
                        Genre = x.Genre.Name,
                        Rating = x.Rating,
+                       CreatedByUserId = x.CreatedByUserId.ToString(),
                        ReleaseDate = x.ReleaseDate.ToString(DateFormatOfMovie),
                        Title = x.Title,
                        TrailerUrl = x.TrailerUrl,
@@ -75,6 +79,7 @@ namespace MovieCatalogue.Services.Data
                 PosterUrl = movie.PosterUrl,
                 Genre = movie.Genre.Name,
                 Rating = averageRating,
+                CreatedByUserId = movie.CreatedByUserId.ToString(),
                 ReleaseDate = movie.ReleaseDate.ToString(DateFormatOfMovie),
                 Title = movie.Title,
                 TrailerUrl = movie.TrailerUrl,
@@ -254,28 +259,13 @@ namespace MovieCatalogue.Services.Data
         {
             return await _movieRepository.GetAllAttached()
                 .OrderByDescending(m => m.Rating)
-                .Take(5)
+                .Take(4)
                 .Select(m => new MovieInfoViewModel
                 {
                     Id = m.Id,
                     Title = m.Title,
                     PosterUrl = m.PosterUrl,
                     Rating = m.Rating
-                })
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<MovieInfoViewModel>> GetLatestMoviesAsync()
-        {
-            return await _movieRepository.GetAllAttached()
-                .OrderByDescending(m => m.ReleaseDate)
-                .Take(5)
-                .Select(m => new MovieInfoViewModel
-                {
-                    Id = m.Id,
-                    Title = m.Title,
-                    PosterUrl = m.PosterUrl,
-                    ReleaseDate = m.ReleaseDate.ToString("yyyy-MM-dd")
                 })
                 .ToListAsync();
         }
