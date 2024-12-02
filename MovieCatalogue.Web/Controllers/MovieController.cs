@@ -20,12 +20,10 @@ namespace MovieCatalogue.Web.Controllers
 {
     public class MovieController : BaseController
     {
-        private readonly MovieDbContext _context;
         private readonly IMovieService _movieService;
 
         public MovieController(MovieDbContext context, IMovieService movieService)
         {
-            _context = context;
             _movieService = movieService;
         }
 
@@ -130,6 +128,12 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(AddMovieViewModel model, Guid id)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
 
             if (!ModelState.IsValid)
             {
@@ -154,6 +158,13 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid currentUserId = Guid.Parse(GetUserId());
 
             var model = await _movieService.GetMovieForDeletionAsync(id, currentUserId);

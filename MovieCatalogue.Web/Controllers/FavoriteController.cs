@@ -34,6 +34,13 @@ namespace MovieCatalogue.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToFavorites(Guid movieId)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(movieId.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid userId = Guid.Parse(GetUserId());
 
             var isAdded = await _favoriteService.AddToFavoritesAsync(movieId, userId);
@@ -48,6 +55,13 @@ namespace MovieCatalogue.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmRemove(Guid movieId)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(movieId.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid userId = Guid.Parse(GetUserId());
 
             var model = await _favoriteService.GetFavoriteByMovieIdAsync(movieId, userId);
@@ -64,6 +78,13 @@ namespace MovieCatalogue.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Remove(Guid movieId)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(movieId.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             Guid userId = Guid.Parse(GetUserId());
 
             var isRemoved = await _favoriteService.RemoveFavoriteAsync(movieId, userId);

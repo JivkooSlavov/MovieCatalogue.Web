@@ -1,5 +1,5 @@
-﻿@using MovieCatalogue.Web.ViewModels.Movie;
-@model MovieInfoViewModel;
+﻿@using MovieCatalogue.Web.ViewModels.Movie
+@model MovieInfoViewModel
 
 @{
     ViewData["Title"] = "Movie Details";
@@ -24,6 +24,7 @@
             <a href="@Model.TrailerUrl" target="_blank" class="btn btn-danger">
                 <i class="fab fa-youtube"></i> Watch on YouTube
             </a>
+
             <h3>
                 <td>
                     @if (User?.Identity?.IsAuthenticated ?? false)
@@ -47,19 +48,27 @@
             </h3>
         </div>
     </div>
+
     <h3>Rate this Movie</h3>
-    <form asp-action="Create" asp-controller="Rating" method="post">
-        <input type="hidden" name="movieId" value="@Model.Id" />
-        <select name="value" class="form-control" required>
-            <option value="">Select a Rating</option>
-            <option value="1">1 - Poor</option>
-            <option value="2">2 - Fair</option>
-            <option value="3">3 - Good</option>
-            <option value="4">4 - Very Good</option>
-            <option value="5">5 - Excellent</option>
-        </select>
-        <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
-    </form>
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        <form asp-action="Create" asp-controller="Rating" method="post">
+            <input type="hidden" name="movieId" value="@Model.Id" />
+            <select name="value" class="form-control" required>
+                <option value="">Select a Rating</option>
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-danger">You need to <a asp-area="Identity" asp-page="/Account/Login">log in</a> to rate this movie.</p>
+    }
 
     @if (Model.Rating > 0)
     {
@@ -71,7 +80,7 @@
     }
 
     <h3>Reviews</h3>
-    @if (Model.Reviews.Count!=0)
+    @if (Model.Reviews.Count != 0)
     {
         <ul class="list-group">
             @foreach (var review in Model.Reviews)
@@ -89,7 +98,6 @@
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </a>
                         </div>
-
                     }
                 </li>
             }
@@ -99,6 +107,7 @@
     {
         <p>No reviews yet. Be the first to review this movie!</p>
     }
+
     @if (User.Identity.IsAuthenticated)
     {
         <hr />

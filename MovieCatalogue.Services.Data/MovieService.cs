@@ -250,6 +250,34 @@ namespace MovieCatalogue.Services.Data
                 Name = g.Name
             }).ToList();
         }
+        public async Task<IEnumerable<MovieInfoViewModel>> GetPopularMoviesAsync()
+        {
+            return await _movieRepository.GetAllAttached()
+                .OrderByDescending(m => m.Rating)
+                .Take(5)
+                .Select(m => new MovieInfoViewModel
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    PosterUrl = m.PosterUrl,
+                    Rating = m.Rating
+                })
+                .ToListAsync();
+        }
 
+        public async Task<IEnumerable<MovieInfoViewModel>> GetLatestMoviesAsync()
+        {
+            return await _movieRepository.GetAllAttached()
+                .OrderByDescending(m => m.ReleaseDate)
+                .Take(5)
+                .Select(m => new MovieInfoViewModel
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    PosterUrl = m.PosterUrl,
+                    ReleaseDate = m.ReleaseDate.ToString("yyyy-MM-dd")
+                })
+                .ToListAsync();
+        }
     }
 }

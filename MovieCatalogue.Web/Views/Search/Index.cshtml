@@ -1,4 +1,4 @@
-﻿@using MovieCatalogue.Web.ViewModels.Search;
+﻿@using MovieCatalogue.Web.ViewModels.Search
 @model SearchViewModel
 
 @{
@@ -7,6 +7,7 @@
 
 <h1>Search Movies</h1>
 
+<!-- Search Form -->
 <form method="get" asp-controller="Search" asp-action="Index">
     <div class="form-group">
         <label for="query">Search by Movie Title</label>
@@ -19,42 +20,76 @@
 @if (Model.Movies.Any())
 {
     <h2>Search Results</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Poster</th>
-                <th>Title</th>
-                <th>Director</th>
-                <th>Genre</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var movie in Model.Movies)
-            {
-                <tr>
-                    <td>
-                        @if (!string.IsNullOrEmpty(movie.PosterUrl))
-                        {
-                            <img src="@movie.PosterUrl" alt="@movie.PosterUrl" class="img-thumbnail" style="max-height: 100px;" />
-                        }
-                        else
-                        {
-                            <img src="https://via.placeholder.com/100x150" alt="No Poster" />
-                        }
-                    </td>
-                    <td>@movie.Title</td>
-                    <td>@movie.Director</td>
-                    <td>@movie.Genre</td>
-                    <td>
-                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-info">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row">
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="@movie.PosterUrl" alt="@movie.Title Poster" class="card-img-top movie-poster" />
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.Title</h5>
+                        <p class="card-text">Director: @movie.Director</p>
+                        <p class="card-text">Genre: @movie.Genre</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-info btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 }
 else
 {
     <p>No movies found matching your search criteria.</p>
+}
+
+@section Styles {
+    <style>
+        .movie-poster {
+            object-fit: contain;
+            max-height: 300px;
+            width: 100%; 
+            border-radius: 10px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .card:hover {
+                transform: scale(1.05);
+            }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #117a8b;
+        }
+
+            .btn-info:hover {
+                background-color: #117a8b;
+                border-color: #0e5d68;
+            }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-md-3 {
+            margin-bottom: 30px;
+        }
+    </style>
 }

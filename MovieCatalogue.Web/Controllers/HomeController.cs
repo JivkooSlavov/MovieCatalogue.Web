@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.Viewmodels;
+using MovieCatalogue.Web.ViewModels.Home;
 using System.Diagnostics;
 
 namespace MovieCatalogue.Web.Controllers
@@ -7,15 +9,27 @@ namespace MovieCatalogue.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IMovieService _movieService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IMovieService movieService)
         {
             _logger = logger;
+            _movieService = movieService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var popularMovies = await _movieService.GetPopularMoviesAsync();
+            var latestMovies = await _movieService.GetLatestMoviesAsync();
+
+            var model = new HomeIndexViewModel
+            {
+                PopularMovies = popularMovies,
+                LatestMovies = latestMovies
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

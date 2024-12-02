@@ -22,5 +22,9 @@ namespace MovieCatalogue.Services.Data.Interfaces
         Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId);
 
         Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync();
+
+        Task<IEnumerable<MovieInfoViewModel>> GetLatestMoviesAsync();
+
+        Task<IEnumerable<MovieInfoViewModel>> GetPopularMoviesAsync();
     }
 }

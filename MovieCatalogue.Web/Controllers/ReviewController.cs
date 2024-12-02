@@ -25,6 +25,13 @@ namespace MovieCatalogue.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(Guid movieId)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(movieId.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             var model = await _reviewService.GetReviewsForMovieAsync(movieId);
             if (model == null)
             {
@@ -48,6 +55,13 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public IActionResult Create(Guid movieId)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(movieId.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             var reviewVm = new ReviewCreateViewModel
             {
                 MovieId = movieId
@@ -77,6 +91,13 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(Guid id)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
             var userId = Guid.Parse(GetUserId());
             var reviewVm = await _reviewService.GetReviewForEditAsync(id, userId);
 
@@ -111,6 +132,13 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
+
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
 
             var userId = Guid.Parse(GetUserId());
             ReviewDeleteViewModel review = await _reviewService.GetReviewForDeleteAsync(id, userId);
