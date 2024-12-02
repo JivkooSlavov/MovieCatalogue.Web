@@ -14,12 +14,14 @@ namespace MovieCatalogue.Services.Data
     public class MovieService : BaseService, IMovieService
     {
         private readonly IRepository<Movie, Guid> _movieRepository;
-        private readonly IRepository<Genre, int> _genreRepository;
+        private readonly IRepository<Genre, Guid> _genreRepository;
+        private readonly IRepository<Rating, Guid> _ratingRepository;
 
-        public MovieService(IRepository<Movie,Guid> movieRepository, IRepository<Genre, int> genreRepository)
+        public MovieService(IRepository<Movie,Guid> movieRepository, IRepository<Genre, Guid> genreRepository, IRepository<Rating, Guid> ratingRepository)
         {
             _movieRepository = movieRepository;
             _genreRepository = genreRepository;
+            _ratingRepository = ratingRepository;
         }
 
         public async Task<IEnumerable<MovieInfoViewModel>> GetAllMoviesAsync()
@@ -61,6 +63,7 @@ namespace MovieCatalogue.Services.Data
             {
                 return null;
             }
+            var averageRating = movie.Ratings.Any() ? movie.Ratings.Average(r => r.Value) : 0;
 
             return new MovieInfoViewModel
             {
@@ -71,7 +74,7 @@ namespace MovieCatalogue.Services.Data
                 Duration = movie.Duration,
                 PosterUrl = movie.PosterUrl,
                 Genre = movie.Genre.Name,
-                Rating = movie.Rating,
+                Rating = averageRating,
                 ReleaseDate = movie.ReleaseDate.ToString(DateFormatOfMovie),
                 Title = movie.Title,
                 TrailerUrl = movie.TrailerUrl,
@@ -89,24 +92,49 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<bool> AddMovieAsync(AddMovieViewModel model, Guid userId)
         {
-            bool isReleaseDateValid = DateTime
-                .TryParseExact(model.ReleaseDate, DateFormatOfMovie, CultureInfo.InvariantCulture, DateTimeStyles.None,
-                    out DateTime releaseDate);
+            bool isReleaseDateValid = DateTime.TryParseExact(
+                model.ReleaseDate,
+                DateFormatOfMovie,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out DateTime releaseDate
+            );
+
             if (!isReleaseDateValid)
             {
                 return false;
             }
+            Movie movie = new Movie
+            {
+                Title = model.Title,
+                Description = model.Description,
+                GenreId = model.GenreId,
+                ReleaseDate = releaseDate,
+                Cast = model.Cast,
+                TrailerUrl = model.TrailerUrl,
+                PosterUrl = model.PosterUrl,
+                Director = model.Director,
+                Duration = model.Duration,
+                CreatedByUserId = userId
+            };
 
-            Movie movie = new Movie();
-            AutoMapperConfig.MapperInstance.Map(model, movie);
-            movie.CreatedByUserId = userId;
+            Rating creatorRating = new Rating
+            {
+                Movie = movie,
+                UserId = userId,
+                Value = (int)model.Rating
+            };
 
-            await this._movieRepository.AddAsync(movie);
+            movie.Ratings.Add(creatorRating);
+
+            movie.Rating = movie.Ratings.Average(r => r.Value);
+
+            await _movieRepository.AddAsync(movie);
 
             return true;
         }
 
-       public async Task<AddMovieViewModel?> GetMovieForEditAsync(Guid id, Guid currentUserId)
+        public async Task<AddMovieViewModel?> GetMovieForEditAsync(Guid id, Guid currentUserId)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
 
@@ -211,13 +239,17 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public IEnumerable<TypeOfGenreMovies> GetTypes()
+        public async Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync()
         {
-            return _genreRepository.Select(x => new TypeOfGenreMovies
+
+            var genres = await _genreRepository.GetAllAsync(); 
+
+            return genres.Select(g => new TypeOfGenreMovies
             {
-                Id = x.Id,
-                Name = x.Name
-            });
+                Id = g.Id,
+                Name = g.Name
+            }).ToList();
         }
+
     }
 }

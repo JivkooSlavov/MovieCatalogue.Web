@@ -2,7 +2,7 @@
 {
     public class Favorite
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } 
         public Guid MovieId { get; set; }
         public Movie Movie { get; set; } = null!;
         public Guid UserId { get; set; }

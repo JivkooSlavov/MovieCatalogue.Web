@@ -9,7 +9,7 @@ namespace MovieCatalogue.Services.Data.Interfaces
 {
     public interface IRatingService
     {
-        Task AddOrUpdateRatingAsync(RatingViewModel model, Guid userId);
+        Task AddOrUpdateRatingAsync(Guid movieId, Guid userId, int ratingValue);
         Task UpdateMovieRatingAsync(Guid movieId);
     }
 }

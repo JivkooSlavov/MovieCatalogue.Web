@@ -21,6 +21,6 @@ namespace MovieCatalogue.Services.Data.Interfaces
         Task<DeleteMovieViewModel?> GetMovieForDeletionAsync(Guid id, Guid currentUserId);
         Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId);
 
-        IEnumerable<TypeOfGenreMovies> GetTypes();
+        Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync();
     }
 }

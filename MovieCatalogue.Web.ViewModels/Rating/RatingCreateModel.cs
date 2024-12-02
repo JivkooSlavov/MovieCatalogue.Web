@@ -10,7 +10,7 @@ using static MovieCatalogue.Common.Messages;
 
 namespace MovieCatalogue.Web.ViewModels.Rating
 {
-    public class RatingViewModel
+    public class RatingCreateModel
     {
         [Required]
         [Range(RatingValueMin, RatingValueMax, ErrorMessage = StringLengthErrorMessage)]

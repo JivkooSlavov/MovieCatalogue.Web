@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovieCatalogue.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -42,5 +43,6 @@ namespace MovieCatalogue.Data.Repository.Interfaces
         IQueryable<TType> GetAllWithInclude(params Expression<Func<TType, object>>[] includes);
 
         IEnumerable<TResult> Select<TResult>(Func<TType, TResult> selector);
+
     }
 }

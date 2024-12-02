@@ -9,10 +9,6 @@ namespace MovieCatalogue.Services.Data.Interfaces
 {
     public interface IUserService
     {
-        Guid GetUserId();
-
-        string GetUserName();
-
         Task<IEnumerable<UserViewModel>> GetAllUsersAsync();
 
         Task<bool> UserExistsByIdAsync(Guid userId);

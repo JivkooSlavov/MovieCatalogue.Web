@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieCatalogue.Data.Models;
 using MovieCatalogue.Data.Repository.Interfaces;
 using System;
 using System.Collections.Generic;

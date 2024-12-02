@@ -8,7 +8,7 @@ namespace MovieCatalogue.Web.ViewModels.Favorite
 {
     public class AddMovieToFavorite
     {
-        public int FavoriteId { get; set; }
+        public Guid FavoriteId { get; set; }
         public Guid MovieId { get; set; }
         public string Genre { get; set; } = null!;
         public string DirectorName { get; set; } = null!;

@@ -11,23 +11,12 @@ public class UserService : BaseService, IUserService
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserService(UserManager<User> userManager,
         RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _httpContextAccessor = httpContextAccessor;
-    }
-    public Guid GetUserId()
-    {
-        var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        return userId != null ? Guid.Parse(userId) : Guid.Empty;
-    }
-    public string GetUserName()
-    {
-        return _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
     }
     public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
     {

@@ -13,7 +13,7 @@ using static MovieCatalogue.Common.Messages;
 
 namespace MovieCatalogue.Web.ViewModels.Movie
 {
-    public class AddMovieViewModel : IMapTo<MovieCatalogue.Data.Models.Movie>
+    public class AddMovieViewModel
     {
         public Guid Id { get; set; }
 
@@ -26,7 +26,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
         public string Description { get; set; } = null!;
 
         [Required(ErrorMessage =RequireErrorMessage)]
-        public int GenreId { get; set; }
+        public Guid GenreId { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
         public string ReleaseDate { get; set; } = DateTime.Today.ToString(DateFormatOfMovie);

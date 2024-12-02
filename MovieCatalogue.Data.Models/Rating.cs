@@ -2,7 +2,7 @@
 {
     public class Rating
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public int Value { get; set; }
         public Guid MovieId { get; set; }
         public Movie Movie { get; set; } = null!;

@@ -27,7 +27,7 @@ namespace MovieCatalogue.Web.ViewModels.Movie
 
         public virtual ICollection<TypeOfGenreMovies> Genres { get; set; } = new HashSet<TypeOfGenreMovies>();
 
-        public virtual ICollection<RatingViewModel> Ratings { get; set; } = new HashSet<RatingViewModel>();
+        public virtual ICollection<RatingCreateModel> Ratings { get; set; } = new HashSet<RatingCreateModel>();
 
         public virtual ICollection<ReviewViewModel> Reviews { get; set; } = new HashSet<ReviewViewModel>();
 

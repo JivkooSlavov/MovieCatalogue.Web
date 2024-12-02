@@ -6,6 +6,7 @@ using MovieCatalogue.Common;
 using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
 using MovieCatalogue.Data.Repository.Interfaces;
+using MovieCatalogue.Services.Data;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
@@ -66,8 +67,10 @@ namespace MovieCatalogue.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            AddMovieViewModel model = new AddMovieViewModel();
-            model.Genres = GetTypes();
+            var model = new AddMovieViewModel
+            {
+                Genres = await _movieService.GetGenresAsync()
+            };
 
             return View(model);
         }
@@ -78,21 +81,24 @@ namespace MovieCatalogue.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Genres = GetTypes();
+                model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }
 
+            Guid userId = Guid.Parse(GetUserId());
+            bool result = await _movieService.AddMovieAsync(model, userId);
 
-            bool result = await _movieService.AddMovieAsync(model, Guid.Parse(GetUserId()));
-            if (result == false)
+            if (!result)
             {
                 this.ModelState.AddModelError(nameof(model.ReleaseDate),
                     String.Format("The Release Date must be in the following format: {0}", DateFormatOfMovie));
-                model.Genres = GetTypes();
-                return this.View(model);
+                model.Genres = await _movieService.GetGenresAsync();
+                return View(model);
             }
+
             return RedirectToAction(nameof(Index));
         }
+
 
         [HttpGet]
         [Authorize]
@@ -127,7 +133,7 @@ namespace MovieCatalogue.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.Genres = GetTypes();
+                model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }
             Guid currentUserId = Guid.Parse(GetUserId());
@@ -137,7 +143,7 @@ namespace MovieCatalogue.Web.Controllers
             if (!isEdited)
             {
                 ModelState.AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
-                model.Genres = GetTypes();
+                model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }
 
@@ -175,16 +181,6 @@ namespace MovieCatalogue.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        private IEnumerable<TypeOfGenreMovies> GetTypes()
-        {
-            return _context.Genres
-                .Select(x => new TypeOfGenreMovies
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                });
-        }
-
         private string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;

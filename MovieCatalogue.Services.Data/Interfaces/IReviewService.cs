@@ -15,7 +15,6 @@ namespace MovieCatalogue.Services.Data.Interfaces
         Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm);
         Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId);
         Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId);
-
         public Task<IEnumerable<UserReviewViewModel>> GetUserReviewsAsync(Guid userId);
     }
 }

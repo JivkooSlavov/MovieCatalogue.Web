@@ -14,9 +14,9 @@ namespace MovieCatalogue.Services.Data
     public class FavoriteService : BaseService, IFavoriteService
     {
         private readonly IRepository<Movie, Guid> _movieRepository;
-        private readonly IRepository<Favorite, int> _favoriteRepository;
+        private readonly IRepository<Favorite, Guid> _favoriteRepository;
 
-        public FavoriteService(IRepository<Favorite, int> favoriteRepository, IRepository<Movie, Guid> movieRepository)
+        public FavoriteService(IRepository<Favorite, Guid> favoriteRepository, IRepository<Movie, Guid> movieRepository)
         {
             _favoriteRepository = favoriteRepository;
             _movieRepository = movieRepository;

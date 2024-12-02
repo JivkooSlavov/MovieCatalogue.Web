@@ -155,11 +155,9 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Favorite", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
@@ -178,11 +176,9 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Genre", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -196,52 +192,52 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("c2e80bd4-44f7-42f2-8a76-189fe9d12754"),
                             Name = "Drama"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("5a5e5959-17ee-4b2a-8902-497a1c79321e"),
                             Name = "Comedy"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("d4a34098-333d-4177-9cbc-53a979f0382c"),
                             Name = "Action"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
                             Name = "Adventure"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("a8dbee99-43f7-4df1-824b-4b27600f67bd"),
                             Name = "Horror"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = new Guid("947fa7e5-5013-4c8e-b03a-8e2aa6317cd8"),
                             Name = "Triller"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = new Guid("e692d3ba-17f1-466d-b8e5-aac14c4d8242"),
                             Name = "Mystery"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = new Guid("d5ce01d4-9ac0-411c-b813-e022d6886652"),
                             Name = "History"
                         },
                         new
                         {
-                            Id = 9,
+                            Id = new Guid("ff41706e-522a-47cf-93e3-e646823ea7ed"),
                             Name = "Animation"
                         },
                         new
                         {
-                            Id = 10,
+                            Id = new Guid("93df566f-30f5-4d2b-b6ff-dc540b86a289"),
                             Name = "Fantasy"
                         });
                 });
@@ -273,8 +269,8 @@ namespace MovieCatalogue.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("GenreId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -315,13 +311,13 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fc9d7404-607b-49ec-bc13-eeeb9432c902"),
+                            Id = new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"),
                             Cast = "Daniel Radcliffe, Rupert Grint, Emma Watson, John Cleese, Robbie Coltrane, Warwick Davis, Richard Griffiths, Richard Harris, Ian Hart, John Hurt, Alan Rickman, Fiona Shaw, Maggie Smith, Julie Walters",
                             CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Description = "Harry Potter and the Philosopher's Stone (also known as Harry Potter and the Sorcerer's Stone in the United States) is a 2001 fantasy film directed by Chris Columbus and produced by David Heyman from a screenplay by Steve Kloves. It is based on the 1997 novel Harry Potter and the Philosopher's Stone by J. K. Rowling. It is the first instalment in the Harry Potter film series. The film stars Daniel Radcliffe as Harry Potter, with Rupert Grint as Ron Weasley, and Emma Watson as Hermione Granger. Its story follows Harry's first year at Hogwarts School of Witchcraft and Wizardry as he discovers that he is a famous wizard and begins his formal wizarding education.",
                             Director = "Chris Columbus",
                             Duration = 152,
-                            GenreId = 4,
+                            GenreId = new Guid("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
                             IsDeleted = false,
                             PosterUrl = "https://img.posterstore.com/zoom/wb0101-8harrypotter-thephilosophersstoneno150x70.jpg",
                             Rating = 5.0,
@@ -331,13 +327,13 @@ namespace MovieCatalogue.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d985c16d-e33d-43d1-a7fa-8e146e8bfa44"),
+                            Id = new Guid("b1d07192-c121-443a-8367-b18934739a2e"),
                             Cast = "Ian McKellen, Martin Freeman, Richard Armitage, James Nesbitt, Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, Elijah Wood, Andy Serkis",
                             CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Description = "The story is set in Middle-earth sixty years before the main events of The Lord of the Rings and portions of the film are adapted from the appendices to Tolkien's The Return of the King.[7] An Unexpected Journey tells the tale of Bilbo Baggins (Martin Freeman), who is convinced by the wizard Gandalf (Ian McKellen) to accompany thirteen Dwarves, led by Thorin Oakenshield (Richard Armitage), on a quest to reclaim the Lonely Mountain from the dragon Smaug. The ensemble cast also includes Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, James Nesbitt, Elijah Wood, and Andy Serkis. It features Sylvester McCoy, Barry Humphries, and Manu Bennett.",
                             Director = "Peter Jackson",
                             Duration = 169,
-                            GenreId = 4,
+                            GenreId = new Guid("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
                             IsDeleted = false,
                             PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_FMjpg_UX1000_.jpg",
                             Rating = 5.0,
@@ -347,13 +343,13 @@ namespace MovieCatalogue.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("48059d39-e904-41eb-9624-28c6a4d93d47"),
+                            Id = new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"),
                             Cast = "Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry",
                             CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Description = "Gone Girl is aAmerican psychological thriller film directed by David Fincher and written by Gillian Flynn, based on her 2012 novel of the same name. It stars Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry, and Carrie Coon in her film debut. In the film, Nick Dunne (Affleck) becomes the prime suspect in the sudden disappearance of his wife, Amy (Pike) in Missouri.",
                             Director = "David Fincher",
                             Duration = 149,
-                            GenreId = 6,
+                            GenreId = new Guid("947fa7e5-5013-4c8e-b03a-8e2aa6317cd8"),
                             IsDeleted = false,
                             PosterUrl = "https://m.media-amazon.com/images/I/61cdYGoHFrL._AC_SY879_.jpg",
                             Rating = 5.0,
@@ -363,13 +359,13 @@ namespace MovieCatalogue.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("78650750-039d-4d84-9d5a-68793141c576"),
+                            Id = new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"),
                             Cast = "Brad Pitt, Eric Bana, Orlando Bloom, Diane Kruger, Brian Cox, Sean Bean, Brendan Gleeson, Peter O'Toole",
                             CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Description = "Troy is a 2004 epic historical war film directed by Wolfgang Petersen and written by David Benioff. Produced by units in Malta, Mexico and Britain's Shepperton Studios, the film features an ensemble cast led by Brad Pitt, Eric Bana, Sean Bean, Diane Kruger, Brian Cox, Brendan Gleeson, Rose Byrne, Saffron Burrows and Orlando Bloom. It is loosely based[3] on Homer's Iliad in its narration of the entire story of the decade-long Trojan War—condensed into little more than a couple of weeks, rather than just the quarrel between Achilles and Agamemnon in the ninth year. Achilles leads his Myrmidons along with the rest of the Greek army invading the historical city of Troy, defended by Hector's Trojan army. The end of the film (the sack of Troy) is not taken from the Iliad, but rather from Quintus Smyrnaeus's Posthomerica, as the Iliad concludes with Hector's death and funeral.",
                             Director = "Wolfgang Petersen",
                             Duration = 183,
-                            GenreId = 8,
+                            GenreId = new Guid("d5ce01d4-9ac0-411c-b813-e022d6886652"),
                             IsDeleted = false,
                             PosterUrl = "https://www.rogerebert.com/wp-content/uploads/2024/03/Troy.jpg",
                             Rating = 5.0,
@@ -379,13 +375,13 @@ namespace MovieCatalogue.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1144f031-04e4-42ab-ae14-7528fbe03223"),
+                            Id = new Guid("e8772d7c-8bda-4652-9f91-757857838db7"),
                             Cast = "Ray Romano, John Leguizamo, Denis Leary",
                             CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Description = "On Earth 20,000 years ago, everything was covered in ice. A group of friends, Manny, a mammoth, Diego, a saber tooth tiger, and Sid, a sloth encounter an Eskimo human baby. They must try to return the baby back to his tribe before a group of saber tooth tigers find him and eat him.",
                             Director = "Chris Wedge",
                             Duration = 81,
-                            GenreId = 9,
+                            GenreId = new Guid("ff41706e-522a-47cf-93e3-e646823ea7ed"),
                             IsDeleted = false,
                             PosterUrl = "https://image.tmdb.org/t/p/original/idg7vYulQRXKEHfLIM0XKtqPkPz.jpg",
                             Rating = 4.0,
@@ -397,11 +393,9 @@ namespace MovieCatalogue.Data.Migrations
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Rating", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
@@ -423,6 +417,43 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Ratings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d13f3150-3827-45db-8d78-07f8b69288c0"),
+                            MovieId = new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"),
+                            UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("418b2462-0485-458b-9d67-59a213724a29"),
+                            MovieId = new Guid("b1d07192-c121-443a-8367-b18934739a2e"),
+                            UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("517b4432-a16e-4b71-abe1-87c9225b29e7"),
+                            MovieId = new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"),
+                            UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("2ab20663-9c23-4be5-8177-a27c04e36523"),
+                            MovieId = new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"),
+                            UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("4dd82023-5ea3-4b17-837c-275f9a508a60"),
+                            MovieId = new Guid("e8772d7c-8bda-4652-9f91-757857838db7"),
+                            UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Value = 4
+                        });
                 });
 
             modelBuilder.Entity("MovieCatalogue.Data.Models.Review", b =>
@@ -532,15 +563,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "45b1dda4-4247-4926-aaf7-9cdcd9631d77",
+                            ConcurrencyStamp = "efd90642-525d-43f4-9740-63fde54eed5c",
                             Email = "zhivko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZHIVKO@MOVIE.COM",
                             NormalizedUserName = "ZHIVKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPW01t5SmoQqBCxGUfwNuRnOQ7xEa7B/B58YbNNfR9kQPyiNiNNgU4aLENhiYXTxYw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGcznz/TVQIi2IH842oICmpQNdeNGWYEkDQiT444BIUF5LqiPmpaWrZEM3zsP1jWQw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72a797c3-e15c-4fec-a00d-45b2fb1c48c8",
+                            SecurityStamp = "f0c6045d-ea27-4f92-aaf6-2edc794180ab",
                             TwoFactorEnabled = false,
                             UserName = "zhivko@movie.com"
                         },
@@ -548,15 +579,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3dab0b29-b30e-40b0-b4a3-21152a3ce66c",
+                            ConcurrencyStamp = "d59ba3e5-8622-43d6-b218-8692c8245a79",
                             Email = "mitko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MITKO@MOVIE.COM",
                             NormalizedUserName = "MITKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOznfNZ03zrSZsGHYErrSqzf6+74g5nJlK1AqL0gH8A4c8FA+PJOa7gU74LBLBQ16g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOt9dip+k2wa/ig57dnpZKnHu1tffiURyM6+p4Es8gbbTarWxwTzMTltaWMKdeGYiA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "febcd72c-d188-41a7-9165-d010cb323b6b",
+                            SecurityStamp = "33eba3d7-9f5c-40b7-a03d-23a7c44acbc1",
                             TwoFactorEnabled = false,
                             UserName = "mitko@movie.com"
                         });

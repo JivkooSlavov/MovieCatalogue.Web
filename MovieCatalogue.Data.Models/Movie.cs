@@ -8,7 +8,7 @@ namespace MovieCatalogue.Data.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public int GenreId { get; set; }
+        public Guid GenreId { get; set; }
         public Genre Genre { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
         public string Cast { get; set; } = null!;

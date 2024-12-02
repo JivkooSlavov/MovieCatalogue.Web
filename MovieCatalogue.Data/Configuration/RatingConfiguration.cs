@@ -26,6 +26,22 @@ namespace MovieCatalogue.Data.Configuration
                 .WithMany(u => u.Ratings)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasData(SeedRating());
+        }
+
+        private HashSet<Rating> SeedRating()
+        {
+            HashSet<Rating> genres = new HashSet<Rating>()
+            {
+                    new Rating() { Value =5, MovieId = Guid.Parse("9a237ae5-bff5-4fa3-b30f-1303ea504903"), UserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")},
+                    new Rating() { Value =5, MovieId = Guid.Parse("b1d07192-c121-443a-8367-b18934739a2e"), UserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")},
+                    new Rating() { Value =5, MovieId = Guid.Parse("000a7d61-c851-4705-9e18-f16ea9624cf7"), UserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")},
+                    new Rating() { Value =5, MovieId = Guid.Parse("7dc6c01d-68ed-475c-9ca1-3cda99437db2"), UserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")},
+                    new Rating() { Value =4, MovieId = Guid.Parse("e8772d7c-8bda-4652-9f91-757857838db7"), UserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")}
+            };
+
+            return genres;
         }
     }
 }

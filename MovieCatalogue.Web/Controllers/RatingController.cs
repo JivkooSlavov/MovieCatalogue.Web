@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MovieCatalogue.Data;
-using MovieCatalogue.Data.Models;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels.Rating;
+using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MovieCatalogue.Web.Controllers
 {
@@ -20,7 +19,7 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(RatingViewModel model)
+        public async Task<IActionResult> Create(RatingCreateModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -29,7 +28,7 @@ namespace MovieCatalogue.Web.Controllers
 
             var userId = Guid.Parse(GetUserId());
 
-            await _ratingService.AddOrUpdateRatingAsync(model, userId);
+            await _ratingService.AddOrUpdateRatingAsync(model.MovieId, userId, model.Value);
 
             return RedirectToAction("Details", "Movie", new { id = model.MovieId });
         }
