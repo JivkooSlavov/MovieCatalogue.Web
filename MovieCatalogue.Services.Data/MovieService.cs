@@ -139,11 +139,11 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<AddMovieViewModel?> GetMovieForEditAsync(Guid id, Guid currentUserId)
+        public async Task<AddMovieViewModel?> GetMovieForEditAsync(Guid id, Guid currentUserId, bool isAdmin)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
 
-            if (movie == null || movie.CreatedByUserId != currentUserId)
+            if (movie == null || (!isAdmin && movie.CreatedByUserId != currentUserId))
             {
                 return null;
             }
@@ -168,13 +168,14 @@ namespace MovieCatalogue.Services.Data
             };
         }
 
-        public async Task<bool> EditMovieAsync(Guid id, AddMovieViewModel model, Guid currentUserId)
+
+        public async Task<bool> EditMovieAsync(Guid id, AddMovieViewModel model, Guid currentUserId, bool isAdmin)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
 
-            if (movie == null || movie.CreatedByUserId != currentUserId)
+            if (movie == null || (!isAdmin && movie.CreatedByUserId != currentUserId))
             {
-                return false;
+                return false; 
             }
 
             bool isReleaseDateValid = DateTime.TryParseExact(
@@ -186,7 +187,7 @@ namespace MovieCatalogue.Services.Data
 
             if (!isReleaseDateValid)
             {
-                return false;
+                return false; 
             }
 
             movie.Title = model.Title;
@@ -205,7 +206,8 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<DeleteMovieViewModel?> GetMovieForDeletionAsync(Guid id, Guid currentUserId)
+
+        public async Task<DeleteMovieViewModel?> GetMovieForDeletionAsync(Guid id, Guid currentUserId, bool isAdmin)
         {
             var movie = await _movieRepository.GetAllWithInclude(m => m.Genre)
                 .Where(m => m.Id == id && !m.IsDeleted)
@@ -221,7 +223,7 @@ namespace MovieCatalogue.Services.Data
                 })
                 .FirstOrDefaultAsync();
 
-            if (movie == null || movie.CreatedByUserId != currentUserId)
+            if (movie == null || (movie.CreatedByUserId != currentUserId && !isAdmin))
             {
                 return null;
             }
@@ -229,13 +231,14 @@ namespace MovieCatalogue.Services.Data
             return movie;
         }
 
-        public async Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId)
+
+        public async Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId, bool isAdmin)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
 
-            if (movie == null || movie.CreatedByUserId != currentUserId || movie.IsDeleted)
+            if (movie == null || (movie.CreatedByUserId != currentUserId && !isAdmin) || movie.IsDeleted)
             {
-                return false; 
+                return false;
             }
 
             movie.IsDeleted = true;
@@ -244,17 +247,6 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync()
-        {
-
-            var genres = await _genreRepository.GetAllAsync(); 
-
-            return genres.Select(g => new TypeOfGenreMovies
-            {
-                Id = g.Id,
-                Name = g.Name
-            }).ToList();
-        }
         public async Task<IEnumerable<MovieInfoViewModel>> GetPopularMoviesAsync()
         {
             return await _movieRepository.GetAllAttached()
@@ -269,5 +261,17 @@ namespace MovieCatalogue.Services.Data
                 })
                 .ToListAsync();
         }
+        public async Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync()
+        {
+
+            var genres = await _genreRepository.GetAllAsync(); 
+
+            return genres.Select(g => new TypeOfGenreMovies
+            {
+                Id = g.Id,
+                Name = g.Name
+            }).ToList();
+        }
+
     }
 }

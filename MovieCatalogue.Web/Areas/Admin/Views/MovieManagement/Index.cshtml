@@ -1,0 +1,35 @@
+﻿@model IEnumerable<MovieCatalogue.Web.ViewModels.Movie.MovieInfoViewModel>
+
+<h1 class="text-center mb-4">Manage Movies</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Movie</a>
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <ul class="list-group">
+        @foreach (var movie in Model)
+        {
+            <li class="list-group-item d-flex align-items-center">
+                <div class="me-3">
+                    <img src="@movie.PosterUrl" alt="@movie.Title Poster" class="rounded" style="width: 100px; height: 150px; object-fit: cover;" />
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="mb-1">@movie.Title</h5>
+                    <p class="mb-0"><strong>Genre:</strong> @movie.Genre</p>
+                    <p class="mb-0"><strong>Released:</strong> @movie.ReleaseDate.ToString()</p>
+                    <p class="mb-0"><strong>Rating:</strong> @movie.Rating.ToString("f1") / 5.0</p>
+                </div>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-warning btn-sm me-2">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-center">No movies available.</p>
+}

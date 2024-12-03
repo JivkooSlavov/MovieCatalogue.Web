@@ -15,6 +15,7 @@ using System.IO;
 using System.Security.Claims;
 using static MovieCatalogue.Common.EntityValidationConstants;
 using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
+using static MovieCatalogue.Common.ApplicationConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
@@ -111,10 +112,10 @@ namespace MovieCatalogue.Web.Controllers
             }
 
             Guid currentUserId = Guid.Parse(GetUserId());
-
+            bool isAdmin = User.IsInRole(AdminRoleName);
 
             AddMovieViewModel? model = await this._movieService
-                            .GetMovieForEditAsync(movieGuid, currentUserId);
+                            .GetMovieForEditAsync(movieGuid, currentUserId, isAdmin);
 
             if (model==null)
             {
@@ -134,25 +135,26 @@ namespace MovieCatalogue.Web.Controllers
             {
                 return this.RedirectToAction(nameof(Index));
             }
-
             if (!ModelState.IsValid)
             {
                 model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }
-            Guid currentUserId = Guid.Parse(GetUserId());
 
-            bool isEdited = await _movieService.EditMovieAsync(id, model, currentUserId);
+            Guid currentUserId = Guid.Parse(GetUserId());
+            bool isAdmin = User.IsInRole(AdminRoleName);
+
+            bool isEdited = await _movieService.EditMovieAsync(id, model, currentUserId, isAdmin);
 
             if (!isEdited)
             {
-                ModelState.AddModelError(nameof(model.ReleaseDate), $"Invalid date! Format must be: {DateFormatOfMovie}");
+                ModelState.AddModelError(nameof(model.ReleaseDate), "You do not have permission to edit this movie.");
                 model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }
-
             return RedirectToAction(nameof(Details), new { id });
         }
+
 
         [HttpGet]
         [Authorize]
@@ -166,8 +168,9 @@ namespace MovieCatalogue.Web.Controllers
             }
 
             Guid currentUserId = Guid.Parse(GetUserId());
+            bool isAdmin = User.IsInRole(AdminRoleName);
 
-            var model = await _movieService.GetMovieForDeletionAsync(id, currentUserId);
+            var model = await _movieService.GetMovieForEditAsync(id, currentUserId, isAdmin);
 
             if (model == null)
             {
@@ -182,8 +185,8 @@ namespace MovieCatalogue.Web.Controllers
         public async Task<IActionResult> Delete(DeleteMovieViewModel model)
         {
             Guid currentUserId = Guid.Parse(GetUserId());
-
-            bool isDeleted = await _movieService.DeleteMovieAsync(model.Id, currentUserId);
+            bool isAdmin = User.IsInRole(AdminRoleName);
+            bool isDeleted = await _movieService.DeleteMovieAsync(model.Id, currentUserId, isAdmin);
 
             if (!isDeleted)
             {

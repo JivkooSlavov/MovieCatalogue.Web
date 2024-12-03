@@ -17,11 +17,11 @@ namespace MovieCatalogue.Services.Data.Interfaces
 
         Task<bool> AddMovieAsync(AddMovieViewModel inputModel, Guid userId);
 
-        Task<AddMovieViewModel?> GetMovieForEditAsync(Guid id, Guid currentUserId);
-        Task<bool> EditMovieAsync(Guid id, AddMovieViewModel model, Guid currentUserId);
+        Task<AddMovieViewModel?> GetMovieForEditAsync(Guid id, Guid currentUserId, bool isAdmin);
+        Task<bool> EditMovieAsync(Guid id, AddMovieViewModel model, Guid currentUserId, bool isAdmin);
 
-        Task<DeleteMovieViewModel?> GetMovieForDeletionAsync(Guid id, Guid currentUserId);
-        Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId);
+        Task<DeleteMovieViewModel?> GetMovieForDeletionAsync(Guid id, Guid currentUserId, bool isAdmin);
+        Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId, bool isAdmin);
 
         Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync();
 

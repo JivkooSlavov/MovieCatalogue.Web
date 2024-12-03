@@ -23,7 +23,7 @@
                     <img src="@movie.PosterUrl" alt="@movie.Title" class="card-img-top movie-poster" />
                     <div class="card-body">
                         <h5 class="card-title">@movie.Title</h5>
-                        <p class="card-text">Rating: @movie.Rating / 5</p>
+                        <p class="card-text">Rating: @movie.Rating.ToString("f1") / 5.0</p>
                         <a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
