@@ -1,0 +1,31 @@
+﻿@using MovieCatalogue.Web.ViewModels.Review;
+@model IEnumerable<ReviewViewModel>
+
+<h1 class="text-center">All Reviews</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Reviewer</th>
+            <th>Review Content</th>
+            <th>Movie</th>
+            <th>Posted On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.UserName</td>
+                <td>@review.Content</td>
+                <td>@review.MovieTitle </td>
+                <td>@review.CreatedAt.ToString("g")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

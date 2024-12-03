@@ -9,6 +9,7 @@ using MovieCatalogue.Web.ViewModels;
 using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
 using System.Security.Claims;
+using static MovieCatalogue.Common.ApplicationConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
@@ -99,7 +100,8 @@ namespace MovieCatalogue.Web.Controllers
             }
 
             var userId = Guid.Parse(GetUserId());
-            var reviewVm = await _reviewService.GetReviewForEditAsync(id, userId);
+            bool isAdmin = User.IsInRole(AdminRoleName);
+            var reviewVm = await _reviewService.GetReviewForEditAsync(id, userId, isAdmin);
 
             if (reviewVm == null)
             {
@@ -117,8 +119,9 @@ namespace MovieCatalogue.Web.Controllers
             {
                 return View(model);
             }
-
-            var result = await _reviewService.UpdateReviewAsync(model);
+            var userId = Guid.Parse(GetUserId());
+            bool isAdmin = User.IsInRole(AdminRoleName);
+            var result = await _reviewService.UpdateReviewAsync(model, userId, isAdmin);
 
             if (!result)
             {
@@ -141,7 +144,8 @@ namespace MovieCatalogue.Web.Controllers
             }
 
             var userId = Guid.Parse(GetUserId());
-            ReviewDeleteViewModel review = await _reviewService.GetReviewForDeleteAsync(id, userId);
+            bool isAdmin = User.IsInRole(AdminRoleName);
+            ReviewDeleteViewModel review = await _reviewService.GetReviewForDeleteAsync(id, userId, isAdmin);
 
             if (review == null)
             {
@@ -156,7 +160,8 @@ namespace MovieCatalogue.Web.Controllers
         public async Task<IActionResult> DeleteConfirm(ReviewDeleteViewModel review)
         {
             var userId = Guid.Parse(GetUserId());
-            var isDeleted = await _reviewService.DeleteReviewAsync(review.Id, userId);
+            bool isAdmin = User.IsInRole(AdminRoleName);
+            var isDeleted = await _reviewService.DeleteReviewAsync(review.Id, userId, isAdmin);
 
             if (!isDeleted)
             {

@@ -72,11 +72,11 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<ReviewEditViewModel> GetReviewForEditAsync(Guid id, Guid userId)
+        public async Task<ReviewEditViewModel> GetReviewForEditAsync(Guid id, Guid userId, bool isAdmin)
         {
             var reviewForEdit = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == id);
 
-            if (reviewForEdit == null || reviewForEdit.UserId != userId)
+            if (reviewForEdit == null || !isAdmin && reviewForEdit.UserId != userId)
             {
                 return null;
             }
@@ -86,15 +86,16 @@ namespace MovieCatalogue.Services.Data
                 Id = reviewForEdit.Id,
                 MovieId = reviewForEdit.MovieId,
                 Content = reviewForEdit.Content,
-                UpdatePosted = DateTime.UtcNow
+                CreatedByUserId = userId,
+                DatePosted = reviewForEdit.DatePosted.ToString()
             };
         }
 
-        public async Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm)
+        public async Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm, Guid userId, bool isAdmin)
         {
             var reviewUpdated = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewVm.Id);
 
-            if (reviewUpdated == null)
+            if (reviewUpdated == null || !isAdmin && reviewUpdated.UserId != userId)
             {
                 return false;
             }
@@ -106,7 +107,7 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId)
+        public async Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId, bool isAdmin)
         {
             var reviewForDelete = await _reviewRepository
                  .GetAllWithInclude(r => r.Movie)
@@ -122,7 +123,7 @@ namespace MovieCatalogue.Services.Data
                  })
                  .FirstOrDefaultAsync();
 
-            if (reviewForDelete == null || reviewForDelete.CreatedByUserId != userId)
+            if (reviewForDelete == null || !isAdmin && reviewForDelete.CreatedByUserId != userId)
             {
                 throw new UnauthorizedAccessException("You are not authorized to delete this review.");
             }
@@ -130,11 +131,11 @@ namespace MovieCatalogue.Services.Data
             return reviewForDelete;
         }
 
-        public async Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId)
+        public async Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId, bool isAdmin)
         {
             var reviewDeleted = await _reviewRepository.FirstOrDefaultAsync(r => r.Id == reviewId);
 
-            if (reviewDeleted == null || reviewDeleted.UserId != userId)
+            if (reviewDeleted == null || !isAdmin && reviewDeleted.UserId != userId)
             {
                 return false;
             }
@@ -159,6 +160,25 @@ namespace MovieCatalogue.Services.Data
                     CreatedAt = r.DatePosted,
                     MovieTitle = r.Movie.Title,
                     MovieId = r.Movie.Id
+                })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ReviewViewModel>> GetAllReviewsAsync()
+        {
+            return await _reviewRepository
+                .GetAllWithInclude(r => r.Movie)
+                .Include(r => r.User)
+                .Where(r => !r.IsDeleted)
+                .OrderByDescending(r => r.DatePosted)
+                .Select(r => new ReviewViewModel
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    CreatedAt = r.DatePosted,
+                    MovieId = r.MovieId,
+                    UserName = r.User.UserName,
+                    MovieTitle = r.Movie.Title
                 })
                 .ToListAsync();
         }

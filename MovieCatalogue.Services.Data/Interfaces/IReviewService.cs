@@ -11,10 +11,11 @@ namespace MovieCatalogue.Services.Data.Interfaces
     {
         Task<ReviewIndexViewModel> GetReviewsForMovieAsync(Guid movieId);
         Task<bool> CreateReviewAsync(ReviewCreateViewModel reviewVm, Guid userId);
-        Task<ReviewEditViewModel> GetReviewForEditAsync(Guid id, Guid userId);
-        Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm);
-        Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId);
-        Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId);
-        public Task<IEnumerable<UserReviewViewModel>> GetUserReviewsAsync(Guid userId);
+        Task<ReviewEditViewModel> GetReviewForEditAsync(Guid id, Guid userId, bool isAdmin);
+        Task<bool> UpdateReviewAsync(ReviewEditViewModel reviewVm, Guid userId, bool isAdmin);
+        Task<ReviewDeleteViewModel> GetReviewForDeleteAsync(Guid id, Guid userId, bool isAdmin);
+        Task<bool> DeleteReviewAsync(Guid reviewId, Guid userId, bool isAdmin);
+        Task<IEnumerable<UserReviewViewModel>> GetUserReviewsAsync(Guid userId);
+        Task<IEnumerable<ReviewViewModel>> GetAllReviewsAsync();
     }
 }

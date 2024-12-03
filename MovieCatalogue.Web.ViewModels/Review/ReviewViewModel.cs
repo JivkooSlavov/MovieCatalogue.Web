@@ -16,6 +16,8 @@ namespace MovieCatalogue.Web.ViewModels.Review
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
+        public string? MovieTitle { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

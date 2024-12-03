@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieCatalogue.Services.Data.Interfaces;
+using MovieCatalogue.Web.Controllers;
 using MovieCatalogue.Web.ViewModels.Movie;
 using System.Security.Claims;
 using static MovieCatalogue.Common.ApplicationConstants;
 
 namespace MovieCatalogue.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class MovieManagementController : Controller
+    [Area(AdminRoleName)]
+    [Authorize(Roles = AdminRoleName)]
+    public class MovieManagementController : BaseController
     {
         private readonly IMovieService _movieService;
 
