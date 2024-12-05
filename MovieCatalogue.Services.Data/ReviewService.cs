@@ -51,6 +51,7 @@ namespace MovieCatalogue.Services.Data
                         Content = r.Content,
                         CreatedAt = r.DatePosted,
                         UserName = r.User?.UserName ?? "Unknown",
+                        UpdatedAt = r.UpdatePosted
                     })
                     .ToList()
             };
@@ -101,7 +102,7 @@ namespace MovieCatalogue.Services.Data
             }
 
             reviewUpdated.Content = reviewVm.Content;
-            reviewUpdated.UpdatePosted = DateTime.UtcNow;
+            reviewUpdated.UpdatePosted = DateTime.Now;
 
             await _reviewRepository.UpdateAsync(reviewUpdated);
             return true;
@@ -159,7 +160,8 @@ namespace MovieCatalogue.Services.Data
                     Content = r.Content,
                     CreatedAt = r.DatePosted,
                     MovieTitle = r.Movie.Title,
-                    MovieId = r.Movie.Id
+                    MovieId = r.Movie.Id,
+                    UpdatedAt = r.UpdatePosted
                 })
                 .ToListAsync();
         }
@@ -178,7 +180,8 @@ namespace MovieCatalogue.Services.Data
                     CreatedAt = r.DatePosted,
                     MovieId = r.MovieId,
                     UserName = r.User.UserName,
-                    MovieTitle = r.Movie.Title
+                    MovieTitle = r.Movie.Title,
+                    UpdatedAt = r.UpdatePosted
                 })
                 .ToListAsync();
         }

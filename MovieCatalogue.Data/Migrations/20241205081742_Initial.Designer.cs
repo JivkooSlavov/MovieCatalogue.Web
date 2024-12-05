@@ -12,7 +12,7 @@ using MovieCatalogue.Data;
 namespace MovieCatalogue.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241201230505_Initial")]
+    [Migration("20241205081742_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -424,35 +424,35 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d13f3150-3827-45db-8d78-07f8b69288c0"),
+                            Id = new Guid("5e452d9c-60de-413e-99b5-4b7bb95e266f"),
                             MovieId = new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("418b2462-0485-458b-9d67-59a213724a29"),
+                            Id = new Guid("ce9e6c53-7ada-4162-a8ca-834543f597a1"),
                             MovieId = new Guid("b1d07192-c121-443a-8367-b18934739a2e"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("517b4432-a16e-4b71-abe1-87c9225b29e7"),
+                            Id = new Guid("7c747870-2d01-47f6-bd04-72adeaefd17f"),
                             MovieId = new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("2ab20663-9c23-4be5-8177-a27c04e36523"),
+                            Id = new Guid("1bf02bee-aa6c-47d6-969b-342d7f4d4e58"),
                             MovieId = new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"),
                             UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("4dd82023-5ea3-4b17-837c-275f9a508a60"),
+                            Id = new Guid("6dec2899-aa3b-44a6-9610-4afe49338919"),
                             MovieId = new Guid("e8772d7c-8bda-4652-9f91-757857838db7"),
                             UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Value = 4
@@ -566,15 +566,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "efd90642-525d-43f4-9740-63fde54eed5c",
+                            ConcurrencyStamp = "5b9dd289-fc4a-4278-b7b5-a9a2f5cf9e91",
                             Email = "zhivko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZHIVKO@MOVIE.COM",
                             NormalizedUserName = "ZHIVKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGcznz/TVQIi2IH842oICmpQNdeNGWYEkDQiT444BIUF5LqiPmpaWrZEM3zsP1jWQw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL+YRLW9Fd8obLA2IeEGkl4BF7bDL4BLxuVCSmBeg1Q/2ExkJzFmEMDS7N9IFfNIDA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f0c6045d-ea27-4f92-aaf6-2edc794180ab",
+                            SecurityStamp = "354b006e-fdb8-414c-8411-365be9644f4c",
                             TwoFactorEnabled = false,
                             UserName = "zhivko@movie.com"
                         },
@@ -582,15 +582,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d59ba3e5-8622-43d6-b218-8692c8245a79",
+                            ConcurrencyStamp = "8214f761-1a03-47e3-86a5-34701650e990",
                             Email = "mitko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MITKO@MOVIE.COM",
                             NormalizedUserName = "MITKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOt9dip+k2wa/ig57dnpZKnHu1tffiURyM6+p4Es8gbbTarWxwTzMTltaWMKdeGYiA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKsO8RG1h6O/8afn8fgvo6DuAm2mtWaNrze8bqsu/SnIia+lVigEJQ/wkJHxcKbubw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "33eba3d7-9f5c-40b7-a03d-23a7c44acbc1",
+                            SecurityStamp = "a56372cc-5327-4012-8700-a6359e8fb82a",
                             TwoFactorEnabled = false,
                             UserName = "mitko@movie.com"
                         });

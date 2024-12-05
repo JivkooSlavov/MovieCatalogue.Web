@@ -9,7 +9,7 @@
             <th>Reviewer</th>
             <th>Review Content</th>
             <th>Movie</th>
-            <th>Posted On</th>
+            <th>Posted/Updated On</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -19,8 +19,17 @@
             <tr>
                 <td>@review.UserName</td>
                 <td>@review.Content</td>
-                <td>@review.MovieTitle </td>
-                <td>@review.CreatedAt.ToString("g")</td>
+                <td>@review.MovieTitle</td>
+                <td>
+                    @if (review.UpdatedAt.HasValue)
+                    {
+                        <span class="text-muted">Updated On:</span> @review.UpdatedAt.Value.ToString("g")
+                    }
+                    else
+                    {
+                        <span class="text-muted">Posted On:</span> @review.CreatedAt.ToString("g")
+                    }
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-warning btn-sm">Edit</a>
                     <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>

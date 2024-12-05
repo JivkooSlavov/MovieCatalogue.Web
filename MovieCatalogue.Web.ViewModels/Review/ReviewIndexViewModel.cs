@@ -12,6 +12,6 @@ namespace MovieCatalogue.Web.ViewModels.Review
         public Guid Id { get; set; }
         public Guid MovieId { get; set; }
         public string MovieTitle { get; set; } = null!;
-        public virtual ICollection<ReviewViewModel> Reviews { get; set; }  = new HashSet<ReviewViewModel>();
+        public ICollection<ReviewViewModel> Reviews { get; set; } = new HashSet<ReviewViewModel>();
     }
 }

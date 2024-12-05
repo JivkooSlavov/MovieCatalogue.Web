@@ -90,7 +90,8 @@ namespace MovieCatalogue.Services.Data
                         Id = r.Id,
                         Content = r.Content,
                         CreatedAt = r.DatePosted,
-                        UserName = r.User.UserName
+                        UserName = r.User.UserName,
+                        UpdatedAt = r.UpdatePosted
                     }).ToList()
             };
         }
@@ -251,13 +252,20 @@ namespace MovieCatalogue.Services.Data
         {
             return await _movieRepository.GetAllAttached()
                 .OrderByDescending(m => m.Rating)
+                .Where(m => !m.IsDeleted)
                 .Take(4)
                 .Select(m => new MovieInfoViewModel
                 {
                     Id = m.Id,
                     Title = m.Title,
                     PosterUrl = m.PosterUrl,
-                    Rating = m.Rating
+                    Rating = m.Rating,
+                    Cast = m.Cast,
+                    Description = m.Description,
+                    Director = m.Director,
+                    Duration = m.Duration,
+                    ReleaseDate = m.ReleaseDate.ToString(),
+                    TrailerUrl = m.TrailerUrl
                 })
                 .ToListAsync();
         }
@@ -272,6 +280,5 @@ namespace MovieCatalogue.Services.Data
                 Name = g.Name
             }).ToList();
         }
-
     }
 }

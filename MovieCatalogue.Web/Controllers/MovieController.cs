@@ -170,7 +170,7 @@ namespace MovieCatalogue.Web.Controllers
             Guid currentUserId = Guid.Parse(GetUserId());
             bool isAdmin = User.IsInRole(AdminRoleName);
 
-            var model = await _movieService.GetMovieForEditAsync(id, currentUserId, isAdmin);
+            DeleteMovieViewModel? model = await _movieService.GetMovieForDeletionAsync(id, currentUserId, isAdmin);
 
             if (model == null)
             {

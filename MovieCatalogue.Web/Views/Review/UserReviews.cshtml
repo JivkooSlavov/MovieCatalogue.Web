@@ -18,7 +18,7 @@ else
             <tr>
                 <th>Movie</th>
                 <th>Review</th>
-                <th>Created At</th>
+                <th>Last Modified</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -32,7 +32,16 @@ else
                         </a>
                     </td>
                     <td>@review.Content</td>
-                    <td>@review.CreatedAt.ToString("f")</td>
+                    <td>
+                        @if (review.UpdatedAt.HasValue)
+                        {
+                            <span>Updated at: @review.UpdatedAt.Value.ToString("f")</span>
+                        }
+                        else
+                        {
+                            <span>Created at: @review.CreatedAt.ToString("f")</span>
+                        }
+                    </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-warning btn-sm">Edit</a>
                         <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>
