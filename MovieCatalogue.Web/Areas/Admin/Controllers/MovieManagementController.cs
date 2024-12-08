@@ -5,6 +5,7 @@ using MovieCatalogue.Web.Controllers;
 using MovieCatalogue.Web.ViewModels.Movie;
 using System.Security.Claims;
 using static MovieCatalogue.Common.ApplicationConstants;
+using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 
 namespace MovieCatalogue.Web.Areas.Admin.Controllers
 {
@@ -20,11 +21,24 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            IEnumerable<MovieInfoViewModel> allMovies = await _movieService.GetAllMoviesAsync();
-            return View(allMovies);
+            var totalMovies = await _movieService.GetTotalMoviesAsync();
+            var totalPages = (int)Math.Ceiling(totalMovies / (double)PageSizeOfMovies);
+
+            var movies = await _movieService.GetMoviesByPageAsync(page, PageSizeOfMovies);
+
+            var model = new MoviesListViewModel
+            {
+                Movies = movies,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+
+            return View(model);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -119,11 +133,9 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            // Вземаме текущия потребител
             Guid currentUserId = Guid.Parse(GetUserId());
             bool isAdmin = User.IsInRole("Admin");
 
-            // Изтриваме филма
             bool isDeleted = await _movieService.DeleteMovieAsync(id, currentUserId, isAdmin);
 
             if (!isDeleted)

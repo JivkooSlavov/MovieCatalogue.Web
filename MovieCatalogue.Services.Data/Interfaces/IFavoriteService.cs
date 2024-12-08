@@ -9,8 +9,8 @@ namespace MovieCatalogue.Services.Data.Interfaces
 {
     public interface IFavoriteService
     {
-        Task<IEnumerable<AddMovieToFavorite>> GetUserFavoritesAsync(Guid userId);
-
+        Task<int> GetTotalFavoritesForUserAsync(Guid userId);
+        Task<IEnumerable<AddMovieToFavorite>> GetUserFavoritesByPageAsync(Guid userId, int page, int pageSize);
         Task<bool> AddToFavoritesAsync(Guid movieId, Guid userId);
         Task<RemoveMovieFromFavorite?> GetFavoriteByMovieIdAsync(Guid movieId, Guid userId);
         Task<bool> RemoveFavoriteAsync(Guid movieId, Guid userId);

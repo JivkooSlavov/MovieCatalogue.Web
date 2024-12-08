@@ -21,7 +21,9 @@ public class UserService : BaseService, IUserService
     public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
     {
         IEnumerable<User> allUsers = await _userManager.Users
+            .OrderBy(x=>x.UserName)
             .ToArrayAsync();
+
         ICollection<UserViewModel> allUsersViewModel = new List<UserViewModel>();
 
         foreach (User user in allUsers)

@@ -8,6 +8,7 @@ using MovieCatalogue.Web.ViewModels.Favorite;
 using MovieCatalogue.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Authorization;
 using MovieCatalogue.Services.Data.Interfaces;
+using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
@@ -22,14 +23,27 @@ namespace MovieCatalogue.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        [Authorize]
+        public async Task<IActionResult> Index(int page = 1)
         {
             Guid currentUserId = Guid.Parse(GetUserId());
 
-            var favorites = await _favoriteService.GetUserFavoritesAsync(currentUserId);
+            var totalFavorites = await _favoriteService.GetTotalFavoritesForUserAsync(currentUserId);
+            var totalPages = (int)Math.Ceiling(totalFavorites / (double)PageSizeOfMovies);
 
-            return View(favorites);
+            var favorites = await _favoriteService.GetUserFavoritesByPageAsync(currentUserId, page, PageSizeOfMovies);
+
+
+            var model = new UserFavoritesListViewModel
+            {
+                Favorites = favorites,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+
+            return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddToFavorites(Guid movieId)

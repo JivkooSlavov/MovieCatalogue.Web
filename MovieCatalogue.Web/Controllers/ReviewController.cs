@@ -10,6 +10,7 @@ using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
 using System.Security.Claims;
 using static MovieCatalogue.Common.ApplicationConstants;
+using static MovieCatalogue.Common.EntityValidationConstants.ReviewConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
@@ -44,13 +45,24 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> UserReviews()
+        public async Task<IActionResult> UserReviews(int pageNumber = 1)
         {
             var userId = Guid.Parse(GetUserId());
-            var reviews = await _reviewService.GetUserReviewsAsync(userId);
+            var totalReviews = await _reviewService.GetTotalReviewsForUserAsync(userId);
+            var totalPages = (int)Math.Ceiling(totalReviews / (double)PageSizeOfReviews);
 
-            return View(reviews);
+            var reviews = await _reviewService.GetUserReviewsByPageAsync(userId, pageNumber, PageSizeOfReviews);
+
+            var model = new UserReviewsListViewModel
+            {
+                Reviews = reviews,
+                CurrentPage = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return View(model);
         }
+
 
         [HttpGet]
         [Authorize]

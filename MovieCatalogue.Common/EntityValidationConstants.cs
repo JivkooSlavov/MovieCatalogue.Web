@@ -16,7 +16,7 @@ namespace MovieCatalogue.Common
             public const int MovieDescriptionsMaxLength = 1000;
             public const int MovieDescriptionMinLength = 50;
 
-            public const string DateFormatOfMovie = "dd-MM-yyyy";
+            public const string DateFormatOfMovie = "yyyy-dd-MM";
 
             public const int MovieCastMaxLength = 500;
             public const int MovieCastMinLength = 20;
@@ -31,6 +31,9 @@ namespace MovieCatalogue.Common
             public const int MovieImageUrlMaxLength = 2048;
 
             public const int MovieRatingDefault = 0;
+
+            public const int PageSizeOfMovies = 8;
+            public const int Page = 1;
         }
 
         public static class RatingConstants
@@ -42,6 +45,9 @@ namespace MovieCatalogue.Common
         {
             public const int ReviewContentMax = 1000;
             public const int ReviewContentMin = 5;
+
+            public const int PageSizeOfReviews = 10;
+            public const int Page = 1;
         }
 
         public static class GenreConstants

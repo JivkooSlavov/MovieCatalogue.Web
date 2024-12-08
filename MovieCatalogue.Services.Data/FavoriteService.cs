@@ -22,6 +22,14 @@ namespace MovieCatalogue.Services.Data
             _movieRepository = movieRepository;
         }
 
+        public async Task<int> GetTotalFavoritesForUserAsync(Guid userId)
+        {
+            return _favoriteRepository
+                .GetAll()
+                .Where(f => f.UserId == userId)
+                .Count();
+        }
+
         public async Task<bool> AddToFavoritesAsync(Guid movieId, Guid userId)
         {
             var exists = await _favoriteRepository
@@ -42,26 +50,29 @@ namespace MovieCatalogue.Services.Data
 
             return true;
         }
-        public async Task<IEnumerable<AddMovieToFavorite>> GetUserFavoritesAsync(Guid userId)
+        public async Task<IEnumerable<AddMovieToFavorite>> GetUserFavoritesByPageAsync(Guid userId, int page, int pageSize)
         {
             return await _favoriteRepository
-            .GetAllWithInclude(f => f.Movie)
-            .Include(f=>f.Movie.Genre)
-            .Where(f => f.UserId == userId)
-            .Select(f => new AddMovieToFavorite
-            {
-                FavoriteId = f.Id,
-                DirectorName = f.Movie.Director,
-                MovieId = f.Movie.Id,
-                Genre = f.Movie.Genre.Name,
-                MovieTitle = f.Movie.Title,
-                MovieDescription = f.Movie.Description,
-                PosterUrl = f.Movie.PosterUrl,
-                IsFavorite = true
-            })
-            .ToListAsync();
-
+                .GetAllWithInclude(f => f.Movie)
+                .Include(f => f.Movie.Genre)
+                .Where(f => f.UserId == userId)
+                .OrderBy(f => f.Movie.Title)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(f => new AddMovieToFavorite
+                {
+                    FavoriteId = f.Id,
+                    MovieId = f.Movie.Id,
+                    MovieTitle = f.Movie.Title,
+                    Genre = f.Movie.Genre.Name,
+                    DirectorName = f.Movie.Director,
+                    PosterUrl = f.Movie.PosterUrl,
+                    MovieDescription = f.Movie.Description,
+                    IsFavorite = true
+                })
+                .ToListAsync();
         }
+
         public async Task<RemoveMovieFromFavorite?> GetFavoriteByMovieIdAsync(Guid movieId, Guid userId)
         {
             var favorite = await _favoriteRepository

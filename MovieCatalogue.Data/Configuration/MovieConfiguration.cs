@@ -133,6 +133,81 @@ namespace MovieCatalogue.Data.Configuration
                     Rating = 4,
                     ReleaseDate = new DateTime(2003, 04, 04),
                     CreatedByUserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")
+                },
+               new Movie()
+{
+                    Id = Guid.Parse("d17c51a2-4677-47c9-8f15-1f768b3b7e7b"),
+                    Title = "The Shawshank Redemption",
+                    Description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+                    Director = "Frank Darabont",
+                    Cast = "Tim Robbins, Morgan Freeman, Bob Gunton",
+                    PosterUrl = "https://m.media-amazon.com/images/I/51NiGlapXlL._AC_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=NmzuHjWmXOc",
+                    Duration = 142,
+                    GenreId = Guid.Parse("c2e80bd4-44f7-42f2-8a76-189fe9d12754"),
+                    Rating = 5,
+                    ReleaseDate = new DateTime(1994, 09, 22),
+                    CreatedByUserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")
+                },
+               new Movie()
+{
+                    Id = Guid.Parse("a51ec6e9-e9c2-42a7-a785-1b6a6822d5fa"),
+                    Title = "The Dark Knight",
+                    Description = "When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+                    Director = "Christopher Nolan",
+                    Cast = "Christian Bale, Heath Ledger, Aaron Eckhart",
+                    PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+                    Duration = 152,
+                    GenreId = Guid.Parse("d4a34098-333d-4177-9cbc-53a979f0382c"), 
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2008, 07, 18),
+                    CreatedByUserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")
+                },
+                new Movie()
+                {
+                    Id = Guid.Parse("3a8bc77f-6d53-4dc2-9532-8d3fc6a9a4ed"),
+                    Title = "The Incredibles",
+                    Description = "A family of undercover superheroes, while trying to live the quiet suburban life, are forced into action to save the world.",
+                    Director = "Brad Bird",
+                    Cast = "Craig T. Nelson, Holly Hunter, Samuel L. Jackson",
+                    PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTY5OTU0OTc2NV5BMl5BanBnXkFtZTcwMzU4MDcyMQ@@._V1_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=eZbzbC9285I",
+                    Duration = 115,
+                    GenreId = Guid.Parse("ff41706e-522a-47cf-93e3-e646823ea7ed"), 
+                    Rating = 4,
+                    ReleaseDate = new DateTime(2004, 11, 05),
+                    CreatedByUserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")
+                },
+                new Movie()
+                {
+                    Id = Guid.Parse("89d143c2-41f5-4e49-b9b8-3152df7c2f8e"),
+                    Title = "The Lord of the Rings: The Return of the King",
+                    Description = "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
+                    Director = "Peter Jackson",
+                    Cast = "Elijah Wood, Viggo Mortensen, Ian McKellen, Orlando Bloom, Cate Blanchett",
+                    PosterUrl = "https://m.media-amazon.com/images/I/51Qvs9i5a%2BL._AC_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=r5X-hFf6Bwo",
+                    Duration = 201,
+                    GenreId = Guid.Parse("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2003, 12, 17),
+                    CreatedByUserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")
+                },
+                new Movie()
+                {
+                    Id = Guid.Parse("4e2c34e7-5b85-4a72-a894-8e71bb045c6e"),
+                    Title = "A Quiet Place",
+                    Description = "In a post-apocalyptic world, a family is forced to live in silence while hiding from monsters with ultra-sensitive hearing.",
+                    Director = "John Krasinski",
+                    Cast = "Emily Blunt, John Krasinski, Millicent Simmonds, Noah Jupe",
+                    PosterUrl = "https://m.media-amazon.com/images/M/MV5BMjI0MDMzNTQ0M15BMl5BanBnXkFtZTgwMTM5NzM3NDM@._V1_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=WR7cc5t7tv8",
+                    Duration = 90,
+                    GenreId = Guid.Parse("a8dbee99-43f7-4df1-824b-4b27600f67bd"),
+                    Rating = 5,
+                    ReleaseDate = new DateTime(2018, 04, 06),
+                    CreatedByUserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")
                 }
             };
             return movies;

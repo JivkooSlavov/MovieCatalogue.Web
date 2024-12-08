@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.Controllers;
 using MovieCatalogue.Web.ViewModels.Review;
+using System.Drawing.Printing;
 using System.Security.Claims;
 using static MovieCatalogue.Common.ApplicationConstants;
+using static MovieCatalogue.Common.EntityValidationConstants.ReviewConstants;
 
 namespace MovieCatalogue.Web.Areas.Admin.Controllers
 {
@@ -20,11 +22,23 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
             _reviewService = reviewService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var reviews = await _reviewService.GetAllReviewsAsync();
-            return View(reviews);
+            var totalReviews = await _reviewService.GetTotalReviewsAsync();
+            var totalPages = (int)Math.Ceiling(totalReviews / (double)PageSizeOfReviews);
+            var reviews = await _reviewService.GetAllReviewsByPageAsync(page, PageSizeOfReviews);
+
+            var model = new ReviewsListViewModel
+            {
+                Reviews = reviews,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+
+            return View(model);
         }
+
+
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {

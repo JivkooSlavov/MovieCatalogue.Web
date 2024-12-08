@@ -24,35 +24,46 @@ namespace MovieCatalogue.Services.Data
             _genreRepository = genreRepository;
             _ratingRepository = ratingRepository;
         }
-
-        public async Task<IEnumerable<MovieInfoViewModel>> GetAllMoviesAsync()
+        public async Task<IEnumerable<MovieInfoViewModel>> GetMoviesByPageAsync(int page, int pageSize)
         {
+            var movies = await _movieRepository
+                .GetAllAttached()
+                .Include(y => y.Genre)
+                .Where(x => x.IsDeleted == false)
+                .OrderBy(x => x.Title)
+                .Skip((page - 1) * pageSize) 
+                .Take(pageSize)
+                .Select(x => new MovieInfoViewModel
+                {
+                    Id = x.Id,
+                    Cast = x.Cast,
+                    Description = x.Description,
+                    Director = x.Director,
+                    Duration = x.Duration,
+                    PosterUrl = x.PosterUrl,
+                    Genre = x.Genre.Name,
+                    Rating = x.Rating,
+                    CreatedByUserId = x.CreatedByUserId.ToString(),
+                    ReleaseDate = x.ReleaseDate.ToString(DateFormatOfMovie),
+                    Title = x.Title,
+                    TrailerUrl = x.TrailerUrl,
+                })
+                .AsNoTracking()
+                .ToListAsync();
 
-            var model = await _movieRepository
-                 .GetAllAttached()
-                 .Include(y => y.Genre)
-                 .Where(x=>x.IsDeleted==false)
-                 .OrderBy(x=>x.Title)
-                      .Select(x => new MovieInfoViewModel
-                   {
-                       Id = x.Id,
-                       Cast = x.Cast,
-                       Description = x.Description,
-                       Director = x.Director,
-                       Duration = x.Duration,
-                       PosterUrl = x.PosterUrl,
-                       Genre = x.Genre.Name,
-                       Rating = x.Rating,
-                       CreatedByUserId = x.CreatedByUserId.ToString(),
-                       ReleaseDate = x.ReleaseDate.ToString(DateFormatOfMovie),
-                       Title = x.Title,
-                       TrailerUrl = x.TrailerUrl,
-                   })
-                   .AsNoTracking()
-                   .ToListAsync();
-
-            return model;
+            return movies;
         }
+
+        public async Task<int> GetTotalMoviesAsync()
+        {
+            var totalMovies = await _movieRepository
+                .GetAllAttached()
+                .CountAsync(x => x.IsDeleted == false);
+
+            return totalMovies;
+        }
+
+
 
         public async Task<MovieInfoViewModel?> GetMovieDetailsAsync(Guid id)
         {
@@ -110,6 +121,7 @@ namespace MovieCatalogue.Services.Data
             {
                 return false;
             }
+
             Movie movie = new Movie
             {
                 Title = model.Title,
@@ -172,11 +184,13 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<bool> EditMovieAsync(Guid id, AddMovieViewModel model, Guid currentUserId, bool isAdmin)
         {
-            var movie = await _movieRepository.GetByIdAsync(id);
+            var movie = await _movieRepository
+                .GetAllWithInclude(m => m.Ratings)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (movie == null || (!isAdmin && movie.CreatedByUserId != currentUserId))
             {
-                return false; 
+                return false;
             }
 
             bool isReleaseDateValid = DateTime.TryParseExact(
@@ -188,7 +202,7 @@ namespace MovieCatalogue.Services.Data
 
             if (!isReleaseDateValid)
             {
-                return false; 
+                return false;
             }
 
             movie.Title = model.Title;
@@ -196,16 +210,34 @@ namespace MovieCatalogue.Services.Data
             movie.Cast = model.Cast;
             movie.Director = model.Director;
             movie.Duration = model.Duration;
-            movie.Rating = model.Rating;
             movie.ReleaseDate = releaseDate;
             movie.PosterUrl = model.PosterUrl;
             movie.TrailerUrl = model.TrailerUrl ?? string.Empty;
             movie.GenreId = model.GenreId;
 
+            var existingRating = movie.Ratings.FirstOrDefault(r => r.UserId == currentUserId);
+            if (existingRating != null)
+            {
+                existingRating.Value = (int)model.Rating;
+            }
+            else
+            {
+                var newRating = new Rating
+                {
+                    MovieId = movie.Id,
+                    UserId = currentUserId,
+                    Value = (int)model.Rating
+                };
+                movie.Ratings.Add(newRating);
+            }
+
+            movie.Rating = movie.Ratings.Any() ? movie.Ratings.Average(r => r.Value) : 0;
+
             await _movieRepository.UpdateAsync(movie);
 
             return true;
         }
+
 
 
         public async Task<DeleteMovieViewModel?> GetMovieForDeletionAsync(Guid id, Guid currentUserId, bool isAdmin)
@@ -261,6 +293,7 @@ namespace MovieCatalogue.Services.Data
                     PosterUrl = m.PosterUrl,
                     Rating = m.Rating,
                     Cast = m.Cast,
+                    Genre =m.Genre.Name,
                     Description = m.Description,
                     Director = m.Director,
                     Duration = m.Duration,

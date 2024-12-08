@@ -11,8 +11,7 @@ namespace MovieCatalogue.Services.Data.Interfaces
 {
     public interface IMovieService
     {
-        Task<IEnumerable<MovieInfoViewModel>> GetAllMoviesAsync();
-
+        Task<IEnumerable<MovieInfoViewModel>> GetMoviesByPageAsync(int page, int pageSize);
         Task<MovieInfoViewModel?> GetMovieDetailsAsync(Guid id);
 
         Task<bool> AddMovieAsync(AddMovieViewModel inputModel, Guid userId);
@@ -26,6 +25,7 @@ namespace MovieCatalogue.Services.Data.Interfaces
         Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync();
 
         Task<IEnumerable<MovieInfoViewModel>> GetPopularMoviesAsync();
+        Task<int> GetTotalMoviesAsync();
 
     }
 }

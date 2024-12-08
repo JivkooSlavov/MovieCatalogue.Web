@@ -1,21 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MovieCatalogue.Common;
 using MovieCatalogue.Data;
-using MovieCatalogue.Data.Models;
-using MovieCatalogue.Data.Repository.Interfaces;
-using MovieCatalogue.Services.Data;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels.Movie;
-using MovieCatalogue.Web.ViewModels.Review;
-using System.Globalization;
-using System.IO;
 using System.Security.Claims;
-using static MovieCatalogue.Common.EntityValidationConstants;
-using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 using static MovieCatalogue.Common.ApplicationConstants;
+using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 
 namespace MovieCatalogue.Web.Controllers
 {
@@ -30,14 +20,25 @@ namespace MovieCatalogue.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            var totalMovies = await _movieService.GetTotalMoviesAsync();
+            var totalPages = (int)Math.Ceiling(totalMovies / (double)PageSizeOfMovies);
 
-            IEnumerable<MovieInfoViewModel> allMovies =
-               await  _movieService.GetAllMoviesAsync();
+            var movies = await _movieService.GetMoviesByPageAsync(page, PageSizeOfMovies);
 
-            return View(allMovies);
+            var model = new MoviesListViewModel
+            {
+                Movies = movies,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+
+            return View(model);
         }
+
+
+
 
         [HttpGet]
         [AllowAnonymous]

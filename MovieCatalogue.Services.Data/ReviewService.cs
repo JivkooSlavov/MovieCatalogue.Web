@@ -147,13 +147,30 @@ namespace MovieCatalogue.Services.Data
             return true;
         }
 
-        public async Task<IEnumerable<UserReviewViewModel>> GetUserReviewsAsync(Guid userId)
+        public async Task<int> GetTotalReviewsForUserAsync(Guid userId)
+        {
+            return await  _reviewRepository
+                .GetAllAttached()
+                .Where(r => r.UserId == userId && r.IsDeleted == false)
+                .CountAsync();
+        }
+
+        public async Task<int> GetTotalReviewsAsync()
+        {
+            return await _reviewRepository
+                .GetAllAttached()
+                .Where(r=>r.IsDeleted == false)
+                .CountAsync();
+        }
+
+        public async Task<IEnumerable<UserReviewViewModel>> GetUserReviewsByPageAsync(Guid userId, int pageNumber, int pageSize)
         {
             return await _reviewRepository
                 .GetAllWithInclude(r => r.Movie)
-                .Where(r=>r.IsDeleted == false)
-                .Where(r => r.UserId == userId)
+                .Where(r => r.UserId == userId && r.IsDeleted == false)
                 .OrderByDescending(r => r.DatePosted)
+                .Skip((pageNumber - 1) * pageSize) 
+                .Take(pageSize) 
                 .Select(r => new UserReviewViewModel
                 {
                     Id = r.Id,
@@ -166,25 +183,28 @@ namespace MovieCatalogue.Services.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ReviewViewModel>> GetAllReviewsAsync()
+
+        public async Task<IEnumerable<ReviewViewModel>> GetAllReviewsByPageAsync(int page, int pageSize)
         {
             return await _reviewRepository
                 .GetAllWithInclude(r => r.Movie)
                 .Include(r => r.User)
                 .Where(r => !r.IsDeleted)
                 .OrderByDescending(r => r.DatePosted)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .Select(r => new ReviewViewModel
                 {
                     Id = r.Id,
-                    Content = r.Content,
-                    CreatedAt = r.DatePosted,
                     MovieId = r.MovieId,
+                    Content = r.Content,
                     UserName = r.User.UserName,
+                    CreatedAt = r.DatePosted,
+                    UpdatedAt = r.UpdatePosted,
                     MovieTitle = r.Movie.Title,
-                    UpdatedAt = r.UpdatePosted
+                    IsDeleted = r.IsDeleted
                 })
                 .ToListAsync();
         }
-
     }
 }
