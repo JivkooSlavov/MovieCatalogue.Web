@@ -1,11 +1,4 @@
-﻿using MovieCatalogue.Services.Mapping;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using static MovieCatalogue.Common.EntityValidationConstants.MovieConstants;
 using static MovieCatalogue.Common.EntityValidationConstants.RatingConstants;
 using static MovieCatalogue.Common.Messages;

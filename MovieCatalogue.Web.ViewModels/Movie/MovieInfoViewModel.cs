@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MovieCatalogue.Data.Models;
-using MovieCatalogue.Services.Mapping;
-using MovieCatalogue.Web.ViewModels.Rating;
+﻿using MovieCatalogue.Web.ViewModels.Rating;
 using MovieCatalogue.Web.ViewModels.Review;
 
 namespace MovieCatalogue.Web.ViewModels.Movie

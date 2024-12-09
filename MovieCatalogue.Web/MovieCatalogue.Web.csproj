@@ -18,13 +18,13 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MovieCatalogue.Common\MovieCatalogue.Common.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Data\MovieCatalogue.Data.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Services.Data\MovieCatalogue.Services.Data.csproj" />
-    <ProjectReference Include="..\MovieCatalogue.Services.Mapping\MovieCatalogue.Services.Mapping.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Web.Infrastructure\MovieCatalogue.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Web.ViewModels\MovieCatalogue.Web.ViewModels.csproj" />
   </ItemGroup>

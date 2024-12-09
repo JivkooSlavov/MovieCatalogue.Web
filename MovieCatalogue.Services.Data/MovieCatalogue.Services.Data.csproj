@@ -14,7 +14,6 @@
     <ProjectReference Include="..\MovieCatalogue.Common\MovieCatalogue.Common.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Data.Models\MovieCatalogue.Data.Models.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Data\MovieCatalogue.Data.csproj" />
-    <ProjectReference Include="..\MovieCatalogue.Services.Mapping\MovieCatalogue.Services.Mapping.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Web.ViewModels\MovieCatalogue.Web.ViewModels.csproj" />
   </ItemGroup>
 

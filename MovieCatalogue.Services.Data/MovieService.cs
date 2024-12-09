@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MovieCatalogue.Data.Models;
 using MovieCatalogue.Data.Repository.Interfaces;
 using MovieCatalogue.Services.Data.Interfaces;
-using MovieCatalogue.Services.Mapping;
 using MovieCatalogue.Web.ViewModels.Movie;
 using MovieCatalogue.Web.ViewModels.Review;
 using System.Globalization;

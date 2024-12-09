@@ -7,119 +7,122 @@ using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.ViewModels.Admin;
 using System.Security.Claims;
 
-public class UserService : BaseService, IUserService
+namespace MovieCatalogue.Services.Data
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-
-    public UserService(UserManager<User> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor)
+    public class UserService : BaseService, IUserService
     {
-        _userManager = userManager;
-        _roleManager = roleManager;
-    }
-    public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
-    {
-        IEnumerable<User> allUsers = await _userManager.Users
-            .OrderBy(x=>x.UserName)
-            .ToArrayAsync();
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
-        ICollection<UserViewModel> allUsersViewModel = new List<UserViewModel>();
-
-        foreach (User user in allUsers)
+        public UserService(UserManager<User> userManager,
+            RoleManager<IdentityRole<Guid>> roleManager, IHttpContextAccessor httpContextAccessor)
         {
-            IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+        public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
+        {
+            IEnumerable<User> allUsers = await _userManager.Users
+                .OrderBy(x => x.UserName)
+                .ToArrayAsync();
 
-            allUsersViewModel.Add(new UserViewModel()
+            ICollection<UserViewModel> allUsersViewModel = new List<UserViewModel>();
+
+            foreach (User user in allUsers)
             {
-                Id = user.Id,
-                Email = user.Email,
-                Roles = roles.ToList()
-            });
+                IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
+
+                allUsersViewModel.Add(new UserViewModel()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Roles = roles.ToList()
+                });
+            }
+
+            return allUsersViewModel;
         }
 
-        return allUsersViewModel;
-    }
-
-    public async Task<bool> UserExistsByIdAsync(Guid userId)
-    {
-        User? user = await _userManager
-            .FindByIdAsync(userId.ToString());
-
-        return user != null;
-    }
-
-    public async Task<bool> AssignUserToRoleAsync(Guid userId, string roleName)
-    {
-        User? user = await _userManager
-            .FindByIdAsync(userId.ToString());
-        bool roleExists = await _roleManager.RoleExistsAsync(roleName);
-
-        if (user == null || !roleExists)
+        public async Task<bool> UserExistsByIdAsync(Guid userId)
         {
-            return false;
+            User? user = await _userManager
+                .FindByIdAsync(userId.ToString());
+
+            return user != null;
         }
 
-        bool alreadyInRole = await _userManager.IsInRoleAsync(user, roleName);
-        if (!alreadyInRole)
+        public async Task<bool> AssignUserToRoleAsync(Guid userId, string roleName)
         {
+            User? user = await _userManager
+                .FindByIdAsync(userId.ToString());
+            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
+
+            if (user == null || !roleExists)
+            {
+                return false;
+            }
+
+            bool alreadyInRole = await _userManager.IsInRoleAsync(user, roleName);
+            if (!alreadyInRole)
+            {
+                IdentityResult? result = await _userManager
+                    .AddToRoleAsync(user, roleName);
+
+                if (!result.Succeeded)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public async Task<bool> RemoveUserRoleAsync(Guid userId, string roleName)
+        {
+            User? user = await _userManager
+                .FindByIdAsync(userId.ToString());
+            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
+
+            if (user == null || !roleExists)
+            {
+                return false;
+            }
+
+            bool alreadyInRole = await _userManager.IsInRoleAsync(user, roleName);
+            if (alreadyInRole)
+            {
+                IdentityResult? result = await _userManager
+                    .RemoveFromRoleAsync(user, roleName);
+
+                if (!result.Succeeded)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public async Task<bool> DeleteUserAsync(Guid userId)
+        {
+            User? user = await _userManager
+                .FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return false;
+            }
+
             IdentityResult? result = await _userManager
-                .AddToRoleAsync(user, roleName);
-
+                .DeleteAsync(user);
             if (!result.Succeeded)
             {
                 return false;
             }
+
+            return true;
         }
 
-        return true;
+
     }
-
-    public async Task<bool> RemoveUserRoleAsync(Guid userId, string roleName)
-    {
-        User? user = await _userManager
-            .FindByIdAsync(userId.ToString());
-        bool roleExists = await _roleManager.RoleExistsAsync(roleName);
-
-        if (user == null || !roleExists)
-        {
-            return false;
-        }
-
-        bool alreadyInRole = await _userManager.IsInRoleAsync(user, roleName);
-        if (alreadyInRole)
-        {
-            IdentityResult? result = await _userManager
-                .RemoveFromRoleAsync(user, roleName);
-
-            if (!result.Succeeded)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public async Task<bool> DeleteUserAsync(Guid userId)
-    {
-        User? user = await _userManager
-            .FindByIdAsync(userId.ToString());
-
-        if (user == null)
-        {
-            return false;
-        }
-
-        IdentityResult? result = await _userManager
-            .DeleteAsync(user);
-        if (!result.Succeeded)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-
 }

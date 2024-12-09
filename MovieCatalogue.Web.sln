@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Web.Infrastr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{37CCB0BC-6180-4F87-B77A-DB898D4570EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Services.Data", "MovieCatalogue.Services.Data\MovieCatalogue.Services.Data.csproj", "{22B632AB-3B70-41C6-8421-E1E26243EF84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieCatalogue.Services.Data", "MovieCatalogue.Services.Data\MovieCatalogue.Services.Data.csproj", "{22B632AB-3B70-41C6-8421-E1E26243EF84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Services.Mapping", "MovieCatalogue.Services.Mapping\MovieCatalogue.Services.Mapping.csproj", "{D06B3302-3772-4FE5-973F-2C112727446A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E60D1FE0-9841-4A71-8E0C-A9F588AED64D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieCatalogue.Tests", "MovieCatalogue.Tests\MovieCatalogue.Tests.csproj", "{4091BDDB-41A0-46FB-AC3E-C947712D5DAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +61,10 @@ Global
 		{22B632AB-3B70-41C6-8421-E1E26243EF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B632AB-3B70-41C6-8421-E1E26243EF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B632AB-3B70-41C6-8421-E1E26243EF84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D06B3302-3772-4FE5-973F-2C112727446A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D06B3302-3772-4FE5-973F-2C112727446A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D06B3302-3772-4FE5-973F-2C112727446A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D06B3302-3772-4FE5-973F-2C112727446A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4091BDDB-41A0-46FB-AC3E-C947712D5DAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4091BDDB-41A0-46FB-AC3E-C947712D5DAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4091BDDB-41A0-46FB-AC3E-C947712D5DAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4091BDDB-41A0-46FB-AC3E-C947712D5DAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,7 +76,7 @@ Global
 		{F903683E-B1CB-4675-AC9C-7E2C71FEE748} = {209598D4-A5FD-4E42-8E91-C3CC4E5B9075}
 		{F978BA94-AA98-4467-8A99-4F513931DAAC} = {A315413C-3ED3-412A-876E-E1002AEA2B78}
 		{22B632AB-3B70-41C6-8421-E1E26243EF84} = {37CCB0BC-6180-4F87-B77A-DB898D4570EC}
-		{D06B3302-3772-4FE5-973F-2C112727446A} = {37CCB0BC-6180-4F87-B77A-DB898D4570EC}
+		{4091BDDB-41A0-46FB-AC3E-C947712D5DAB} = {E60D1FE0-9841-4A71-8E0C-A9F588AED64D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {914CD60C-2D41-46E4-B382-78034A19F278}

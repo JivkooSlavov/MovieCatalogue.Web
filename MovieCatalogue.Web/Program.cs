@@ -4,7 +4,6 @@ using MovieCatalogue.Data;
 using MovieCatalogue.Data.Models;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Services.Data;
-using MovieCatalogue.Services.Mapping;
 using MovieCatalogue.Web.Viewmodels;
 using MovieCatalogue.Web.Infrastructure.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,8 +52,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 WebApplication app = builder.Build();
-
-AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

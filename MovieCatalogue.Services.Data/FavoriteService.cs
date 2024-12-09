@@ -24,10 +24,10 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<int> GetTotalFavoritesForUserAsync(Guid userId)
         {
-            return _favoriteRepository
-                .GetAll()
+            return  await _favoriteRepository
+                .GetAllAttached()
                 .Where(f => f.UserId == userId)
-                .Count();
+                .CountAsync();
         }
 
         public async Task<bool> AddToFavoritesAsync(Guid movieId, Guid userId)

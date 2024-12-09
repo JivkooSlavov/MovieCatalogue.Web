@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MovieCatalogue.Common\MovieCatalogue.Common.csproj" />
     <ProjectReference Include="..\MovieCatalogue.Data.Models\MovieCatalogue.Data.Models.csproj" />
-    <ProjectReference Include="..\MovieCatalogue.Services.Mapping\MovieCatalogue.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>
