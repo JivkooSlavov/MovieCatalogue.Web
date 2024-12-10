@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using MovieCatalogue.Services.Data.Interfaces;
 using MovieCatalogue.Web.Controllers;
 using MovieCatalogue.Web.ViewModels.Movie;
@@ -76,26 +77,42 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
+
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid currentUserId = Guid.Parse(GetUserId());
             bool isAdmin = User.IsInRole(AdminRoleName);
-            var model = await _movieService.GetMovieForEditAsync(id, Guid.Empty, isAdmin);
+
+            AddMovieViewModel? model = await this._movieService
+                            .GetMovieForEditAsync(movieGuid, currentUserId, isAdmin);
 
             if (model == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(model);
+            return this.View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(AddMovieViewModel model, Guid id)
         {
+            Guid movieGuid = Guid.Empty;
+            bool isGuidValid = this.IsGuidValid(id.ToString(), ref movieGuid);
+            if (!isGuidValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
             if (!ModelState.IsValid)
             {
                 model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }
-
 
             Guid currentUserId = Guid.Parse(GetUserId());
             bool isAdmin = User.IsInRole(AdminRoleName);
@@ -117,9 +134,9 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             Guid currentUserId = Guid.Parse(GetUserId());
-            bool isAdmin = User.IsInRole("Admin");
+            bool isAdmin = User.IsInRole(AdminRoleName);
 
-            var model = await _movieService.GetMovieForDeletionAsync(id, currentUserId, isAdmin);
+            DeleteMovieViewModel? model = await _movieService.GetMovieForDeletionAsync(id, currentUserId, isAdmin);
 
             if (model == null)
             {
@@ -131,12 +148,12 @@ namespace MovieCatalogue.Web.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> Delete(DeleteMovieViewModel model)
         {
             Guid currentUserId = Guid.Parse(GetUserId());
-            bool isAdmin = User.IsInRole("Admin");
+            bool isAdmin = User.IsInRole(AdminRoleName);
 
-            bool isDeleted = await _movieService.DeleteMovieAsync(id, currentUserId, isAdmin);
+            bool isDeleted = await _movieService.DeleteMovieAsync(model.Id, currentUserId, isAdmin);
 
             if (!isDeleted)
             {

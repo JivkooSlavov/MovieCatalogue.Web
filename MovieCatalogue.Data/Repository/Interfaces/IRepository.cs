@@ -44,5 +44,7 @@ namespace MovieCatalogue.Data.Repository.Interfaces
 
         IEnumerable<TResult> Select<TResult>(Func<TType, TResult> selector);
 
+        Task<bool> DeleteByConditionAsync(Expression<Func<TType, bool>> predicate);
+
     }
 }

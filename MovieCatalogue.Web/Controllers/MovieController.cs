@@ -13,7 +13,7 @@ namespace MovieCatalogue.Web.Controllers
     {
         private readonly IMovieService _movieService;
 
-        public MovieController(MovieDbContext context, IMovieService movieService)
+        public MovieController(IMovieService movieService)
         {
             _movieService = movieService;
         }
@@ -149,7 +149,7 @@ namespace MovieCatalogue.Web.Controllers
 
             if (!isEdited)
             {
-                ModelState.AddModelError(nameof(model.ReleaseDate), "You do not have permission to edit this movie.");
+                ModelState.AddModelError(nameof(model.ReleaseDate), "Invalid release date format.");
                 model.Genres = await _movieService.GetGenresAsync();
                 return View(model);
             }

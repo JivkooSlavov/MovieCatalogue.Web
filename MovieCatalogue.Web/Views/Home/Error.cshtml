@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "An error occurred";
+}
+
+<div class="error-page">
+    <h1>Oops, something went wrong!</h1>
+    <p>An unexpected error occurred. Please try again later or return to the homepage.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Home</a>
+</div>
+
+@section Styles {
+    <style>
+        .error-page {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+            .error-page h1 {
+                font-size: 3rem;
+                color: #6c757d;
+            }
+
+            .error-page p {
+                font-size: 1.25rem;
+                color: #555;
+            }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #5a6268;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #494e52;
+            }
+    </style>
+}

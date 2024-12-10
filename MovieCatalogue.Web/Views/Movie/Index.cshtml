@@ -26,7 +26,7 @@
                         <h5 class="card-title">@movie.Title</h5>
                         <p class="card-text">@movie.Genre</p>
                         <p class="card-text">Released: @movie.ReleaseDate</p>
-                        <p class="card-text">Rating: @movie.Rating.ToString("F1") / 5,0</p>
+                        <p class="card-text">Average Rating: @movie.Rating.ToString("F1") / 5,0</p>
                     </div>
                     <div class="card-footer text-center">
                         <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-sm">Details</a>

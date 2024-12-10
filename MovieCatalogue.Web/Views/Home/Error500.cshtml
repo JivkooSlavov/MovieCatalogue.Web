@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Internal Server Error";
+}
+
+<div class="error-page">
+    <h1>500 - Internal Server Error</h1>
+    <p>Oops! Something went wrong on our side. Please try again later.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-danger">Go back to Home</a>
+</div>
+
+@section Styles {
+    <style>
+        .error-page {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+            .error-page h1 {
+                font-size: 3rem;
+                color: #dc3545;
+            }
+
+            .error-page p {
+                font-size: 1.25rem;
+                color: #555;
+            }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #c82333;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #a71d2a;
+            }
+    </style>
+}

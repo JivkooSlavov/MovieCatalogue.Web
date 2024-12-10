@@ -89,19 +89,22 @@ namespace MovieCatalogue.Services.Data
             }
 
             bool alreadyInRole = await _userManager.IsInRoleAsync(user, roleName);
-            if (alreadyInRole)
+            if (!alreadyInRole)
             {
-                IdentityResult? result = await _userManager
-                    .RemoveFromRoleAsync(user, roleName);
+                return true;
+            }
 
-                if (!result.Succeeded)
-                {
-                    return false;
-                }
+            IdentityResult? result = await _userManager
+                .RemoveFromRoleAsync(user, roleName);
+
+            if (!result.Succeeded)
+            {
+                return false;
             }
 
             return true;
         }
+
 
         public async Task<bool> DeleteUserAsync(Guid userId)
         {

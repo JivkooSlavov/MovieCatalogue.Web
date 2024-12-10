@@ -214,24 +214,18 @@ namespace MovieCatalogue.Services.Data
             movie.TrailerUrl = model.TrailerUrl ?? string.Empty;
             movie.GenreId = model.GenreId;
 
-            var existingRating = movie.Ratings.FirstOrDefault(r => r.UserId == currentUserId);
-            if (existingRating != null)
+            if(movie.Rating != model.Rating)
             {
-                existingRating.Value = (int)model.Rating;
-            }
-            else
-            {
-                var newRating = new Rating
+                await _ratingRepository.DeleteByConditionAsync(mr => mr.MovieId == model.Id);
+                Rating updatedRating = new Rating
                 {
-                    MovieId = movie.Id,
+                    MovieId = model.Id,
                     UserId = currentUserId,
                     Value = (int)model.Rating
                 };
-                movie.Ratings.Add(newRating);
+                await _ratingRepository.AddAsync(updatedRating);
+                movie.Rating = model.Rating;
             }
-
-            movie.Rating = movie.Ratings.Any() ? movie.Ratings.Average(r => r.Value) : 0;
-
             await _movieRepository.UpdateAsync(movie);
 
             return true;

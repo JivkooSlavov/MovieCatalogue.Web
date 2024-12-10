@@ -30,9 +30,10 @@
         </div>
     </div>
 
-    <form method="post">
+    <form method="post" asp-action="Delete" asp-controller="MovieManagement" asp-area="Admin">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
         <button type="submit" class="btn btn-danger me-2">Delete</button>
-        <a href="@Url.Action("Index", "Movie")" class="btn btn-secondary">Cancel</a>
+        <a href="@Url.Action("Index", "MovieManagement", new { area = "Admin" })" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

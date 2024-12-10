@@ -17,7 +17,7 @@ namespace MovieCatalogue.Web.Controllers
     {
         private readonly IFavoriteService _favoriteService;
 
-        public FavoriteController(MovieDbContext context, IFavoriteService favoriteService)
+        public FavoriteController(IFavoriteService favoriteService)
         {
             _favoriteService = favoriteService;
         }

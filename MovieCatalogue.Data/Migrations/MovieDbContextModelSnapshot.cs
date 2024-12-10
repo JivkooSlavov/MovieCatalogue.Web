@@ -388,86 +388,6 @@ namespace MovieCatalogue.Data.Migrations
                             ReleaseDate = new DateTime(2003, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Ice Age",
                             TrailerUrl = "https://www.youtube.com/watch?v=wjdqn9r4thg"
-                        },
-                        new
-                        {
-                            Id = new Guid("d17c51a2-4677-47c9-8f15-1f768b3b7e7b"),
-                            Cast = "Tim Robbins, Morgan Freeman, Bob Gunton",
-                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
-                            Description = "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-                            Director = "Frank Darabont",
-                            Duration = 142,
-                            GenreId = new Guid("c2e80bd4-44f7-42f2-8a76-189fe9d12754"),
-                            IsDeleted = false,
-                            PosterUrl = "https://m.media-amazon.com/images/I/51NiGlapXlL._AC_.jpg",
-                            Rating = 5.0,
-                            ReleaseDate = new DateTime(1994, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Shawshank Redemption",
-                            TrailerUrl = "https://www.youtube.com/watch?v=NmzuHjWmXOc"
-                        },
-                        new
-                        {
-                            Id = new Guid("a51ec6e9-e9c2-42a7-a785-1b6a6822d5fa"),
-                            Cast = "Christian Bale, Heath Ledger, Aaron Eckhart",
-                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
-                            Description = "When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-                            Director = "Christopher Nolan",
-                            Duration = 152,
-                            GenreId = new Guid("d4a34098-333d-4177-9cbc-53a979f0382c"),
-                            IsDeleted = false,
-                            PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
-                            Rating = 5.0,
-                            ReleaseDate = new DateTime(2008, 7, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Dark Knight",
-                            TrailerUrl = "https://www.youtube.com/watch?v=EXeTwQWrcwY"
-                        },
-                        new
-                        {
-                            Id = new Guid("3a8bc77f-6d53-4dc2-9532-8d3fc6a9a4ed"),
-                            Cast = "Craig T. Nelson, Holly Hunter, Samuel L. Jackson",
-                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
-                            Description = "A family of undercover superheroes, while trying to live the quiet suburban life, are forced into action to save the world.",
-                            Director = "Brad Bird",
-                            Duration = 115,
-                            GenreId = new Guid("ff41706e-522a-47cf-93e3-e646823ea7ed"),
-                            IsDeleted = false,
-                            PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTY5OTU0OTc2NV5BMl5BanBnXkFtZTcwMzU4MDcyMQ@@._V1_.jpg",
-                            Rating = 4.0,
-                            ReleaseDate = new DateTime(2004, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Incredibles",
-                            TrailerUrl = "https://www.youtube.com/watch?v=eZbzbC9285I"
-                        },
-                        new
-                        {
-                            Id = new Guid("89d143c2-41f5-4e49-b9b8-3152df7c2f8e"),
-                            Cast = "Elijah Wood, Viggo Mortensen, Ian McKellen, Orlando Bloom, Cate Blanchett",
-                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
-                            Description = "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
-                            Director = "Peter Jackson",
-                            Duration = 201,
-                            GenreId = new Guid("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
-                            IsDeleted = false,
-                            PosterUrl = "https://m.media-amazon.com/images/I/51Qvs9i5a%2BL._AC_.jpg",
-                            Rating = 5.0,
-                            ReleaseDate = new DateTime(2003, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Lord of the Rings: The Return of the King",
-                            TrailerUrl = "https://www.youtube.com/watch?v=r5X-hFf6Bwo"
-                        },
-                        new
-                        {
-                            Id = new Guid("4e2c34e7-5b85-4a72-a894-8e71bb045c6e"),
-                            Cast = "Emily Blunt, John Krasinski, Millicent Simmonds, Noah Jupe",
-                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
-                            Description = "In a post-apocalyptic world, a family is forced to live in silence while hiding from monsters with ultra-sensitive hearing.",
-                            Director = "John Krasinski",
-                            Duration = 90,
-                            GenreId = new Guid("a8dbee99-43f7-4df1-824b-4b27600f67bd"),
-                            IsDeleted = false,
-                            PosterUrl = "https://m.media-amazon.com/images/M/MV5BMjI0MDMzNTQ0M15BMl5BanBnXkFtZTgwMTM5NzM3NDM@._V1_.jpg",
-                            Rating = 5.0,
-                            ReleaseDate = new DateTime(2018, 4, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "A Quiet Place",
-                            TrailerUrl = "https://www.youtube.com/watch?v=WR7cc5t7tv8"
                         });
                 });
 
@@ -501,35 +421,35 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("94b0d6c4-6536-4521-9fb8-071bf6d16ce8"),
+                            Id = new Guid("1cbf8973-56ed-41f1-aa0c-eb852101ecfc"),
                             MovieId = new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("be26c06e-f0f9-42f1-8d83-589da280315d"),
+                            Id = new Guid("5b1c1305-ac53-419c-acd5-45bbada5b1ca"),
                             MovieId = new Guid("b1d07192-c121-443a-8367-b18934739a2e"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("bae110ef-dc38-436f-9cc5-500fdca54294"),
+                            Id = new Guid("1b062050-f3f8-48ab-aec6-29d910b601c2"),
                             MovieId = new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("d66963f5-bbaa-4ba3-8654-3ba236a38615"),
+                            Id = new Guid("8c366b61-afc4-4dec-ae1d-4d7408485ae2"),
                             MovieId = new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"),
                             UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("31878726-6940-4289-8599-331a57cdba72"),
+                            Id = new Guid("a0321587-2413-46c1-8e33-f4874f481707"),
                             MovieId = new Guid("e8772d7c-8bda-4652-9f91-757857838db7"),
                             UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Value = 4
@@ -643,15 +563,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bcdaa84f-ad89-4baf-a9f7-b64979e9912a",
+                            ConcurrencyStamp = "f78405bb-8552-4cc1-b759-d77c6902d813",
                             Email = "zhivko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZHIVKO@MOVIE.COM",
                             NormalizedUserName = "ZHIVKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHu0MRzlIHJdjLXsJ4ndif3FQyejwETJsbNQvVJF3HpwzF+/hlVg+ZWc5aP/KslsLw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELxfoHKQrty5l4VQOVnjrj98NUxbU/2NsOv4ogcXSnElZ+cGs5QiGJjummIpLX9oMg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cc121d27-acb0-464a-94ab-751339aaa520",
+                            SecurityStamp = "54f1fdbf-a98f-47fc-bc4c-a8d7643959d3",
                             TwoFactorEnabled = false,
                             UserName = "zhivko@movie.com"
                         },
@@ -659,15 +579,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cf42c1cd-e4d5-45df-bab8-0c30bc7f8a75",
+                            ConcurrencyStamp = "be97fb48-62fb-4aa7-b0c2-860f56c6f788",
                             Email = "mitko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MITKO@MOVIE.COM",
                             NormalizedUserName = "MITKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEODW+jTYwgHAI8QMZdIBtc1mXPU42dx0XgvJ5+uNpxOKtBWUShrtqT4QbNTAs4FckA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFLeAR2REmCELwQnQ/rO0oN/1MNdK4WVifM+w8quUIW5Ne7WD2hucWGC4IPvadWcvg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dd9bd443-ab6e-4f04-836b-b61f837359c1",
+                            SecurityStamp = "59efd6f3-6791-4d79-b3e6-5a48d58c8b94",
                             TwoFactorEnabled = false,
                             UserName = "mitko@movie.com"
                         });

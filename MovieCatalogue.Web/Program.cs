@@ -12,12 +12,12 @@ using MovieCatalogue.Data.Repository.Interfaces;
 using MovieCatalogue.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+
 string connectionString = builder.Configuration.GetConnectionString("SQLServer")!;
 string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
 string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
 string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
 
-// Add services to the container.
 builder.Services.AddDbContext<MovieDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
@@ -51,9 +51,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-WebApplication app = builder.Build();
+var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -64,10 +63,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
-
-//app.UseRoleRedirectMiddleware();
-
 app.UseAuthorization();
+
+
+app.UseExceptionHandler("/Home/Error");
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
 
@@ -78,11 +78,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
 app.ApplyMigrations();
 
 app.Run();
 
-// ConfigureIdentity method as before
 static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg)
 {
     cfg.Password.RequireDigit =
@@ -107,29 +107,4 @@ static void ConfigureIdentity(WebApplicationBuilder builder, IdentityOptions cfg
 
     cfg.User.RequireUniqueEmail =
         builder.Configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
-}
-
-// Create middleware for redirecting admin users
-public static class AdminRedirectMiddleware
-{
-    public static void UseAdminRedirect(this IApplicationBuilder app)
-    {
-        app.Use(async (context, next) =>
-        {
-            if (context.User.Identity?.IsAuthenticated == true)
-            {
-                var userManager = context.RequestServices.GetRequiredService<UserManager<User>>();
-                var user = await userManager.GetUserAsync(context.User);
-
-                if (user != null && await userManager.IsInRoleAsync(user, "Administrator"))
-                {
-                    // Redirect admin users to /Admin/Home/Index
-                    context.Response.Redirect("/Admin/Home/Index");
-                    return;
-                }
-            }
-
-            await next();
-        });
-    }
 }

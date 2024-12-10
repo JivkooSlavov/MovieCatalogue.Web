@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Forbidden";
+}
+
+<div class="error-page">
+    <h1>403 - Forbidden</h1>
+    <p>You do not have permission to view this page. If you believe this is an error, please contact the administrator.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-warning">Go back to Home</a>
+</div>
+
+@section Styles {
+    <style>
+        .error-page {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+            .error-page h1 {
+                font-size: 3rem;
+                color: #ffc107;
+            }
+
+            .error-page p {
+                font-size: 1.25rem;
+                color: #555;
+            }
+
+        .btn-warning {
+            background-color: #ffcc00;
+            border-color: #e6b800;
+        }
+
+            .btn-warning:hover {
+                background-color: #e6b800;
+                border-color: #cc9900;
+            }
+    </style>
+}

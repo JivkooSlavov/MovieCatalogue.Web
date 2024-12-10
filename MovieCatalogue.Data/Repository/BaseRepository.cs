@@ -141,6 +141,22 @@ namespace MovieCatalogue.Data.Repository
                 return false;
             }
         }
+        public async Task<bool> DeleteByConditionAsync(Expression<Func<TType, bool>> predicate)
+        {
+            try
+            {
+                var itemsToDelete = dbSet.Where(predicate).ToList();
+                dbSet.RemoveRange(itemsToDelete);
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public IQueryable<TType> GetAllWithInclude(params Expression<Func<TType, object>>[] includes)
         {
             IQueryable<TType> query = dbSet.AsQueryable();
@@ -152,7 +168,6 @@ namespace MovieCatalogue.Data.Repository
 
             return query;
         }
-
         public IEnumerable<TResult> Select<TResult>(Func<TType, TResult> selector)
         {
             return dbSet.Select(selector).ToList();
