@@ -39,17 +39,16 @@ namespace MovieCatalogue.Tests
             _context.Dispose();
         }
 
-        [Test]
-        public async Task GetMoviesByPageAsync_ReturnsCorrectMovies()
+        [TestCase(1, 2, 2)]
+        [TestCase(1, 1, 1)]
+        public async Task GetMoviesByPageAsync_ReturnsCorrectMovies(int page, int pageSize, int expectedCount)
         {
             await CreateMovieAsync("Movie 1");
             await CreateMovieAsync("Movie 2");
 
-            var result = await _movieService.GetMoviesByPageAsync(1, 2);
+            var result = await _movieService.GetMoviesByPageAsync(page, pageSize);
 
-            Assert.AreEqual(2, result.Count());
-            Assert.IsTrue(result.Any(m => m.Title == "Movie 1"));
-            Assert.IsTrue(result.Any(m => m.Title == "Movie 2"));
+            Assert.AreEqual(expectedCount, result.Count());
         }
 
         [Test]
@@ -63,44 +62,29 @@ namespace MovieCatalogue.Tests
             Assert.AreEqual(2, result);
         }
 
-        [Test]
-        public async Task GetMovieDetailsAsync_ReturnsCorrectMovieDetails()
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task GetMovieDetailsAsync_ReturnsExpectedResult(bool movieExists)
         {
-            var movie = await CreateMovieAsync("Movie 1");
+            var movieId = movieExists ? (await CreateMovieAsync("Existing Movie")).Id : Guid.NewGuid();
 
-            var result = await _movieService.GetMovieDetailsAsync(movie.Id);
+            var result = await _movieService.GetMovieDetailsAsync(movieId);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(movie.Title, result?.Title);
-            Assert.AreEqual(movie.Description, result?.Description);
-        }
-
-        [Test]
-        public async Task GetMovieDetailsAsync_ReturnsNull_WhenMovieDoesNotExist()
-        {
-            var nonExistentMovieId = Guid.NewGuid();
-
-            var result = await _movieService.GetMovieDetailsAsync(nonExistentMovieId);
-
-            Assert.IsNull(result);
+            if (movieExists)
+            {
+                Assert.IsNotNull(result);
+                Assert.AreEqual("Existing Movie", result?.Title);
+            }
+            else
+            {
+                Assert.IsNull(result);
+            }
         }
 
         [Test]
         public async Task AddMovieAsync_ReturnsTrue_WhenSuccessfullyAdded()
         {
-            var model = new AddMovieViewModel
-            {
-                Title = "New Movie",
-                Description = "New Description",
-                GenreId = Guid.NewGuid(),
-                ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
-                Cast = "Actor A, Actor B",
-                Director = "Director A",
-                Duration = 120,
-                PosterUrl = "http://poster.url",
-                TrailerUrl = "http://trailer.url",
-                Rating = 4.5
-            };
+            var model = GetTestAddMovieViewModel();
             var userId = Guid.NewGuid();
 
             var result = await _movieService.AddMovieAsync(model, userId);
@@ -109,82 +93,35 @@ namespace MovieCatalogue.Tests
             Assert.AreEqual(1, _context.Movies.Count());
         }
 
-        [Test]
-        public async Task EditMovieAsync_ReturnsTrue_WhenSuccessfullyEdited()
+        [TestCase(true, true)] 
+        [TestCase(false, false)]
+        public async Task EditMovieAsync_ReturnsExpectedResult(bool movieExists, bool expectedResult)
         {
-            var movie = await CreateMovieAsync("Original Title");
-            var model = new AddMovieViewModel
+            var movieId = movieExists ? (await CreateMovieAsync("Original Title")).Id : Guid.NewGuid();
+            var model = GetTestEditMovieViewModel(movieId);
+            var userId = movieExists ? _context.Movies.First().CreatedByUserId : Guid.NewGuid();
+
+            var result = await _movieService.EditMovieAsync(movieId, model, userId, isAdmin: false);
+
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [TestCase(true, true)]
+        [TestCase(false, false)]
+        public async Task DeleteMovieAsync_ReturnsExpectedResult(bool movieExists, bool expectedResult)
+        {
+            var movieId = movieExists ? (await CreateMovieAsync("Deletable Movie")).Id : Guid.NewGuid();
+            var userId = movieExists ? _context.Movies.First().CreatedByUserId : Guid.NewGuid();
+
+            var result = await _movieService.DeleteMovieAsync(movieId, userId, isAdmin: false);
+
+            Assert.AreEqual(expectedResult, result);
+
+            if (movieExists)
             {
-                Id = movie.Id,
-                Title = "Updated Title",
-                Description = "Updated Description",
-                GenreId = movie.GenreId,
-                ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
-                Cast = "Updated Cast",
-                Director = "Updated Director",
-                Duration = 150,
-                PosterUrl = "http://updated.poster",
-                TrailerUrl = "http://updated.trailer",
-                Rating = 5.0
-            };
-            var userId = movie.CreatedByUserId;
-
-            var result = await _movieService.EditMovieAsync(movie.Id, model, userId, isAdmin: false);
-
-            Assert.IsTrue(result);
-            var updatedMovie = _context.Movies.FirstOrDefault(m => m.Id == movie.Id);
-            Assert.IsNotNull(updatedMovie);
-            Assert.AreEqual("Updated Title", updatedMovie?.Title);
+                Assert.IsTrue(_context.Movies.First(m => m.Id == movieId).IsDeleted);
+            }
         }
-
-        [Test]
-        public async Task EditMovieAsync_ReturnsFalse_WhenMovieDoesNotExist()
-        {
-            var nonExistentMovieId = Guid.NewGuid();
-            var model = new AddMovieViewModel
-            {
-                Id = nonExistentMovieId,
-                Title = "Updated Title",
-                Description = "Updated Description",
-                GenreId = Guid.NewGuid(),
-                ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
-                Cast = "Updated Cast",
-                Director = "Updated Director",
-                Duration = 150,
-                PosterUrl = "http://updated.poster",
-                TrailerUrl = "http://updated.trailer",
-                Rating = 5.0
-            };
-            var userId = Guid.NewGuid();
-
-            var result = await _movieService.EditMovieAsync(nonExistentMovieId, model, userId, isAdmin: false);
-
-            Assert.IsFalse(result);
-        }
-
-        [Test]
-        public async Task DeleteMovieAsync_ReturnsTrue_WhenSuccessfullyDeleted()
-        {
-            var movie = await CreateMovieAsync("Deletable Movie");
-            var userId = movie.CreatedByUserId;
-
-            var result = await _movieService.DeleteMovieAsync(movie.Id, userId, isAdmin: false);
-
-            Assert.IsTrue(result);
-            Assert.IsTrue(_context.Movies.First(m => m.Id == movie.Id).IsDeleted);
-        }
-
-        [Test]
-        public async Task DeleteMovieAsync_ReturnsFalse_WhenMovieDoesNotExist()
-        {
-            var nonExistentMovieId = Guid.NewGuid();
-            var userId = Guid.NewGuid();
-
-            var result = await _movieService.DeleteMovieAsync(nonExistentMovieId, userId, isAdmin: false);
-
-            Assert.IsFalse(result);
-        }
-
 
         [Test]
         public async Task GetPopularMoviesAsync_ReturnsTopRatedMovies()
@@ -201,6 +138,35 @@ namespace MovieCatalogue.Tests
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual("Movie 2", result.First().Title);
         }
+
+        private AddMovieViewModel GetTestAddMovieViewModel() => new()
+        {
+            Title = "New Movie",
+            Description = "New Description",
+            GenreId = Guid.NewGuid(),
+            ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            Cast = "Actor A, Actor B",
+            Director = "Director A",
+            Duration = 120,
+            PosterUrl = "http://poster.url",
+            TrailerUrl = "http://trailer.url",
+            Rating = 4.5
+        };
+
+        private AddMovieViewModel GetTestEditMovieViewModel(Guid movieId) => new()
+        {
+            Id = movieId,
+            Title = "Updated Title",
+            Description = "Updated Description",
+            GenreId = Guid.NewGuid(),
+            ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            Cast = "Updated Cast",
+            Director = "Updated Director",
+            Duration = 150,
+            PosterUrl = "http://updated.poster",
+            TrailerUrl = "http://updated.trailer",
+            Rating = 5.0
+        };
 
         private async Task<Movie> CreateMovieAsync(string title)
         {

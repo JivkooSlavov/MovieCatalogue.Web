@@ -50,7 +50,7 @@ namespace MovieCatalogue.Services.Data
                         Id = r.Id,
                         Content = r.Content,
                         CreatedAt = r.DatePosted,
-                        UserName = r.User?.UserName ?? "Unknown",
+                        UserName = r.User?.UserName,
                         UpdatedAt = r.UpdatePosted
                     })
                     .ToList()
@@ -117,10 +117,13 @@ namespace MovieCatalogue.Services.Data
                  {
                      Id = r.Id,
                      MovieId = r.MovieId,
-                     MovieTitle = r.Movie.Title,
                      Content = r.Content,
+                     UserName = r.User.UserName,
                      CreatedAt = r.DatePosted,
+                     UpdatedAt = r.UpdatePosted,
+                     MovieTitle = r.Movie.Title,
                      CreatedByUserId = r.UserId
+
                  })
                  .FirstOrDefaultAsync();
 

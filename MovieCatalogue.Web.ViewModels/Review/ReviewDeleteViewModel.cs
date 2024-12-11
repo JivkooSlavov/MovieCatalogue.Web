@@ -13,8 +13,9 @@ namespace MovieCatalogue.Web.ViewModels.Review
         public Guid MovieId { get; set; } 
         public string MovieTitle { get; set; } = null!; 
         public string Content { get; set; } = null!; 
-        public DateTime CreatedAt { get; set; } 
-
+        public DateTime CreatedAt { get; set; }
+        public string? UserName { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public Guid CreatedByUserId { get; set; }
     }
 

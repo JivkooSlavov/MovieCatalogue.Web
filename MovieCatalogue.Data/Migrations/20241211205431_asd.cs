@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MovieCatalogue.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class asd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -290,8 +290,8 @@ namespace MovieCatalogue.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 0, "f78405bb-8552-4cc1-b759-d77c6902d813", "zhivko@movie.com", false, false, null, "ZHIVKO@MOVIE.COM", "ZHIVKO@MOVIE.COM", "AQAAAAIAAYagAAAAELxfoHKQrty5l4VQOVnjrj98NUxbU/2NsOv4ogcXSnElZ+cGs5QiGJjummIpLX9oMg==", null, false, "54f1fdbf-a98f-47fc-bc4c-a8d7643959d3", false, "zhivko@movie.com" },
-                    { new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 0, "be97fb48-62fb-4aa7-b0c2-860f56c6f788", "mitko@movie.com", false, false, null, "MITKO@MOVIE.COM", "MITKO@MOVIE.COM", "AQAAAAIAAYagAAAAEFLeAR2REmCELwQnQ/rO0oN/1MNdK4WVifM+w8quUIW5Ne7WD2hucWGC4IPvadWcvg==", null, false, "59efd6f3-6791-4d79-b3e6-5a48d58c8b94", false, "mitko@movie.com" }
+                    { new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 0, "96b6ce56-12f6-4abd-af7c-f2b89bc1e703", "zhivko@movie.com", false, false, null, "ZHIVKO@MOVIE.COM", "ZHIVKO@MOVIE.COM", "AQAAAAIAAYagAAAAEGiBesK9YDjSTjfQeUcvI1jd6JOMSolPM6JV7U9zIK1prVZbmcrhjCXYwtFo8GURzw==", null, false, "3045659d-a5df-408b-ab09-3d029f6720ff", false, "zhivko@movie.com" },
+                    { new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 0, "07826e1b-25a5-47f1-b5f3-fad68edaf16d", "mitko@movie.com", false, false, null, "MITKO@MOVIE.COM", "MITKO@MOVIE.COM", "AQAAAAIAAYagAAAAEGQwIjxAEShn0jNjlDWS56B3X4K5AVwtgJSlN3IXMaUiOxCHIRoOY3ce7ueBXsoS9g==", null, false, "ec65e1e2-0459-4edc-b406-759ffab70620", false, "mitko@movie.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -328,11 +328,11 @@ namespace MovieCatalogue.Data.Migrations
                 columns: new[] { "Id", "MovieId", "UserId", "Value" },
                 values: new object[,]
                 {
-                    { new Guid("1b062050-f3f8-48ab-aec6-29d910b601c2"), new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
-                    { new Guid("1cbf8973-56ed-41f1-aa0c-eb852101ecfc"), new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
-                    { new Guid("5b1c1305-ac53-419c-acd5-45bbada5b1ca"), new Guid("b1d07192-c121-443a-8367-b18934739a2e"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
-                    { new Guid("8c366b61-afc4-4dec-ae1d-4d7408485ae2"), new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 },
-                    { new Guid("a0321587-2413-46c1-8e33-f4874f481707"), new Guid("e8772d7c-8bda-4652-9f91-757857838db7"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 4 }
+                    { new Guid("7769c977-41dc-47de-8a73-1da5177c8361"), new Guid("b1d07192-c121-443a-8367-b18934739a2e"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("c5217d3b-1770-4be9-ac41-b379e3ef03ea"), new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("cfb3508b-0472-4dca-ab0a-33cdbeac3541"), new Guid("e8772d7c-8bda-4652-9f91-757857838db7"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 4 },
+                    { new Guid("da0c2ff4-8d73-448a-bb7d-b408e2e368a6"), new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("ffaa5af5-3bb2-44ed-8412-c46a6ab7222f"), new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -15,54 +15,25 @@ namespace MovieCatalogue.Tests
             _baseService = new BaseService();
         }
 
-        [Test]
-        public void IsGuidValid_ReturnsTrue_ForValidGuid()
+        [TestCase("2c4b23c8-3f5c-4e6a-b2f1-df4f5dd5f1bc", true)]
+        [TestCase(null, false)]
+        [TestCase("", false)] 
+        [TestCase("invalid-guid", false)]
+        public void IsGuidValid_ReturnsExpectedResult(string? input, bool expectedResult)
         {
-            string validGuidString = Guid.NewGuid().ToString();
             Guid parsedGuid = Guid.Empty;
 
-            bool result = _baseService.IsGuidValid(validGuidString, ref parsedGuid);
+            bool result = _baseService.IsGuidValid(input, ref parsedGuid);
 
-            Assert.IsTrue(result);
-            Assert.AreNotEqual(Guid.Empty, parsedGuid);
-        }
-
-        [Test]
-        public void IsGuidValid_ReturnsFalse_ForNullString()
-        {
-            string? nullString = null;
-            Guid parsedGuid = Guid.Empty;
-
-            bool result = _baseService.IsGuidValid(nullString, ref parsedGuid);
-
-            Assert.IsFalse(result);
-            Assert.AreEqual(Guid.Empty, parsedGuid);
-        }
-
-        [Test]
-        public void IsGuidValid_ReturnsFalse_ForEmptyString()
-        {
-            string emptyString = "";
-            Guid parsedGuid = Guid.Empty;
-
-            bool result = _baseService.IsGuidValid(emptyString, ref parsedGuid);
-
-            Assert.IsFalse(result);
-            Assert.AreEqual(Guid.Empty, parsedGuid);
-        }
-
-        [Test]
-        public void IsGuidValid_ReturnsFalse_ForInvalidGuidString()
-        {
-
-            string invalidGuidString = "invalid-guid";
-            Guid parsedGuid = Guid.Empty;
-
-            bool result = _baseService.IsGuidValid(invalidGuidString, ref parsedGuid);
-
-
-            Assert.IsFalse(result);
-            Assert.AreEqual(Guid.Empty, parsedGuid);
+            Assert.AreEqual(expectedResult, result);
+            if (expectedResult)
+            {
+                Assert.AreNotEqual(Guid.Empty, parsedGuid);
+            }
+            else
+            {
+                Assert.AreEqual(Guid.Empty, parsedGuid);
+            }
         }
     }
 }

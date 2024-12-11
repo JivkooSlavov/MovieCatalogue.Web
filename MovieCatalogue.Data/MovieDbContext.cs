@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace MovieCatalogue.Data
 {
-    public class  MovieDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+    public class MovieDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public MovieDbContext()
         {

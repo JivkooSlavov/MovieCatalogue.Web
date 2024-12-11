@@ -5,6 +5,10 @@ using MovieCatalogue.Data.Repository;
 using MovieCatalogue.Data.Repository.Interfaces;
 using MovieCatalogue.Services.Data;
 using MovieCatalogue.Services.Data.Interfaces;
+using NUnit.Framework;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MovieCatalogue.Tests
 {
@@ -35,10 +39,11 @@ namespace MovieCatalogue.Tests
             _context.Dispose();
         }
 
-
-        [Test]
-        public async Task SearchMoviesAsync_ReturnsMovies_WhenQueryMatches()
+        [TestCase("Test", 1)]
+        [TestCase("NonExistentQuery", 0)]
+        public async Task SearchMoviesAsync_ReturnsCorrectResults_BasedOnQuery(string query, int expectedCount)
         {
+            // Adding test data
             var genre = new Genre { Name = "Action" };
             var movie = new Movie
             {
@@ -59,40 +64,13 @@ namespace MovieCatalogue.Tests
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            var result = await _searchService.SearchMoviesAsync("Test");
+            var result = await _searchService.SearchMoviesAsync(query);
 
-            Assert.IsNotEmpty(result);
-            Assert.AreEqual(1, result.Count());
-            Assert.AreEqual("Test Movie", result.First().Title);
-        }
-
-        [Test]
-        public async Task SearchMoviesAsync_ReturnsEmpty_WhenNoMoviesMatch()
-        {
-            var genre = new Genre { Name = "Drama" };
-            var movie = new Movie
+            Assert.AreEqual(expectedCount, result.Count());
+            if (expectedCount > 0)
             {
-                Id = Guid.NewGuid(),
-                Title = "Another Movie",
-                Genre = genre,
-                GenreId = genre.Id,
-                Description = "A test movie description.",
-                ReleaseDate = DateTime.Today,
-                Cast = "Actor 1, Actor 2",
-                TrailerUrl = "http://test.com/trailer",
-                PosterUrl = "http://test.com/poster.jpg",
-                Director = "Director 2",
-                Duration = 120,
-                IsDeleted = false,
-                CreatedByUserId = Guid.NewGuid(),
-            };
-
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
-
-            var result = await _searchService.SearchMoviesAsync("Test");
-
-            Assert.IsEmpty(result);
+                Assert.AreEqual("Test Movie", result.First().Title);
+            }
         }
 
         [Test]
@@ -119,7 +97,7 @@ namespace MovieCatalogue.Tests
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            var result = await _searchService.SearchMoviesAsync("NonExistentQuery");
+            var result = await _searchService.SearchMoviesAsync("Test");
 
             Assert.IsEmpty(result);
         }
@@ -173,15 +151,13 @@ namespace MovieCatalogue.Tests
             Assert.AreEqual("Active Movie", result.First().Title);
         }
 
-        [Test]
-        public async Task SearchMoviesAsync_ReturnsEmpty_WhenQueryIsEmptyOrWhitespace()
+        [TestCase("", 0)]
+        [TestCase("   ", 0)]
+        public async Task SearchMoviesAsync_ReturnsEmpty_WhenQueryIsEmptyOrWhitespace(string query, int expectedCount)
         {
-            var result1 = await _searchService.SearchMoviesAsync(string.Empty);
-            var result2 = await _searchService.SearchMoviesAsync("   ");
+            var result = await _searchService.SearchMoviesAsync(query);
 
-            Assert.IsEmpty(result1);
-            Assert.IsEmpty(result2);
+            Assert.AreEqual(expectedCount, result.Count());
         }
-
     }
 }

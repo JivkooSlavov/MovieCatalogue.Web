@@ -43,8 +43,10 @@ else
                         }
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-warning btn-sm">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>
+                        <div class="d-flex">
+                            <a asp-action="Edit" asp-route-id="@review.Id" class="btn btn-warning btn-sm me-2">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@review.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </td>
                 </tr>
             }

@@ -32,7 +32,7 @@ namespace MovieCatalogue.Data.Configuration
 
         private HashSet<Rating> SeedRating()
         {
-            HashSet<Rating> genres = new HashSet<Rating>()
+            HashSet<Rating> ratings = new HashSet<Rating>()
             {
                     new Rating() { Value =5, MovieId = Guid.Parse("9a237ae5-bff5-4fa3-b30f-1303ea504903"), UserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")},
                     new Rating() { Value =5, MovieId = Guid.Parse("b1d07192-c121-443a-8367-b18934739a2e"), UserId = Guid.Parse("2a82b11c-525b-44a4-9d03-a108c6bed3b9")},
@@ -41,7 +41,7 @@ namespace MovieCatalogue.Data.Configuration
                     new Rating() { Value =4, MovieId = Guid.Parse("e8772d7c-8bda-4652-9f91-757857838db7"), UserId = Guid.Parse("ba09344d-675b-431b-9808-1b92c92ce016")}
             };
 
-            return genres;
+            return ratings;
         }
     }
 }

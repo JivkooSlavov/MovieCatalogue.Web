@@ -41,8 +41,8 @@ namespace MovieCatalogue.Tests
         [Test]
         public async Task GetReviewsForMovieAsync_ReturnsCorrectReviews()
         {
-            var movie = await CreateMovieAsync("Movie 1"); 
-            var review = await CreateReviewAsync(movie.Id); 
+            var movie = await CreateMovieAsync("Movie 1");
+            var review = await CreateReviewAsync(movie.Id);
 
             var result = await _reviewService.GetReviewsForMovieAsync(movie.Id);
 
@@ -153,7 +153,7 @@ namespace MovieCatalogue.Tests
         {
             var movie = await CreateMovieAsync("Movie 1");
             var review = await CreateReviewAsync(movie.Id);
-            var anotherUserId = Guid.NewGuid(); 
+            var anotherUserId = Guid.NewGuid();
 
             var result = await _reviewService.GetReviewForEditAsync(review.Id, anotherUserId, isAdmin: false);
 
@@ -229,7 +229,7 @@ namespace MovieCatalogue.Tests
         }
 
         private async Task<Review> CreateReviewAsync(Guid movieId)
-        {   
+        {
             var review = new Review
             {
                 Id = Guid.NewGuid(),

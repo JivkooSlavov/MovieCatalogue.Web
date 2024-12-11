@@ -38,66 +38,43 @@ namespace MovieCatalogue.Tests
         }
 
         [Test]
-        public async Task AddOrUpdateRatingAsync_AddsNewRating_WhenRatingDoesNotExist()
+        [TestCase(0, 5, 5)]
+        [TestCase(3, 5, 5)]
+        public async Task AddOrUpdateRatingAsync_AddsOrUpdatesRating_Correctly(int initialRating, int newRating, int expectedRating)
         {
             var movie = await CreateTestMovieAsync();
-
-            await _ratingService.AddOrUpdateRatingAsync(movie.Id, Guid.NewGuid(), 5);
-
-            var rating = await _ratingRepository.FirstOrDefaultAsync(r => r.MovieId == movie.Id);
-            Assert.IsNotNull(rating);
-            Assert.AreEqual(5, rating.Value);
-        }
-
-        [Test]
-        public async Task AddOrUpdateRatingAsync_UpdatesExistingRating_WhenRatingAlreadyExists()
-        {
             var userId = Guid.NewGuid();
-            var movie = await CreateTestMovieAsync();
-            var rating = new Rating
+
+            if (initialRating > 0)
             {
-                MovieId = movie.Id,
-                UserId = userId,
-                Value = 3
-            };
-            _context.Ratings.Add(rating);
-            await _context.SaveChangesAsync();
+                await AddTestRatingAsync(movie.Id, userId, initialRating);
+            }
 
-            await _ratingService.AddOrUpdateRatingAsync(movie.Id, userId, 5);
+            await _ratingService.AddOrUpdateRatingAsync(movie.Id, userId, newRating);
 
-            var updatedRating =
-                await _ratingRepository.FirstOrDefaultAsync(r => r.MovieId == movie.Id && r.UserId == userId);
-            Assert.IsNotNull(updatedRating);
-            Assert.AreEqual(5, updatedRating.Value);
+            var rating = await _ratingRepository.FirstOrDefaultAsync(r => r.MovieId == movie.Id && r.UserId == userId);
+            Assert.IsNotNull(rating);
+            Assert.AreEqual(expectedRating, rating.Value);
         }
 
         [Test]
-        public async Task UpdateMovieRatingAsync_UpdatesMovieRating_Correctly()
+        [TestCase(new int[] { 5, 3 }, 4)]
+        [TestCase(new int[] { }, 0)] 
+        [TestCase(new int[] { 4 }, 4)]
+        public async Task UpdateMovieRatingAsync_CalculatesCorrectAverageRating(int[] ratings, double expectedAverage)
         {
             var movie = await CreateTestMovieAsync();
-            var rating1 = new Rating { MovieId = movie.Id, Value = 5 };
-            var rating2 = new Rating { MovieId = movie.Id, Value = 3 };
-            _context.Ratings.Add(rating1);
-            _context.Ratings.Add(rating2);
-            await _context.SaveChangesAsync();
+
+            foreach (var rating in ratings)
+            {
+                await AddTestRatingAsync(movie.Id, Guid.NewGuid(), rating);
+            }
 
             await _ratingService.UpdateMovieRatingAsync(movie.Id);
 
             var updatedMovie = await _movieRepository.FirstOrDefaultAsync(m => m.Id == movie.Id);
             Assert.IsNotNull(updatedMovie);
-            Assert.AreEqual(4, updatedMovie.Rating); 
-        }
-
-        [Test]
-        public async Task UpdateMovieRatingAsync_SetsRatingToZero_WhenNoRatingsExist()
-        {
-            var movie = await CreateTestMovieAsync();
-
-            await _ratingService.UpdateMovieRatingAsync(movie.Id);
-
-            var updatedMovie = await _movieRepository.FirstOrDefaultAsync(m => m.Id == movie.Id);
-            Assert.IsNotNull(updatedMovie);
-            Assert.AreEqual(0, updatedMovie.Rating); 
+            Assert.AreEqual(expectedAverage, updatedMovie.Rating);
         }
 
         private async Task<Movie> CreateTestMovieAsync(string title = "Test Movie", bool isDeleted = false)
@@ -120,6 +97,19 @@ namespace MovieCatalogue.Tests
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
             return movie;
+        }
+
+        private async Task AddTestRatingAsync(Guid movieId, Guid userId, int value)
+        {
+            var rating = new Rating
+            {
+                Id = Guid.NewGuid(),
+                MovieId = movieId,
+                UserId = userId,
+                Value = value
+            };
+            _context.Ratings.Add(rating);
+            await _context.SaveChangesAsync();
         }
     }
 }

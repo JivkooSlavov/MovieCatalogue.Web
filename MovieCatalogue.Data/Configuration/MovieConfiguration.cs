@@ -38,12 +38,12 @@ namespace MovieCatalogue.Data.Configuration
              .IsRequired()
              .HasMaxLength(MovieImageUrlMaxLength);
 
-            builder.Property(m=>m.Director)
+            builder.Property(m => m.Director)
                 .IsRequired()
                 .HasMaxLength(MovieDirectorMaxLength);
 
             builder
-                .Property(m=>m.IsDeleted)
+                .Property(m => m.IsDeleted)
                 .HasDefaultValue(false);
 
             builder.HasOne(m => m.Genre)

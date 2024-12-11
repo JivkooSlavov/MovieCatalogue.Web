@@ -1,4 +1,4 @@
-﻿﻿@using MovieCatalogue.Web.ViewModels.Review;
+﻿@using MovieCatalogue.Web.ViewModels.Review;
 @model ReviewDeleteViewModel
 
 @{
@@ -15,7 +15,15 @@
     <div class="mb-3">
         <p><strong>Movie:</strong> @Model.MovieTitle</p>
         <p><strong>Review Content:</strong> @Model.Content</p>
-        <p><small><strong>Posted On:</strong> @Model.CreatedAt.ToString("f")</small></p>
+
+        @if (Model.UpdatedAt.HasValue)
+        {
+            <p><small><strong>Updated On:</strong> @Model.UpdatedAt.Value.ToString("f")</small></p>
+        }
+        else
+        {
+            <p><small><strong>Posted On:</strong> @Model.CreatedAt.ToString("f")</small></p>
+        }
     </div>
 
     <form asp-action="DeleteConfirm" method="post">
@@ -26,6 +34,7 @@
         <input type="hidden" asp-for="Content" />
         <input type="hidden" asp-for="CreatedAt" />
         <input type="hidden" asp-for="CreatedByUserId" />
+        <input type="hidden" asp-for="UpdatedAt" />
 
         <button type="submit" class="btn btn-danger">Yes, Delete</button>
         <a asp-action="Details" asp-controller="Movie" asp-route-id="@Model.MovieId" class="btn btn-secondary">Cancel</a>
