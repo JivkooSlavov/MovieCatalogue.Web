@@ -12,8 +12,8 @@ using MovieCatalogue.Data;
 namespace MovieCatalogue.Data.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20241211205431_asd")]
-    partial class asd
+    [Migration("20241211215509_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,7 +317,7 @@ namespace MovieCatalogue.Data.Migrations
                             Id = new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"),
                             Cast = "Daniel Radcliffe, Rupert Grint, Emma Watson, John Cleese, Robbie Coltrane, Warwick Davis, Richard Griffiths, Richard Harris, Ian Hart, John Hurt, Alan Rickman, Fiona Shaw, Maggie Smith, Julie Walters",
                             CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
-                            Description = "Harry Potter and the Philosopher's Stone (also known as Harry Potter and the Sorcerer's Stone in the United States) is a 2001 fantasy film directed by Chris Columbus and produced by David Heyman from a screenplay by Steve Kloves. It is based on the 1997 novel Harry Potter and the Philosopher's Stone by J. K. Rowling. It is the first instalment in the Harry Potter film series. The film stars Daniel Radcliffe as Harry Potter, with Rupert Grint as Ron Weasley, and Emma Watson as Hermione Granger. Its story follows Harry's first year at Hogwarts School of Witchcraft and Wizardry as he discovers that he is a famous wizard and begins his formal wizarding education.",
+                            Description = "The story follows 11-year-old Harry Potter, who discovers on his birthday that he is a wizard. Raised by his cruel aunt and uncle, Harry learns that he is famous in the magical world for surviving an attack by the dark wizard Lord Voldemort, which left him with a lightning-shaped scar on his forehead. Harry is invited to attend Hogwarts School of Witchcraft and Wizardry, where he befriends Ron and Hermione. As they explore the mysteries of the school, they uncover a secret about the Philosopher's Stone, a magical object that grants immortality.",
                             Director = "Chris Columbus",
                             Duration = 152,
                             GenreId = new Guid("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
@@ -333,7 +333,7 @@ namespace MovieCatalogue.Data.Migrations
                             Id = new Guid("b1d07192-c121-443a-8367-b18934739a2e"),
                             Cast = "Ian McKellen, Martin Freeman, Richard Armitage, James Nesbitt, Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, Elijah Wood, Andy Serkis",
                             CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
-                            Description = "The story is set in Middle-earth sixty years before the main events of The Lord of the Rings and portions of the film are adapted from the appendices to Tolkien's The Return of the King.[7] An Unexpected Journey tells the tale of Bilbo Baggins (Martin Freeman), who is convinced by the wizard Gandalf (Ian McKellen) to accompany thirteen Dwarves, led by Thorin Oakenshield (Richard Armitage), on a quest to reclaim the Lonely Mountain from the dragon Smaug. The ensemble cast also includes Ken Stott, Cate Blanchett, Ian Holm, Christopher Lee, Hugo Weaving, James Nesbitt, Elijah Wood, and Andy Serkis. It features Sylvester McCoy, Barry Humphries, and Manu Bennett.",
+                            Description = "TIn the peaceful Shire, Bilbo Baggins is visited by the wizard Gandalf (Ian McKellen) and a group of 13 dwarves, led by Thorin Oakenshield (Richard Armitage), who seek his help to reclaim the Lonely Mountain and its treasure, which has been overtaken by the fearsome dragon Smaug. Though Bilbo is initially reluctant to join their quest, he eventually agrees, setting off on an unexpected adventure that will take him across the dangerous and magical lands of Middle-earth.",
                             Director = "Peter Jackson",
                             Duration = 169,
                             GenreId = new Guid("6f7c25cb-88f7-4036-902e-473b8b7f06d0"),
@@ -349,7 +349,7 @@ namespace MovieCatalogue.Data.Migrations
                             Id = new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"),
                             Cast = "Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry",
                             CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
-                            Description = "Gone Girl is aAmerican psychological thriller film directed by David Fincher and written by Gillian Flynn, based on her 2012 novel of the same name. It stars Ben Affleck, Rosamund Pike, Neil Patrick Harris, Tyler Perry, and Carrie Coon in her film debut. In the film, Nick Dunne (Affleck) becomes the prime suspect in the sudden disappearance of his wife, Amy (Pike) in Missouri.",
+                            Description = "The story centers around the mysterious disappearance of Amy Dunne on the morning of her fifth wedding anniversary. As Nick becomes the prime suspect in her case, the investigation reveals troubling details about the couple's relationship. The film alternates between Nick's perspective and flashbacks through Amy's diary entries, gradually revealing a complex and twisted story of manipulation, deception, and psychological games.",
                             Director = "David Fincher",
                             Duration = 149,
                             GenreId = new Guid("947fa7e5-5013-4c8e-b03a-8e2aa6317cd8"),
@@ -365,7 +365,7 @@ namespace MovieCatalogue.Data.Migrations
                             Id = new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"),
                             Cast = "Brad Pitt, Eric Bana, Orlando Bloom, Diane Kruger, Brian Cox, Sean Bean, Brendan Gleeson, Peter O'Toole",
                             CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
-                            Description = "Troy is a 2004 epic historical war film directed by Wolfgang Petersen and written by David Benioff. Produced by units in Malta, Mexico and Britain's Shepperton Studios, the film features an ensemble cast led by Brad Pitt, Eric Bana, Sean Bean, Diane Kruger, Brian Cox, Brendan Gleeson, Rose Byrne, Saffron Burrows and Orlando Bloom. It is loosely based[3] on Homer's Iliad in its narration of the entire story of the decade-long Trojan War—condensed into little more than a couple of weeks, rather than just the quarrel between Achilles and Agamemnon in the ninth year. Achilles leads his Myrmidons along with the rest of the Greek army invading the historical city of Troy, defended by Hector's Trojan army. The end of the film (the sack of Troy) is not taken from the Iliad, but rather from Quintus Smyrnaeus's Posthomerica, as the Iliad concludes with Hector's death and funeral.",
+                            Description = "The plot centers around the invasion of the city of Troy by the Greeks. The war is sparked when Paris, the prince of Troy, abducts Helen, the wife of Menelaus, the king of Sparta. In retaliation, Menelaus and his brother Agamemnon, the king of Mycenae, lead a Greek alliance to lay siege to Troy. The Greeks assemble an army that includes legendary warriors such as Achilles, the greatest of them all, and his rival Hector, the noble Trojan prince.",
                             Director = "Wolfgang Petersen",
                             Duration = 183,
                             GenreId = new Guid("d5ce01d4-9ac0-411c-b813-e022d6886652"),
@@ -381,7 +381,7 @@ namespace MovieCatalogue.Data.Migrations
                             Id = new Guid("e8772d7c-8bda-4652-9f91-757857838db7"),
                             Cast = "Ray Romano, John Leguizamo, Denis Leary",
                             CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
-                            Description = "On Earth 20,000 years ago, everything was covered in ice. A group of friends, Manny, a mammoth, Diego, a saber tooth tiger, and Sid, a sloth encounter an Eskimo human baby. They must try to return the baby back to his tribe before a group of saber tooth tigers find him and eat him.",
+                            Description = "A gruff and solitary mammoth named Manny (voiced by Ray Romano) embarks on an unexpected journey when he crosses paths with Sid (voiced by John Leguizamo), a talkative sloth, and Diego (voiced by Denis Leary), a cunning saber-toothed tiger. Despite their differences, the trio is forced to work together when they discover a human infant. Manny, moved by a sense of duty, takes it upon himself to protect the baby and return it to its tribe. Along the way, the unlikely group faces numerous challenges, including predators hunting them, harsh environmental conditions, and natural obstacles, all while forging a bond that transcends their initial differences.",
                             Director = "Chris Wedge",
                             Duration = 81,
                             GenreId = new Guid("ff41706e-522a-47cf-93e3-e646823ea7ed"),
@@ -391,6 +391,86 @@ namespace MovieCatalogue.Data.Migrations
                             ReleaseDate = new DateTime(2003, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Ice Age",
                             TrailerUrl = "https://www.youtube.com/watch?v=wjdqn9r4thg"
+                        },
+                        new
+                        {
+                            Id = new Guid("24e4cfc0-ec76-4f80-9d4c-e2f5bba1052e"),
+                            Cast = "Sam Worthington, Zoe Saldana, Sigourney Weaver, Stephen Lang, Michelle Rodriguez, Giovanni Ribisi",
+                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Description = "The story follows Jake Sully (played by Sam Worthington), a paraplegic former Marine who is recruited to replace his deceased twin brother as an operator of an \"avatar\"—a remotely controlled, genetically engineered body that allows humans to interact with the indigenous Na'vi people on Pandora. The Na'vi are a humanoid species with blue skin and a deep connection to their environment. The human presence on Pandora is driven by the desire to mine a valuable mineral called unobtanium, which is found deep within the planet's forests.",
+                            Director = "James Cameron",
+                            Duration = 162,
+                            GenreId = new Guid("93df566f-30f5-4d2b-b6ff-dc540b86a289"),
+                            IsDeleted = false,
+                            PosterUrl = "https://m.media-amazon.com/images/I/41kTVLeW1CL._AC_UF894,1000_QL80_.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(2009, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Avatar",
+                            TrailerUrl = "https://www.youtube.com/watch?v=5PSNL1qE6VY"
+                        },
+                        new
+                        {
+                            Id = new Guid("d4e6bf33-5a79-490a-89d1-dc9e2fe12b5c"),
+                            Cast = "Tom Hanks, Robin Wright, Gary Sinise, Mykelti Williamson, Sally Field",
+                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Description = "Forrest Gump tells the story of a simple man with a good heart who unintentionally influences major historical events and changes the lives of everyone he meets. From his humble beginnings in Alabama to becoming a war hero, a successful businessman, and a cultural icon, Forrest's journey is a testament to perseverance, love, and the power of kindness. At its core, the film explores themes of destiny, resilience, and the unpredictability of life.",
+                            Director = "Robert Zemeckis",
+                            Duration = 142,
+                            GenreId = new Guid("c2e80bd4-44f7-42f2-8a76-189fe9d12754"),
+                            IsDeleted = false,
+                            PosterUrl = "https://static0.srcdn.com/wordpress/wp-content/uploads/2023/05/forrest-gump-movie-poster.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(1994, 7, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Forrest Gump",
+                            TrailerUrl = "https://www.youtube.com/watch?v=bLvqoHBptjg"
+                        },
+                        new
+                        {
+                            Id = new Guid("47b1d1ca-756b-4f56-93ad-9d07c44d7b7a"),
+                            Cast = "Matthew Broderick, James Earl Jones, Jeremy Irons, Nathan Lane, Rowan Atkinson, Whoopi Goldberg",
+                            CreatedByUserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Description = "Simba, a young lion prince, must overcome adversity and reclaim his rightful place as king after the tragic death of his father, Mufasa. Along his journey, Simba learns about responsibility, love, and what it means to be a leader, all while confronting his wicked uncle, Scar, who has usurped the throne.",
+                            Director = "Roger Allers, Rob Minkoff",
+                            Duration = 88,
+                            GenreId = new Guid("ff41706e-522a-47cf-93e3-e646823ea7ed"),
+                            IsDeleted = false,
+                            PosterUrl = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRWwKdahmkJpbNfahOGIhiWjHl1UBLKCHOrqO3BLdR-zxHtGMXf1tjX28xeN30fBl-XXz3-AQ",
+                            Rating = 4.0,
+                            ReleaseDate = new DateTime(1994, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "The Lion King",
+                            TrailerUrl = "https://www.youtube.com/watch?v=7TavVZMewpY"
+                        },
+                        new
+                        {
+                            Id = new Guid("31b7d9c1-b9b1-4a3e-9f71-d3d0fdbd94d2"),
+                            Cast = "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy, Cillian Murphy",
+                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Description = "Dom Cobb, a thief with the ability to enter people's dreams and steal secrets, is offered a chance to have his criminal record erased if he can perform an inception—implanting an idea in someone's mind without their knowledge. Cobb assembles a team and dives deep into multiple layers of dreams, where time bends and the stakes are life or death.",
+                            Director = "Christopher Nolan",
+                            Duration = 148,
+                            GenreId = new Guid("d4a34098-333d-4177-9cbc-53a979f0382c"),
+                            IsDeleted = false,
+                            PosterUrl = "https://cdn11.bigcommerce.com/s-yzgoj/images/stencil/1280x1280/products/2919271/5944675/MOVEB46211__19379.1679590452.jpg?c=2",
+                            Rating = 4.0,
+                            ReleaseDate = new DateTime(2010, 7, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Inception",
+                            TrailerUrl = "https://www.youtube.com/watch?v=YoHD9XEInc0"
+                        },
+                        new
+                        {
+                            Id = new Guid("7a59a1d2-d249-442a-8fbb-b3b4057e2e9d"),
+                            Cast = "Christian Bale, Heath Ledger, Aaron Eckhart, Michael Caine, Gary Oldman, Maggie Gyllenhaal",
+                            CreatedByUserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Description = "Batman faces his greatest challenge when a criminal mastermind known as the Joker emerges from the shadows. As the Joker unleashes chaos on Gotham City, Batman must confront his own morals and the consequences of his actions, all while facing the growing tension between him and his trusted ally, Gotham City District Attorney Harvey Dent. With the fate of Gotham hanging in the balance, Batman must decide whether to uphold his code or take drastic action to save his city.",
+                            Director = "Christopher Nolan",
+                            Duration = 152,
+                            GenreId = new Guid("d4a34098-333d-4177-9cbc-53a979f0382c"),
+                            IsDeleted = false,
+                            PosterUrl = "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
+                            Rating = 5.0,
+                            ReleaseDate = new DateTime(2008, 7, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "The Dark Knight",
+                            TrailerUrl = "https://www.youtube.com/watch?v=EXeTwQWrcwY"
                         });
                 });
 
@@ -424,38 +504,73 @@ namespace MovieCatalogue.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("da0c2ff4-8d73-448a-bb7d-b408e2e368a6"),
+                            Id = new Guid("1d7c2f04-5ae4-47c9-ade7-d05e60255e6b"),
                             MovieId = new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("7769c977-41dc-47de-8a73-1da5177c8361"),
+                            Id = new Guid("076cce66-09b1-4739-a505-710681afd3e6"),
                             MovieId = new Guid("b1d07192-c121-443a-8367-b18934739a2e"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("c5217d3b-1770-4be9-ac41-b379e3ef03ea"),
+                            Id = new Guid("e8872588-3cb5-4401-a4b3-f3567bf83b3a"),
                             MovieId = new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"),
                             UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("ffaa5af5-3bb2-44ed-8412-c46a6ab7222f"),
+                            Id = new Guid("61cdccf4-97c9-461e-aef6-b6a1ea4d57ca"),
                             MovieId = new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"),
                             UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("cfb3508b-0472-4dca-ab0a-33cdbeac3541"),
+                            Id = new Guid("06784c5f-0ee0-4405-a8e0-de27cc4ee2d1"),
                             MovieId = new Guid("e8772d7c-8bda-4652-9f91-757857838db7"),
                             UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             Value = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("3fc7edc9-0bff-4533-bab2-32e5d5bcf693"),
+                            MovieId = new Guid("24e4cfc0-ec76-4f80-9d4c-e2f5bba1052e"),
+                            UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("76bcd42a-53de-4e44-b48b-62629b0b3e78"),
+                            MovieId = new Guid("d4e6bf33-5a79-490a-89d1-dc9e2fe12b5c"),
+                            UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("24342325-380b-4144-8c32-3c83c3b689e3"),
+                            MovieId = new Guid("47b1d1ca-756b-4f56-93ad-9d07c44d7b7a"),
+                            UserId = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("b0f03086-65a7-42cd-98b4-08c964fdb7ff"),
+                            MovieId = new Guid("31b7d9c1-b9b1-4a3e-9f71-d3d0fdbd94d2"),
+                            UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = new Guid("180662ed-9e88-411a-8208-9e09c2cde1f1"),
+                            MovieId = new Guid("7a59a1d2-d249-442a-8fbb-b3b4057e2e9d"),
+                            UserId = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
+                            Value = 5
                         });
                 });
 
@@ -566,15 +681,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "96b6ce56-12f6-4abd-af7c-f2b89bc1e703",
+                            ConcurrencyStamp = "a0aeddb8-cae9-4940-82b3-f230cd746077",
                             Email = "zhivko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZHIVKO@MOVIE.COM",
                             NormalizedUserName = "ZHIVKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGiBesK9YDjSTjfQeUcvI1jd6JOMSolPM6JV7U9zIK1prVZbmcrhjCXYwtFo8GURzw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPdpeWxXxf5c5ivlD+ujaB2DlPUS3sIhWl+KJuEb8tSCoPf55XYYcSLuNGZWEW6glA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3045659d-a5df-408b-ab09-3d029f6720ff",
+                            SecurityStamp = "4ac708f2-0c0b-42a5-9109-2bd28f28f1b5",
                             TwoFactorEnabled = false,
                             UserName = "zhivko@movie.com"
                         },
@@ -582,15 +697,15 @@ namespace MovieCatalogue.Data.Migrations
                         {
                             Id = new Guid("ba09344d-675b-431b-9808-1b92c92ce016"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "07826e1b-25a5-47f1-b5f3-fad68edaf16d",
+                            ConcurrencyStamp = "bf259cd4-f624-4bd7-9d46-d0602a84df90",
                             Email = "mitko@movie.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "MITKO@MOVIE.COM",
                             NormalizedUserName = "MITKO@MOVIE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGQwIjxAEShn0jNjlDWS56B3X4K5AVwtgJSlN3IXMaUiOxCHIRoOY3ce7ueBXsoS9g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDJIMobwwSrJH4JUVos4sOoboAN3QMkJUTMux9W0qnrENnaiqmdiCgAeCSV76cLpHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ec65e1e2-0459-4edc-b406-759ffab70620",
+                            SecurityStamp = "873fb00e-6642-4f24-a6f9-7d92935b4c7b",
                             TwoFactorEnabled = false,
                             UserName = "mitko@movie.com"
                         });

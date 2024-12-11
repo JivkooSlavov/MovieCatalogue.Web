@@ -26,10 +26,11 @@ else
                     <td>@review.UserName</td>
                     <td>@review.Content</td>
                     <td>
-                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@review.MovieId">
+                        <a asp-action="Details" asp-controller="Movie" asp-route-id="@review.MovieId" asp-area="">
                             @review.MovieTitle
                         </a>
                     </td>
+
                     <td>
                         @if (review.UpdatedAt.HasValue)
                         {
