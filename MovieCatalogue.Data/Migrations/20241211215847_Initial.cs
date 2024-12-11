@@ -290,8 +290,8 @@ namespace MovieCatalogue.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 0, "a0aeddb8-cae9-4940-82b3-f230cd746077", "zhivko@movie.com", false, false, null, "ZHIVKO@MOVIE.COM", "ZHIVKO@MOVIE.COM", "AQAAAAIAAYagAAAAEPdpeWxXxf5c5ivlD+ujaB2DlPUS3sIhWl+KJuEb8tSCoPf55XYYcSLuNGZWEW6glA==", null, false, "4ac708f2-0c0b-42a5-9109-2bd28f28f1b5", false, "zhivko@movie.com" },
-                    { new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 0, "bf259cd4-f624-4bd7-9d46-d0602a84df90", "mitko@movie.com", false, false, null, "MITKO@MOVIE.COM", "MITKO@MOVIE.COM", "AQAAAAIAAYagAAAAEDJIMobwwSrJH4JUVos4sOoboAN3QMkJUTMux9W0qnrENnaiqmdiCgAeCSV76cLpHg==", null, false, "873fb00e-6642-4f24-a6f9-7d92935b4c7b", false, "mitko@movie.com" }
+                    { new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 0, "de2a58fc-80e0-42b4-8f13-2cd90e19f663", "zhivko@movie.com", false, false, null, "ZHIVKO@MOVIE.COM", "ZHIVKO@MOVIE.COM", "AQAAAAIAAYagAAAAEFyQIcen0v1uq+q15mxr8w9IZNjJ5Gcnhj2PwOm142hnOHuSqylU/J9FyvX806tMcQ==", null, false, "9fd17910-ee48-4de9-9726-b34f62c48274", false, "zhivko@movie.com" },
+                    { new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 0, "5b846f7a-c56a-470d-99af-ec2477234ce4", "mitko@movie.com", false, false, null, "MITKO@MOVIE.COM", "MITKO@MOVIE.COM", "AQAAAAIAAYagAAAAEKtH7cNu8FtUCJsgSIFphqFNDmV3lBF/7jMGghmGdccOfeePS7/a5S1gO23f4SkycA==", null, false, "7a0214b9-5446-4aa5-a8f9-8c50de583da5", false, "mitko@movie.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -329,20 +329,30 @@ namespace MovieCatalogue.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Favorites",
+                columns: new[] { "Id", "MovieId", "UserId" },
+                values: new object[,]
+                {
+                    { new Guid("6bde756c-dd87-48fe-a4de-7ee9a78779e4"), new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9") },
+                    { new Guid("82ca617c-5ad6-4487-943e-1caf0eea2a37"), new Guid("d4e6bf33-5a79-490a-89d1-dc9e2fe12b5c"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9") },
+                    { new Guid("adaafca9-2e3e-4853-9c34-67d511cf2e40"), new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016") }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Ratings",
                 columns: new[] { "Id", "MovieId", "UserId", "Value" },
                 values: new object[,]
                 {
-                    { new Guid("06784c5f-0ee0-4405-a8e0-de27cc4ee2d1"), new Guid("e8772d7c-8bda-4652-9f91-757857838db7"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 4 },
-                    { new Guid("076cce66-09b1-4739-a505-710681afd3e6"), new Guid("b1d07192-c121-443a-8367-b18934739a2e"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
-                    { new Guid("180662ed-9e88-411a-8208-9e09c2cde1f1"), new Guid("7a59a1d2-d249-442a-8fbb-b3b4057e2e9d"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
-                    { new Guid("1d7c2f04-5ae4-47c9-ade7-d05e60255e6b"), new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
-                    { new Guid("24342325-380b-4144-8c32-3c83c3b689e3"), new Guid("47b1d1ca-756b-4f56-93ad-9d07c44d7b7a"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 4 },
-                    { new Guid("3fc7edc9-0bff-4533-bab2-32e5d5bcf693"), new Guid("24e4cfc0-ec76-4f80-9d4c-e2f5bba1052e"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 },
-                    { new Guid("61cdccf4-97c9-461e-aef6-b6a1ea4d57ca"), new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 },
-                    { new Guid("76bcd42a-53de-4e44-b48b-62629b0b3e78"), new Guid("d4e6bf33-5a79-490a-89d1-dc9e2fe12b5c"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 },
-                    { new Guid("b0f03086-65a7-42cd-98b4-08c964fdb7ff"), new Guid("31b7d9c1-b9b1-4a3e-9f71-d3d0fdbd94d2"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 4 },
-                    { new Guid("e8872588-3cb5-4401-a4b3-f3567bf83b3a"), new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 }
+                    { new Guid("226862a2-5137-463f-ab1a-a4008d1f5140"), new Guid("7a59a1d2-d249-442a-8fbb-b3b4057e2e9d"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("4fd3d72d-e12e-4f00-a898-5388e6e7b779"), new Guid("31b7d9c1-b9b1-4a3e-9f71-d3d0fdbd94d2"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 4 },
+                    { new Guid("618011f7-19eb-4e26-a8dc-31bf947cd836"), new Guid("47b1d1ca-756b-4f56-93ad-9d07c44d7b7a"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 4 },
+                    { new Guid("6c9aa4a5-eb3c-4702-8ac7-f5325746a118"), new Guid("9a237ae5-bff5-4fa3-b30f-1303ea504903"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("6f0b814d-c5ab-49d7-8853-316926625d53"), new Guid("e8772d7c-8bda-4652-9f91-757857838db7"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 4 },
+                    { new Guid("a80f90a7-de2b-473b-97c2-d2e07d5e907d"), new Guid("24e4cfc0-ec76-4f80-9d4c-e2f5bba1052e"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 },
+                    { new Guid("b968ef4d-e8aa-4fd7-bde7-6851ae882252"), new Guid("d4e6bf33-5a79-490a-89d1-dc9e2fe12b5c"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 },
+                    { new Guid("d2449595-8786-4a6d-8ab9-e3afed8043d5"), new Guid("b1d07192-c121-443a-8367-b18934739a2e"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("ddd9ddcb-171a-4f34-8960-c18cdf26be08"), new Guid("000a7d61-c851-4705-9e18-f16ea9624cf7"), new Guid("2a82b11c-525b-44a4-9d03-a108c6bed3b9"), 5 },
+                    { new Guid("e3ee90ed-5170-4712-be7d-e8d6619e5f9b"), new Guid("7dc6c01d-68ed-475c-9ca1-3cda99437db2"), new Guid("ba09344d-675b-431b-9808-1b92c92ce016"), 5 }
                 });
 
             migrationBuilder.CreateIndex(
