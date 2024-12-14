@@ -24,9 +24,9 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<int> GetTotalFavoritesForUserAsync(Guid userId)
         {
-            return  await _favoriteRepository
+            return await _favoriteRepository
                 .GetAllAttached()
-                .Where(f => f.UserId == userId)
+                .Where(f => f.UserId == userId && f.IsDeleted == false)
                 .CountAsync();
         }
 
@@ -55,7 +55,7 @@ namespace MovieCatalogue.Services.Data
             return await _favoriteRepository
                 .GetAllWithInclude(f => f.Movie)
                 .Include(f => f.Movie.Genre)
-                .Where(f => f.UserId == userId)
+                .Where(f => f.UserId == userId && f.IsDeleted == false)
                 .OrderBy(f => f.Movie.Title)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -87,8 +87,6 @@ namespace MovieCatalogue.Services.Data
 
             return favorite;
         }
-
-
 
         public async Task<bool> RemoveFavoriteAsync(Guid movieId, Guid userId)
         {

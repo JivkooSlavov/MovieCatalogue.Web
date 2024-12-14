@@ -152,7 +152,7 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<int> GetTotalReviewsForUserAsync(Guid userId)
         {
-            return await  _reviewRepository
+            return await _reviewRepository
                 .GetAllAttached()
                 .Where(r => r.UserId == userId && r.IsDeleted == false)
                 .CountAsync();
@@ -162,7 +162,7 @@ namespace MovieCatalogue.Services.Data
         {
             return await _reviewRepository
                 .GetAllAttached()
-                .Where(r=>r.IsDeleted == false)
+                .Where(r => r.IsDeleted == false)
                 .CountAsync();
         }
 
@@ -172,8 +172,8 @@ namespace MovieCatalogue.Services.Data
                 .GetAllWithInclude(r => r.Movie)
                 .Where(r => r.UserId == userId && r.IsDeleted == false)
                 .OrderByDescending(r => r.DatePosted)
-                .Skip((pageNumber - 1) * pageSize) 
-                .Take(pageSize) 
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(r => new UserReviewViewModel
                 {
                     Id = r.Id,

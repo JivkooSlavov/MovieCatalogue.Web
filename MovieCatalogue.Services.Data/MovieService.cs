@@ -16,12 +16,16 @@ namespace MovieCatalogue.Services.Data
         private readonly IRepository<Movie, Guid> _movieRepository;
         private readonly IRepository<Genre, Guid> _genreRepository;
         private readonly IRepository<Rating, Guid> _ratingRepository;
+        private readonly IRepository<Review, Guid> _reviewRepository;
+        private readonly IRepository<Favorite, Guid> _favoriteRepository;
 
-        public MovieService(IRepository<Movie,Guid> movieRepository, IRepository<Genre, Guid> genreRepository, IRepository<Rating, Guid> ratingRepository)
+        public MovieService(IRepository<Movie, Guid> movieRepository, IRepository<Genre, Guid> genreRepository, IRepository<Rating, Guid> ratingRepository, IRepository<Review, Guid> reviewRepository, IRepository<Favorite, Guid> favoriteRepository)
         {
             _movieRepository = movieRepository;
             _genreRepository = genreRepository;
             _ratingRepository = ratingRepository;
+            _reviewRepository = reviewRepository;
+            _favoriteRepository = favoriteRepository;
         }
         public async Task<IEnumerable<MovieInfoViewModel>> GetMoviesByPageAsync(int page, int pageSize)
         {
@@ -30,7 +34,7 @@ namespace MovieCatalogue.Services.Data
                 .Include(y => y.Genre)
                 .Where(x => x.IsDeleted == false)
                 .OrderBy(x => x.Title)
-                .Skip((page - 1) * pageSize) 
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(x => new MovieInfoViewModel
                 {
@@ -214,7 +218,7 @@ namespace MovieCatalogue.Services.Data
             movie.TrailerUrl = model.TrailerUrl ?? string.Empty;
             movie.GenreId = model.GenreId;
 
-            if(movie.Rating != model.Rating)
+            if (movie.Rating != model.Rating)
             {
                 await _ratingRepository.DeleteByConditionAsync(mr => mr.MovieId == model.Id);
                 Rating updatedRating = new Rating
@@ -260,11 +264,24 @@ namespace MovieCatalogue.Services.Data
 
         public async Task<bool> DeleteMovieAsync(Guid id, Guid currentUserId, bool isAdmin)
         {
+
             var movie = await _movieRepository.GetByIdAsync(id);
+            var review = await _reviewRepository.FirstOrDefaultAsync(r => r.MovieId == movie.Id);
+            var favorite = await _favoriteRepository.FirstOrDefaultAsync(f => f.MovieId == movie.Id);
 
             if (movie == null || (movie.CreatedByUserId != currentUserId && !isAdmin) || movie.IsDeleted)
             {
                 return false;
+            }
+            if (review != null)
+            {
+                review.IsDeleted = true;
+                await _reviewRepository.UpdateAsync(review);
+            }
+            if (favorite != null)
+            {
+                favorite.IsDeleted = true;
+                await _favoriteRepository.UpdateAsync(favorite);
             }
 
             movie.IsDeleted = true;
@@ -286,7 +303,7 @@ namespace MovieCatalogue.Services.Data
                     PosterUrl = m.PosterUrl,
                     Rating = m.Rating,
                     Cast = m.Cast,
-                    Genre =m.Genre.Name,
+                    Genre = m.Genre.Name,
                     Description = m.Description,
                     Director = m.Director,
                     Duration = m.Duration,
@@ -298,7 +315,7 @@ namespace MovieCatalogue.Services.Data
         public async Task<IEnumerable<TypeOfGenreMovies>> GetGenresAsync()
         {
 
-            var genres = await _genreRepository.GetAllAsync(); 
+            var genres = await _genreRepository.GetAllAsync();
 
             return genres.Select(g => new TypeOfGenreMovies
             {
