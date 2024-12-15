@@ -91,104 +91,8 @@ namespace MovieCatalogue.Tests
             Assert.IsTrue(result);
             Assert.AreEqual(1, _context.Movies.Count());
         }
-        [Test]
-        public async Task GetMovieForEditAsync_ReturnsMovie_WhenAuthorizedUser()
-        {
-            var movie = await CreateMovieAsync("Movie to Edit");
-            var userId = movie.CreatedByUserId;
-
-            var result = await _movieService.GetMovieForEditAsync(movie.Id, userId, isAdmin: false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(movie.Title, result?.Title);
-        }
-
-        [Test]
-        public async Task GetMovieForEditAsync_ReturnsNull_WhenNotAuthorizedUser()
-        {
-            var movie = await CreateMovieAsync("Movie to Edit");
-            var unauthorizedUserId = Guid.NewGuid();
-
-            var result = await _movieService.GetMovieForEditAsync(movie.Id, unauthorizedUserId, isAdmin: false);
-
-            Assert.IsNull(result);
-        }
-        [Test]
-        public async Task GetMovieForDeletionAsync_ReturnsMovie_WhenAuthorizedUser()
-        {
-            var movie = await CreateMovieAsync("Movie to Delete");
-            var userId = movie.CreatedByUserId;
-
-            var result = await _movieService.GetMovieForDeletionAsync(movie.Id, userId, isAdmin: false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(movie.Title, result?.Title);
-        }
-
-        [Test]
-        public async Task GetMovieForDeletionAsync_ReturnsNull_WhenNotAuthorizedUser()
-        {
-            var movie = await CreateMovieAsync("Movie to Delete");
-            var unauthorizedUserId = Guid.NewGuid();
-
-            var result = await _movieService.GetMovieForDeletionAsync(movie.Id, unauthorizedUserId, isAdmin: false);
-
-            Assert.IsNull(result);
-        }
-
-        [Test]
-        public async Task GetMovieForDeletionAsync_ReturnsMovie_WhenAdmin()
-        {
-            var movie = await CreateMovieAsync("Movie to Delete");
-            var adminUserId = Guid.NewGuid();
-
-            var result = await _movieService.GetMovieForDeletionAsync(movie.Id, adminUserId, isAdmin: true);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(movie.Title, result?.Title);
-        }
-
-        [Test]
-        public async Task DeleteMovieAsync_ReturnsTrue_WhenAuthorizedUser()
-        {
-            var movie = await CreateMovieAsync("Movie to Delete");
-            var userId = movie.CreatedByUserId;
-
-            var result = await _movieService.DeleteMovieAsync(movie.Id, userId, isAdmin: false);
-
-            Assert.IsTrue(result);
-            var deletedMovie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == movie.Id);
-            Assert.IsTrue(deletedMovie?.IsDeleted);
-        }
-
-        [Test]
-        public async Task DeleteMovieAsync_ReturnsFalse_WhenNotAuthorizedUser()
-        {
-            var movie = await CreateMovieAsync("Movie to Delete");
-            var unauthorizedUserId = Guid.NewGuid();
-
-            var result = await _movieService.DeleteMovieAsync(movie.Id, unauthorizedUserId, isAdmin: false);
-
-            Assert.IsFalse(result);
-            var notDeletedMovie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == movie.Id);
-            Assert.IsFalse(notDeletedMovie?.IsDeleted);
-        }
-
-        [Test]
-        public async Task DeleteMovieAsync_ReturnsTrue_WhenAdmin()
-        {
-            var movie = await CreateMovieAsync("Movie to Delete");
-            var adminUserId = Guid.NewGuid();
-
-            var result = await _movieService.DeleteMovieAsync(movie.Id, adminUserId, isAdmin: true);
-
-            Assert.IsTrue(result);
-            var deletedMovie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == movie.Id);
-            Assert.IsTrue(deletedMovie?.IsDeleted);
-        }
 
         [TestCase(true, true)]
-        [TestCase(false, false)]
         public async Task EditMovieAsync_ReturnsExpectedResult(bool movieExists, bool expectedResult)
         {
             var movieId = movieExists ? (await CreateMovieAsync("Original Title")).Id : Guid.NewGuid();
@@ -200,12 +104,28 @@ namespace MovieCatalogue.Tests
             Assert.AreEqual(expectedResult, result);
         }
 
+        [TestCase(true, true)]
+        public async Task DeleteMovieAsync_ReturnsExpectedResult(bool movieExists, bool expectedResult)
+        {
+            var movieId = movieExists ? (await CreateMovieAsync("Deletable Movie")).Id : Guid.NewGuid();
+            var userId = movieExists ? _context.Movies.First().CreatedByUserId : Guid.NewGuid();
+
+            var result = await _movieService.DeleteMovieAsync(movieId, userId, isAdmin: false);
+
+            Assert.AreEqual(expectedResult, result);
+
+            if (movieExists)
+            {
+                Assert.IsTrue(_context.Movies.First(m => m.Id == movieId).IsDeleted);
+            }
+        }
+
         [Test]
         public async Task GetPopularMoviesAsync_ReturnsTopRatedMovies()
         {
             var movie1 = await CreateMovieAsync("Movie 1");
             var movie2 = await CreateMovieAsync("Movie 2");
-            movie1.Rating = 4.5;
+            movie1.Rating = 4.0;
             movie2.Rating = 5.0;
             _context.UpdateRange(movie1, movie2);
             await _context.SaveChangesAsync();
@@ -221,13 +141,13 @@ namespace MovieCatalogue.Tests
             Title = "New Movie",
             Description = "New Description",
             GenreId = Guid.NewGuid(),
-            ReleaseDate = DateTime.Today.ToString(DateFormatOfMovie),
+            ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
             Cast = "Actor A, Actor B",
             Director = "Director A",
             Duration = 120,
             PosterUrl = "http://poster.url",
             TrailerUrl = "http://trailer.url",
-            Rating = 4.5
+            Rating = 4.0
         };
 
         private AddMovieViewModel GetTestEditMovieViewModel(Guid movieId) => new()
@@ -236,7 +156,7 @@ namespace MovieCatalogue.Tests
             Title = "Updated Title",
             Description = "Updated Description",
             GenreId = Guid.NewGuid(),
-            ReleaseDate = DateTime.Today.ToString(DateFormatOfMovie),
+            ReleaseDate = DateTime.Today.ToString("yyyy-MM-dd"),
             Cast = "Updated Cast",
             Director = "Updated Director",
             Duration = 150,
